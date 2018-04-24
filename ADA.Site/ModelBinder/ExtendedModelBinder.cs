@@ -12,7 +12,7 @@ using System.Web.Mvc;
 namespace ADA.Site.ModelBinder
 {
     /// <summary>
-    /// Binder permettant le binfing automatique de différents types
+    /// Binder permettant le binfing automatique de différents types tutu
     /// </summary>
     public class ExtendedModelBinder : DefaultModelBinder
     {
