@@ -1,4 +1,4 @@
-﻿using ADA.Data.Model;
+using ADA.Data.Model;
 using ADA.Site.Models;
 using ADA.Site.Models.Interface;
 using ADA.Site.Models.Paginable;
@@ -11,6 +11,9 @@ using System.Web.Mvc;
 
 namespace ADA.Site.ModelBinder
 {
+    /// <summary>
+    /// Binder permettant le binfing automatique de différents types
+    /// </summary>
     public class ExtendedModelBinder : DefaultModelBinder
     {
         protected override void BindProperty(ControllerContext controllerContext,
