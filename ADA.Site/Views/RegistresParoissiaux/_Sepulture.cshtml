@@ -1,0 +1,17 @@
+﻿@model ADA.Domain.RegistresParoissiaux.Sepulture
+
+<div>
+    <span class="font-weight-bold">@Html.DisplayFor(modelItem => modelItem.NomPrenom)</span>
+    @if (Model.DateDeces.HasValue)
+    {
+        <span>, décédé(e) le @Model.DateDeces.Value.ToString("D")</span>
+    }
+    @if (Model.DateSepulture.HasValue)
+    {
+        <span>, à eu des funérailles le @Model.DateSepulture.Value.ToString("D") à @Model.ParoisseRegistre.Nom</span>
+    }
+    else
+    {
+        <span>, à eu des funérailles en @Model.AnneeRegistreParoissial à @Model.ParoisseRegistre.Nom</span>
+    }
+</div>

@@ -1,0 +1,17 @@
+﻿@model ADA.Domain.RegistresParoissiaux.Bapteme
+
+<div>
+    <span class="font-weight-bold">@Html.DisplayFor(modelItem => modelItem.NomPrenom)</span>
+    @if (Model.DateNaissance.HasValue)
+    {
+        <span>, né(e) le @Model.DateNaissance.Value.ToString("D")</span>
+    }
+    @if (Model.DateBapteme.HasValue)
+    {
+        <span>, baptisé(e) le @Model.DateBapteme.Value.ToString("D") à @Model.ParoisseRegistre.Nom</span>
+    }
+    else
+    {
+        <span>, baptisé(e) en @Model.AnneeRegistreParoissial à @Model.ParoisseRegistre.Nom</span>
+    }
+</div>

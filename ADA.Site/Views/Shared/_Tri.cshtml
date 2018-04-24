@@ -1,0 +1,8 @@
+﻿@model ADA.Site.Models.Interface.ITriable
+
+
+
+@Html.DropDownList("tri-select", new SelectList(Model.Tris, "Key", "Libelle", Model.Tri.Key), htmlAttributes: new Dictionary<string, object>() 
+            { 
+                { "class", "form-control" } 
+            })

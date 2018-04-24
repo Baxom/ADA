@@ -1,0 +1,81 @@
+﻿@model IEnumerable<ADA.Domain.Pretres.PretrePhoto>
+
+@{
+    var triggerElementId = ViewData["triggerElementId"];
+    var modalId = "modal_" + triggerElementId;
+    var carouselId = "carousel_" + triggerElementId;
+}
+
+<!-- The Modal -->
+<div class="modal fade" id="@modalId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-fullscreen modal-transparent" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close flex-right" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                
+                <div id="@carouselId" class="carousel slide carousel-full-height" data-ride="carousel" data-interval="false">
+                    <ol class="carousel-indicators">
+                        @{ var compteur = 1; }
+                        @foreach (var photo in Model)
+                        {
+                            <li data-target="#@carouselId" data-slide-to="@(compteur - 1)" class="@(@compteur == 1 ? "active" : "")"></li>
+                            compteur++;
+                        }
+                    </ol>
+                    <div class="carousel-inner">
+
+                        @{ compteur = 1; }
+                        @foreach (var photo in Model)
+                        {
+                            <div class="carousel-item @(@compteur == 1 ? "active" : "")">
+                                <img class="d-block center" src="@Url.Action("Image", "Image", new { filename = photo.NomFichier })">
+                            </div>
+                            compteur++;
+                        }
+                    </div>
+                    <a class="carousel-control-prev" href="#@carouselId" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Précédent</span>
+                    </a>
+                    <a class="carousel-control-next" href="#@carouselId" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Suivant</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        @* </div> *@
+    </div>
+</div>
+
+<script>
+    (function () {
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("@triggerElementId");
+
+        btn.onclick = function () {
+
+            $('#@modalId').on('show.bs.modal', function () {
+                $("body").addClass("modal-backdrop-darker");
+                $('#@modalId').on('show.bs.modal', null);
+            });
+
+            $('#@modalId').modal('show');
+
+
+            $('#@modalId').on('hidden.bs.modal', function () {
+                $("body").removeClass("modal-backdrop-darker");
+                $('#@modalId').on('hidden.bs.modal', null);
+            });
+        }
+
+
+
+    })()
+</script>

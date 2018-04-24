@@ -1,0 +1,35 @@
+﻿@model ADA.Domain.Pretres.Pretre
+
+@if (Model.HasDocumentsOuPhotos)
+{
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" name="selection-pretre" data-id="@Model.Id">
+            <span class="box"></span>
+        </label>
+    </div>
+}
+
+<div class="content">
+    <span class="font-weight-bold">@Html.DisplayFor(modelItem => modelItem.Nom) @Html.DisplayFor(modelItem => modelItem.Prenom)</span>
+    <span class="font-italic">&nbsp;&nbsp;(@Model.DateVie)</span>
+    @if (Model.HasDocumentsOuPhotos)
+    {
+        @Html.ActionLink("Pdf", "fiche", new { id = Model.Id, niceUrl = Model.NomComplet }, new { target = "_blank", @class = "pdfLink" });
+    }
+
+    
+    @if (Model.FonctionsLieu.Any())
+    {
+        <ul>
+            @foreach (var fl in Model.FonctionsLieu.OrderBy(b => b.AnneeDebut).ThenBy(b => b.AnneeFin).ThenBy(b => b.Fonction.Nom).ThenBy(b => b.Lieu.Nom))
+            {
+                <li>@fl.Fonction.Nom,  @fl.Lieu.Nom (@fl.AnneeDebut - @fl.AnneeFin)</li>
+            }
+        </ul>
+    }
+</div>
+
+<div class="flex-right">
+    @{ Html.RenderPartial("~/Views/Pretre/Shared/_Photo.cshtml", Model); }
+</div>

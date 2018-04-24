@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@using PagedList;
+@using PagedList.Mvc;
+@model ADA.Site.Models.RechercheRevueViewModel
+
+@using (Html.BeginForm("Recherche", "Revue", new { codeRevue = Model.CodeRevue }, FormMethod.Get, new { name = "recherche" }))
+{
+    Html.RenderPartial("~/Views/Revue/_ChampsRecherche.cshtml", Model);
+
+    if (Model.Recherche)
+    {
+        if(Model.Resultats.Any())
+        {
+            <div class="row header-result">
+                <div class="col-md-12">
+                    @{ Html.RenderPartial("~/Views/Shared/_Pager.cshtml", Model.Resultats, new ViewDataDictionary { { "Action", "Recherche" }, { "FormName", "recherche" } }); }
+                    <div class="header-result-item-right"> @{Html.RenderPartial("~/Views/Shared/_PaginationSelect.cshtml", Model.Pagination);} </div>
+                    <div class="header-result-item-right">
+                        <button id="genere-pdf" type="button" class="btn btn-default">Générer le pdfs de plusieurs revues</button>
+                    </div>
+                </div>
+            </div>
+            
+            <ul class="list-group list-selectable">
+                @foreach (var articleRevue in Model.Resultats)
+                    {
+                    <li class="list-group-item">
+
+
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="selection-revue" data-id="@articleRevue.Id">
+                                <span class="box"></span>
+                            </label>
+                        </div>
+                        <div class="content">
+                            <div>
+                                @Html.DisplayFor(modelItem => articleRevue.Titre)
+                                @Html.ActionLink("Pdf", "pdf", new { id = articleRevue.Id, niceUrl = String.Format("{0} - {1}", articleRevue.Revue.Nom, String.IsNullOrWhiteSpace(articleRevue.Titre) ? "" : articleRevue.Titre) }, new { target = "_blank", @class = "pdfLink" })
+
+
+                                @if (!String.IsNullOrEmpty(articleRevue.Auteur))
+                                    {
+                                        <div>Auteur: @Html.DisplayFor(modelItem => articleRevue.Auteur)</div>
+                                    }
+
+                            </div>
+
+                            <div>
+                                <span>@articleRevue.Revue.Nom, </span>
+
+                                @if (!String.IsNullOrEmpty(articleRevue.PeriodePublication))
+                                    {
+                                    <span>Période publication : @Html.DisplayFor(modelItem => articleRevue.PeriodePublication), </span>
+                                    }
+
+                                <span>Pages: @articleRevue.PagesAffichees</span>
+                            </div>
+
+                        </div>
+
+
+                    </li>
+                    }
+
+            </ul>
+            <div class="row header-result">
+                <div class="col-md-12">
+                    @{ Html.RenderPartial("~/Views/Shared/_Pager.cshtml", Model.Resultats, new ViewDataDictionary { { "Action", "Recherche" }, { "FormName", "recherche" } }); }
+                </div>
+            </div>
+        }
+        else
+        {
+            Html.RenderPartial("~/Views/Shared/_NoResult.cshtml");
+        }
+    }
+}
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/Custom/Pagination.js")
+    @Scripts.Render("~/Scripts/Custom/Pager.js")
+    @Scripts.Render("~/Scripts/Custom/Revue.js")
+    @Scripts.Render("~/Scripts/Custom/Autocomplete.js")
+}
+

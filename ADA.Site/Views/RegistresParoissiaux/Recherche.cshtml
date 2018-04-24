@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "Recherche Registres Paroissiaux";
+}
+@using PagedList;
+@using PagedList.Mvc;
+@using ADA.Domain.RegistresParoissiaux
+@model ADA.Site.Models.RegistresParoissiauxViewModel
+
+@using (Html.BeginForm("Recherche", "RegistresParoissiaux", FormMethod.Get, new { name = "recherche" }))
+{
+    Html.RenderPartial("~/Views/RegistresParoissiaux/_ChampsRecherche.cshtml", Model);
+
+
+    if (Model.Recherche)
+    {
+        if (Model.Resultats.Any())
+        {
+            <div class="row header-result">
+                <div class="col-md-12">
+                    @{ Html.RenderPartial("~/Views/Shared/_Pager.cshtml", Model.Resultats, new ViewDataDictionary { { "Action", "Recherche" }, { "FormName", "recherche" } });}
+                    <div class="header-result-item-right"> @{Html.RenderPartial("~/Views/Shared/_Tri.cshtml", Model);} </div>
+                    <div class="header-result-item-right"> @{Html.RenderPartial("~/Views/Shared/_PaginationSelect.cshtml", Model.Pagination);} </div>
+                </div>
+            </div>
+            <ul class="list-group">
+                @foreach (var item in Model.Resultats)
+                {
+                    <li class="list-group-item">
+                        @{
+                            if((item as Bapteme) != null) {
+                                Html.RenderPartial("~/Views/RegistresParoissiaux/_Bapteme.cshtml", @item as Bapteme);
+                            }
+                            else if((item as Sepulture) != null) {
+                                Html.RenderPartial("~/Views/RegistresParoissiaux/_Sepulture.cshtml", @item as Sepulture);
+                            }
+                            else if((item as Mariage) != null) {
+                                Html.RenderPartial("~/Views/RegistresParoissiaux/_Mariage.cshtml", @item as Mariage, new ViewDataDictionary { { "NomRecherche", Model.Nom }, { "PrenomRecherche", Model.Prenom } });
+                            }
+                    
+                        }
+
+
+                    </li>
+                }
+
+            </ul>
+            <div class="row footer-result">
+                <div class="col-md-12">
+                    @{ Html.RenderPartial("~/Views/Shared/_Pager.cshtml", Model.Resultats, new ViewDataDictionary { { "Action", "Recherche" }, { "FormName", "recherche" } }); }
+                </div>
+            </div>
+        }
+        else
+        {
+            Html.RenderPartial("~/Views/Shared/_NoResult.cshtml");
+        }
+
+    }
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/Custom/Pagination.js")
+    @Scripts.Render("~/Scripts/Custom/Pager.js")
+    @Scripts.Render("~/Scripts/Custom/Autocomplete.js")
+    @Scripts.Render("~/Scripts/Custom/RegistreParoissiaux.js")
+    @Scripts.Render("~/Scripts/Custom/Tri.js")
+}
+

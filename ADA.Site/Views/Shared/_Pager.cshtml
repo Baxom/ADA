@@ -1,0 +1,15 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+
+@model PagedList.IPagedList
+
+@if(Model.PageCount > 1)
+{ 
+@Html.PagedListPager(Model, page => Url.Action(@ViewData["Action"] as string, new { page }), new PagedList.Mvc.PagedListRenderOptions() 
+    {
+        FunctionToTransformEachPageLink = (li, a) => { a.AddCssClass("page-link form-" + @ViewData["FormName"]); li.InnerHtml = a.ToString();  return li; },
+        ContainerDivClasses = new List<string>() { "pagination-container", "custom-pagination-container" },
+        UlElementClasses = new List<string>() { "pagination", "pagination-container" },
+        LiElementClasses = new List<string>() { "page-item" } 
+    })
+}

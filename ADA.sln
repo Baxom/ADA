@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADA.Site", "ADA.Site\ADA.Site.csproj", "{C370BD9F-EAF5-4FE3-BD4D-D5C12DB7699A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADA.Infrastructure.Services", "ADA.Infrastructure.Services\ADA.Infrastructure.Services.csproj", "{D85B91FF-236B-4DE8-9686-0BC7068CA7E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADA.Domain.Services", "ADA.Domain.Service\ADA.Domain.Services.csproj", "{69E06CB8-AB6F-4A4F-AACA-C63C38CD007D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADA.Domain", "ADA.Domain\ADA.Domain.csproj", "{028111CD-8A9C-465F-925B-6DEEBD5FD794}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADA.Data", "ADA.Data\ADA.Data.csproj", "{AB739B83-E845-412B-88A1-579436DBC88F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADA.CompositionRoot", "ADA.CompositionRoot\ADA.CompositionRoot.csproj", "{D4A56FBB-0A69-46CD-9D23-92C33859AB7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADA.Infrastructure", "ADA.Infrastructure\ADA.Infrastructure.csproj", "{9F2912C9-B7E2-4227-ACCC-DB5DF1EA889C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C370BD9F-EAF5-4FE3-BD4D-D5C12DB7699A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C370BD9F-EAF5-4FE3-BD4D-D5C12DB7699A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C370BD9F-EAF5-4FE3-BD4D-D5C12DB7699A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C370BD9F-EAF5-4FE3-BD4D-D5C12DB7699A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D85B91FF-236B-4DE8-9686-0BC7068CA7E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D85B91FF-236B-4DE8-9686-0BC7068CA7E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D85B91FF-236B-4DE8-9686-0BC7068CA7E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D85B91FF-236B-4DE8-9686-0BC7068CA7E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69E06CB8-AB6F-4A4F-AACA-C63C38CD007D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69E06CB8-AB6F-4A4F-AACA-C63C38CD007D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69E06CB8-AB6F-4A4F-AACA-C63C38CD007D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69E06CB8-AB6F-4A4F-AACA-C63C38CD007D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{028111CD-8A9C-465F-925B-6DEEBD5FD794}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{028111CD-8A9C-465F-925B-6DEEBD5FD794}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{028111CD-8A9C-465F-925B-6DEEBD5FD794}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{028111CD-8A9C-465F-925B-6DEEBD5FD794}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB739B83-E845-412B-88A1-579436DBC88F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB739B83-E845-412B-88A1-579436DBC88F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB739B83-E845-412B-88A1-579436DBC88F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB739B83-E845-412B-88A1-579436DBC88F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4A56FBB-0A69-46CD-9D23-92C33859AB7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4A56FBB-0A69-46CD-9D23-92C33859AB7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4A56FBB-0A69-46CD-9D23-92C33859AB7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4A56FBB-0A69-46CD-9D23-92C33859AB7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F2912C9-B7E2-4227-ACCC-DB5DF1EA889C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F2912C9-B7E2-4227-ACCC-DB5DF1EA889C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F2912C9-B7E2-4227-ACCC-DB5DF1EA889C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F2912C9-B7E2-4227-ACCC-DB5DF1EA889C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

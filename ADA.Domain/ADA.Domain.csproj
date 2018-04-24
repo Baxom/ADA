@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{028111CD-8A9C-465F-925B-6DEEBD5FD794}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ADA.Domain</RootNamespace>
+    <AssemblyName>ADA.Domain</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base\EntityBase.cs" />
+    <Compile Include="Base\IEntity.cs" />
+    <Compile Include="Bibliotheques\Bibliotheque.cs" />
+    <Compile Include="Constantes\Enumerations.cs" />
+    <Compile Include="Fonctions\Fonction.cs" />
+    <Compile Include="Fonctions\FonctionLieu.cs" />
+    <Compile Include="Pretres\PretreArticleRevue.cs" />
+    <Compile Include="Pretres\PretreFonctionLieu.cs" />
+    <Compile Include="Lieux\Lieu.cs" />
+    <Compile Include="Pretres\PretrePhoto.cs" />
+    <Compile Include="Pretres\Pretre.cs" />
+    <Compile Include="Pretres\PretreDocument.cs" />
+    <Compile Include="Fonctions\FonctionTypeLieu.cs" />
+    <Compile Include="Lieux\TypeLieu.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="References\Commune.cs" />
+    <Compile Include="RegistresParoissiaux\ActeIndividuel.cs" />
+    <Compile Include="RegistresParoissiaux\Acte.cs" />
+    <Compile Include="RegistresParoissiaux\Mariage.cs" />
+    <Compile Include="RegistresParoissiaux\Personne.cs" />
+    <Compile Include="RegistresParoissiaux\Sepulture.cs" />
+    <Compile Include="RegistresParoissiaux\Bapteme.cs" />
+    <Compile Include="Revues\ArticleRevueIndex.cs" />
+    <Compile Include="Revues\Document.cs" />
+    <Compile Include="Revues\DocumentRevue.cs" />
+    <Compile Include="Revues\PeriodesRevueLieu.cs" />
+    <Compile Include="Revues\PlageRevue.cs" />
+    <Compile Include="Revues\ArticleRevue.cs" />
+    <Compile Include="Revues\ListePlage.cs" />
+    <Compile Include="Revues\Plage.cs" />
+    <Compile Include="Revues\Revue.cs" />
+    <Compile Include="Revues\RevueGroupeIndex .cs" />
+    <Compile Include="Indexation\Index.cs" />
+    <Compile Include="Indexation\GroupeIndex.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ADA.Infrastructure.Services\ADA.Infrastructure.Services.csproj">
+      <Project>{d85b91ff-236b-4de8-9686-0bc7068ca7e3}</Project>
+      <Name>ADA.Infrastructure.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

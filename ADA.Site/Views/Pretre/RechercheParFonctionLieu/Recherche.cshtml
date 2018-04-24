@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "Recherche par fonction/lieu";
+}
+@using PagedList;
+@using PagedList.Mvc;
+@model ADA.Site.Models.RecherchePretreParLieuViewModel
+
+@using (Html.BeginForm("RecherchePretreFonctionLieu", "Pretre", FormMethod.Get, new { name = "recherche" }))
+{
+
+    Html.RenderPartial("~/Views/Pretre/RechercheParFonctionLieu/_ChampsRecherche.cshtml", Model);
+
+    if (Model.Recherche)
+    {
+        if(Model.Resultats.Any()) {
+            <button id="genere-pdf" type="button" class="btn btn-secondary">Générer le pdfs de plusieurs prêtres</button>
+            <div class="row header-result">
+                <div class="col-md-12">
+                    @{ Html.RenderPartial("~/Views/Shared/_Pager.cshtml", Model.Resultats, new ViewDataDictionary { { "Action", "RecherchePretreFonctionLieu" }, { "FormName", "recherche" } }); }
+                    <div class="header-result-item-right"> @{Html.RenderPartial("~/Views/Shared/_Tri.cshtml", Model);} </div>
+                    <div class="header-result-item-right"> @{Html.RenderPartial("~/Views/Shared/_PaginationSelect.cshtml", Model.Pagination);} </div>
+                </div>
+            </div>
+            <ul class="list-group list-selectable">
+                @foreach (var pretre in Model.Resultats)
+            {
+                    <li class="list-group-item">
+                        @{ Html.RenderPartial("~/Views/Pretre/Shared/_PretreItem.cshtml", pretre); }
+                    </li>
+            }
+            </ul>
+
+            <div class="row footer-result">
+                <div class=" col-md-12">
+                    @{Html.RenderPartial("~/Views/Shared/_Pager.cshtml", Model.Resultats, new ViewDataDictionary { { "Action", "Recherche" }, { "FormName", "recherche" } }); }
+                </div>
+            </div>
+        }
+        else
+        {
+            Html.RenderPartial("~/Views/Shared/_NoResult.cshtml");
+        }
+    }
+    
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/Custom/Pretre.js")
+    @Scripts.Render("~/Scripts/Custom/Tri.js")
+    @Scripts.Render("~/Scripts/Custom/Pager.js")
+    @Scripts.Render("~/Scripts/Custom/Pagination.js")
+    @Scripts.Render("~/Scripts/Modules/FonctionLieu.js")
+}

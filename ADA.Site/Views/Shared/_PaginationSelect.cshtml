@@ -1,0 +1,7 @@
+﻿@model ADA.Site.Models.Paginable.PaginationViewModel
+           
+
+@Html.DropDownList("pagination", new SelectList(Model.Valeurs, Model.Valeur), htmlAttributes: new Dictionary<string, object>() 
+            { 
+                { "class", "form-control" } 
+            })

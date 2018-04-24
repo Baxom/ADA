@@ -1,0 +1,11 @@
+﻿@model ADA.Domain.Bibliotheques.Bibliotheque
+
+
+<div>
+    <div class="font-weight-bold">@Html.DisplayFor(modelItem => modelItem.Titre)</div>
+    @if (Model.HasAuteur)
+    {
+        <div> Auteur: @Html.DisplayFor(modelItem => modelItem.Auteur)</div>
+    }
+    <div class="font-italic">Cote: @Html.DisplayFor(modelItem => modelItem.Cote)</div>
+</div>

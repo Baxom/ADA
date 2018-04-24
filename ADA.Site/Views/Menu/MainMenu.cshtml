@@ -1,0 +1,55 @@
+﻿@model IEnumerable<ADA.Domain.Revues.Revue>
+
+@{
+    Layout = null;
+}
+
+<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            @*@Html.ActionLink("ADA", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        @Html.ActionLink("ADA", "Index", "Home", new { area = "" }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Prêtres
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            @Html.ActionLink("Recherche Pretre", "Index", "Pretre", null, new { @class = "dropdown-item" })
+                            @Html.ActionLink("Recherche Pretre par lieu", "IndexRecherchePretreFonctionLieu", "Pretre", null, new { @class = "dropdown-item" })
+                        </div>
+
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Revues
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            @Html.ActionLink("Globale", "Index", "Revue", new { codeRevue =  "" }, new { @class = "dropdown-item" })
+
+                            @if (Model.Any()) { <div class="dropdown-divider"></div>}
+
+                            @foreach (var revue in Model.OrderBy( b => b.Nom))
+                            {
+                                @Html.ActionLink(revue.Nom, "Index", "Revue", new { codeRevue = revue.Code.ToLower() }, new { @class = "dropdown-item" })
+                            }
+                        </div>
+
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Registres paroissiaux", "Index", "RegistresParoissiaux", new { area = "" }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Bibliothèque", "Index", "Bibliotheque", new { area = "" }, new { @class = "nav-link" })
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>

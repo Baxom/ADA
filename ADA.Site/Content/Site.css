@@ -1,0 +1,202 @@
+﻿body {
+  /*  padding-top: 50px;*/
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-top:15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+li.pretre-item {
+    list-style: none;
+    display: block;
+}
+
+.img-clickable {
+    cursor: pointer;
+}
+
+.pagination-container {
+    margin: 0;
+}
+
+.custom-pagination-container {
+    display: inline-block;
+}
+
+.flex-right {
+    margin-left: auto;
+}
+
+a.pdfLink
+{
+    background: url(../Content/Images/pdf-icon-3.png) no-repeat top left;
+     display: inline-block;
+     width: 25px;
+     height: 25px;
+     background-size: contain;
+     text-indent: -9999px; /* hides the link text */
+     margin-left: 10px;
+}
+
+span.pdfLink
+{
+    background: url(../Content/Images/pdf-icon-3.png) no-repeat top left;
+    background-size: contain;
+    text-indent: -9999px; /* hides the link text */
+}
+
+/* Material checkbox */
+
+.checkbox {
+ position: relative;
+}
+
+.checkbox label {
+  padding-left: 24px;
+}
+input[type="checkbox"] {
+  display: none;
+}
+input[type="checkbox"] + .box:before,
+input[type="checkbox"] + .box:after,
+input[type="checkbox"] + input[type="hidden"] + .box:before,
+input[type="checkbox"] + input[type="hidden"] + .box:after {
+  transition: all 0.3s;
+}
+input[type="checkbox"] + .box:after,
+input[type="checkbox"] + input[type="hidden"] + .box:after {
+  position: absolute;
+  left: 4px;
+  top: 3px;
+  margin-top: -1px;
+  margin-left: -4px;
+  display: inline-block;
+  content: ' ';
+  width: 20px;
+  height: 20px;
+  border: 2px solid #999;
+  border-radius: 2px;
+  background-color: #fff;
+  z-index: 400;
+  cursor: pointer;
+}
+input[type="checkbox"]:checked + .box:after,
+input[type="checkbox"] + input[type="hidden"] + .box:after {
+  background-color: #2196f3;
+  border-color: #2196f3;
+}
+input[type="checkbox"]:checked + .box:before,
+input[type="checkbox"] + input[type="hidden"] + .box:before {
+  transform: rotate(45deg);
+  position: absolute;
+  left: 7px;
+  top: 4px;
+  width: 6px;
+  height: 13px;
+  border-width: 2px;
+  border-style: solid;
+  border-top: 0;
+  border-left: 0;
+  border-color: #fff;
+  content: '';
+  z-index: 500;
+  cursor: pointer;
+}
+
+.header-result {
+    margin-top:15px;
+    margin-bottom:15px;
+}
+
+.header-result-item-right {
+    float:right;
+    margin-left: 10px;
+}
+
+.footer-result {
+    margin-top:15px;
+    margin-bottom:15px;
+}
+
+/* list-selectable */
+
+.list-selectable .checkbox {
+    position: absolute;
+}
+
+.list-selectable .content {
+    margin-left: 40px;
+}
+
+
+/* image centrée*/
+img.center {
+    margin: 0 auto;
+}
+
+.modal-backdrop-darker .modal-backdrop.show {
+    opacity: 0.85 !important;
+}
+
+.modal-fullscreen {
+    max-width : 95%;
+    height: 90%;
+}
+
+.modal-fullscreen .modal-content {
+    height : 100%
+}
+
+.modal-fullscreen .modal-body {
+    height : 100%
+}
+
+.modal-transparent .modal-content {
+    border-width: 0;
+    background-color : transparent;
+}
+
+.modal-transparent .modal-header,  .modal-transparent .modal-footer {
+    border-width: 0;
+}
+
+.modal-transparent .close {
+    font-size: 2.5rem;
+    color: #fff
+}
+
+.modal-transparent .close:hover {
+    opacity: 1
+}
+
+.carousel.carousel-full-height {
+    height : 100%
+}
+
+/*.carousel.carousel-full-height img {
+    height : 100%
+}*/
+
+.carousel.carousel-full-height .carousel-inner, .carousel.carousel-full-height .carousel-item.active {
+    height : 100%;
+    display:block;
+}
+

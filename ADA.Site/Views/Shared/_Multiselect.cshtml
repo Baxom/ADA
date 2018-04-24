@@ -1,0 +1,23 @@
+﻿@model ADA.Site.Models.MultiSelect.MultiSelectRevueModel
+        
+
+<div id="@Model.Id">
+    <input id="@Model.Id-fake-multiselect" type="text" class="form-control fake-multiselect" />
+    <select id="RevuesSelectionnees" name="RevuesSelectionnees" multiple style="display: none;">
+        @foreach (var value in Model.Values)
+        {
+            <option value='@Model.FuncKeySelection(value)'>@Model.FuncDisplaySelection(value)</option>
+        }
+    </select>
+</div>
+<script type="text/javascript">
+    var multisel = document.multiselect('#@Model.Id select');
+    multisel.deselectAll();
+
+    @foreach (var valueSelected in Model.SelectedValues)
+    {
+        @:multisel.select(@valueSelected);
+    }
+
+    document.getElementById("@Model.Id-fake-multiselect").remove();
+</script>

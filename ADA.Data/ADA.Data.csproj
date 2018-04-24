@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AB739B83-E845-412B-88A1-579436DBC88F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ADA.Data</RootNamespace>
+    <AssemblyName>ADA.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configurations\ComplexType\RegistresParoissiaux\PersonneComplexTypeConfiguration.cs" />
+    <Compile Include="Configurations\Entity\Lieux\LieuEntityConfiguration.cs" />
+    <Compile Include="Configurations\Entity\Fonctions\FonctionTypeLieuEntityConfiguration.cs" />
+    <Compile Include="Configurations\Entity\Pretres\PretreFonctionLieuEntityConfiguration.cs" />
+    <Compile Include="Configurations\Entity\RegistresParoissiaux\ActeEntityConfiguration.cs" />
+    <Compile Include="Configurations\Entity\Revue\ArticleRevueEntityConfiguration.cs" />
+    <Compile Include="Configurations\Entity\Pretres\PretreArticleRevueEntityConfiguration.cs" />
+    <Compile Include="Configurations\Entity\Fonctions\FonctionLieuEntityConfiguration.cs" />
+    <Compile Include="Configurations\Entity\Index\GroupeIndexEntityConfiguration.cs" />
+    <Compile Include="Configurations\Entity\Revue\RevueGroupeIndexEntityConfiguration.cs" />
+    <Compile Include="Configurations\Entity\Revue\RevueEntityConfiguration.cs" />
+    <Compile Include="Configurations\Entity\Pretres\PretreEntityConfiguration.cs" />
+    <Compile Include="Context\ADAContext.cs" />
+    <Compile Include="Conventions\PrimaryKeyConvention.cs" />
+    <Compile Include="Conventions\ForeignKeyNamingConvention.cs" />
+    <Compile Include="Conventions\StringRequiredConvention.cs" />
+    <Compile Include="Extention\EfExtention.cs" />
+    <Compile Include="Migrations\201711041626138_CreationBase.cs" />
+    <Compile Include="Migrations\201711041626138_CreationBase.Designer.cs">
+      <DependentUpon>201711041626138_CreationBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711041700598_AjoutFonctionParLieuEtPartypeLieu.cs" />
+    <Compile Include="Migrations\201711041700598_AjoutFonctionParLieuEtPartypeLieu.Designer.cs">
+      <DependentUpon>201711041700598_AjoutFonctionParLieuEtPartypeLieu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711071726427_AjoutCommune.cs" />
+    <Compile Include="Migrations\201711071726427_AjoutCommune.Designer.cs">
+      <DependentUpon>201711071726427_AjoutCommune.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711071806593_AjoutArticleRevues.cs" />
+    <Compile Include="Migrations\201711071806593_AjoutArticleRevues.Designer.cs">
+      <DependentUpon>201711071806593_AjoutArticleRevues.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711071829085_AjoutPretreArticlesRevue.cs" />
+    <Compile Include="Migrations\201711071829085_AjoutPretreArticlesRevue.Designer.cs">
+      <DependentUpon>201711071829085_AjoutPretreArticlesRevue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711071925590_AjoutSousDossierRevue.cs" />
+    <Compile Include="Migrations\201711071925590_AjoutSousDossierRevue.Designer.cs">
+      <DependentUpon>201711071925590_AjoutSousDossierRevue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711101504230_AjoutIndexEtGroupeIndex.cs" />
+    <Compile Include="Migrations\201711101504230_AjoutIndexEtGroupeIndex.Designer.cs">
+      <DependentUpon>201711101504230_AjoutIndexEtGroupeIndex.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711111757366_ModificationDuDomainPOurGestionDesClesEtrangereNonNullable.cs" />
+    <Compile Include="Migrations\201711111757366_ModificationDuDomainPOurGestionDesClesEtrangereNonNullable.Designer.cs">
+      <DependentUpon>201711111757366_ModificationDuDomainPOurGestionDesClesEtrangereNonNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711120026057_ChangeCodeInseeType.cs" />
+    <Compile Include="Migrations\201711120026057_ChangeCodeInseeType.Designer.cs">
+      <DependentUpon>201711120026057_ChangeCodeInseeType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711130027521_ModifCleEtrangere.cs" />
+    <Compile Include="Migrations\201711130027521_ModifCleEtrangere.Designer.cs">
+      <DependentUpon>201711130027521_ModifCleEtrangere.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711130037066_ModificationArticleRevueAjoutPeriodePublication.cs" />
+    <Compile Include="Migrations\201711130037066_ModificationArticleRevueAjoutPeriodePublication.Designer.cs">
+      <DependentUpon>201711130037066_ModificationArticleRevueAjoutPeriodePublication.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711151552397_ModificationRevue.cs" />
+    <Compile Include="Migrations\201711151552397_ModificationRevue.Designer.cs">
+      <DependentUpon>201711151552397_ModificationRevue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803261407582_AjoutRechercheParParoisseRevue.cs" />
+    <Compile Include="Migrations\201803261407582_AjoutRechercheParParoisseRevue.Designer.cs">
+      <DependentUpon>201803261407582_AjoutRechercheParParoisseRevue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803261419368_AjoutRecherchePartielleDepuisGlobale.cs" />
+    <Compile Include="Migrations\201803261419368_AjoutRecherchePartielleDepuisGlobale.Designer.cs">
+      <DependentUpon>201803261419368_AjoutRecherchePartielleDepuisGlobale.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803271432138_CreationTypeFonctionnel.cs" />
+    <Compile Include="Migrations\201803271432138_CreationTypeFonctionnel.Designer.cs">
+      <DependentUpon>201803271432138_CreationTypeFonctionnel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803281302120_AjoutRevueVirtuelle.cs" />
+    <Compile Include="Migrations\201803281302120_AjoutRevueVirtuelle.Designer.cs">
+      <DependentUpon>201803281302120_AjoutRevueVirtuelle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803281343131_AjoutPeriodeLieuRevue.cs" />
+    <Compile Include="Migrations\201803281343131_AjoutPeriodeLieuRevue.Designer.cs">
+      <DependentUpon>201803281343131_AjoutPeriodeLieuRevue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803291347228_AjoutPageAffichées.cs" />
+    <Compile Include="Migrations\201803291347228_AjoutPageAffichées.Designer.cs">
+      <DependentUpon>201803291347228_AjoutPageAffichées.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804160949359_RechercheParLieu.cs" />
+    <Compile Include="Migrations\201804160949359_RechercheParLieu.Designer.cs">
+      <DependentUpon>201804160949359_RechercheParLieu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804201348086_AjoutActe.cs" />
+    <Compile Include="Migrations\201804201348086_AjoutActe.Designer.cs">
+      <DependentUpon>201804201348086_AjoutActe.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Model\TriModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\Common\GenericRepository.cs" />
+    <Compile Include="Repositories\Common\IGenericRepository.cs" />
+    <Compile Include="Repositories\Core\PretreRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IPretreRepository.cs" />
+    <Compile Include="UnitOfWork\IUnitOfWork.cs" />
+    <Compile Include="UnitOfWork\UnitOfWork.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\ADA.Domain\ADA.Domain.csproj">
+      <Project>{028111cd-8a9c-465f-925b-6deebd5fd794}</Project>
+      <Name>ADA.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ADA.Infrastructure.Services\ADA.Infrastructure.Services.csproj">
+      <Project>{d85b91ff-236b-4de8-9686-0bc7068ca7e3}</Project>
+      <Name>ADA.Infrastructure.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ADA.Infrastructure\ADA.Infrastructure.csproj">
+      <Project>{9f2912c9-b7e2-4227-accc-db5df1ea889c}</Project>
+      <Name>ADA.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201711041626138_CreationBase.resx">
+      <DependentUpon>201711041626138_CreationBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711041700598_AjoutFonctionParLieuEtPartypeLieu.resx">
+      <DependentUpon>201711041700598_AjoutFonctionParLieuEtPartypeLieu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711071726427_AjoutCommune.resx">
+      <DependentUpon>201711071726427_AjoutCommune.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711071806593_AjoutArticleRevues.resx">
+      <DependentUpon>201711071806593_AjoutArticleRevues.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711071829085_AjoutPretreArticlesRevue.resx">
+      <DependentUpon>201711071829085_AjoutPretreArticlesRevue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711071925590_AjoutSousDossierRevue.resx">
+      <DependentUpon>201711071925590_AjoutSousDossierRevue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711101504230_AjoutIndexEtGroupeIndex.resx">
+      <DependentUpon>201711101504230_AjoutIndexEtGroupeIndex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711111757366_ModificationDuDomainPOurGestionDesClesEtrangereNonNullable.resx">
+      <DependentUpon>201711111757366_ModificationDuDomainPOurGestionDesClesEtrangereNonNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711120026057_ChangeCodeInseeType.resx">
+      <DependentUpon>201711120026057_ChangeCodeInseeType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711130027521_ModifCleEtrangere.resx">
+      <DependentUpon>201711130027521_ModifCleEtrangere.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711130037066_ModificationArticleRevueAjoutPeriodePublication.resx">
+      <DependentUpon>201711130037066_ModificationArticleRevueAjoutPeriodePublication.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711151552397_ModificationRevue.resx">
+      <DependentUpon>201711151552397_ModificationRevue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803261407582_AjoutRechercheParParoisseRevue.resx">
+      <DependentUpon>201803261407582_AjoutRechercheParParoisseRevue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803261419368_AjoutRecherchePartielleDepuisGlobale.resx">
+      <DependentUpon>201803261419368_AjoutRecherchePartielleDepuisGlobale.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803271432138_CreationTypeFonctionnel.resx">
+      <DependentUpon>201803271432138_CreationTypeFonctionnel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803281302120_AjoutRevueVirtuelle.resx">
+      <DependentUpon>201803281302120_AjoutRevueVirtuelle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803281343131_AjoutPeriodeLieuRevue.resx">
+      <DependentUpon>201803281343131_AjoutPeriodeLieuRevue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803291347228_AjoutPageAffichées.resx">
+      <DependentUpon>201803291347228_AjoutPageAffichées.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804160949359_RechercheParLieu.resx">
+      <DependentUpon>201804160949359_RechercheParLieu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804201348086_AjoutActe.resx">
+      <DependentUpon>201804201348086_AjoutActe.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

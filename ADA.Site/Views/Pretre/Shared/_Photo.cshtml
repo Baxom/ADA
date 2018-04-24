@@ -1,0 +1,11 @@
+﻿@model ADA.Domain.Pretres.Pretre
+
+
+@if (Model.Photos.Any())
+{
+    <div class="flex-right">
+        <img id="modal-btn-@Model.Id" class="img-clickable" src="@Url.Action("Thumbnail", "Image", new { filename = Model.Photos.First().NomFichier })" />
+        @{ Html.RenderPartial("~/Views/Shared/_CarouselModal.cshtml", Model.Photos, new ViewDataDictionary { { "triggerElementId", "modal-btn-" + @Model.Id } }); }
+    </div>
+}
+
