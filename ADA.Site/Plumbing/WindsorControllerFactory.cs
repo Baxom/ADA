@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -8,7 +8,7 @@ namespace ADA.Site.Plumbing
 {
     public class WindsorControllerFactory : DefaultControllerFactory
     {
-        readonly IWindsorContainer container;
+        public readonly IWindsorContainer container;
 
         public WindsorControllerFactory(IWindsorContainer container)
         {

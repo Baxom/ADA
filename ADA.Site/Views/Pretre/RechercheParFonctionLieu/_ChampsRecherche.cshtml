@@ -1,39 +1,51 @@
 ﻿@model ADA.Site.Models.RecherchePretreParLieuViewModel
 
+<div id="recherche-lieu-fonction" class="row search-form">
+    <div class="col-md-12">
+        @if (Model.FonctionLieuViewModel.TypesLieu.Any())
+        {
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <select class="form-control" name="typeLieuId" data-bind="options: fonctionLieuViewModel.typesLieu, optionsText: 'nom', optionsValue: 'id', value: typeLieuId, event: { change: typeLieuChanged }"></select>
+                </div>
 
-<div id="recherche-lieu-fonction">
-    
-    <div class="form-group row">
-        <div class="col-md-3">
-            <select class="form-control" name="typeLieuId" data-bind="options: fonctionLieuViewModel.typesLieu, optionsText: 'nom', optionsValue: 'id', value: typeLieuId, event: { change: typeLieuChanged }"></select>
-        </div>
-        <div class="col-md-9">
-            <input class="form-control" name="nomLieu" style="@(Model.FonctionLieuViewModel.TypesLieu.First( b => b.Id == Model.TypeLieuId).TypeRecherche == ADA.Domain.Constantes.TypeRecherche.AutoCompletion ? "" : "display:none" )"
-                   data-bind="jqAuto: { value: nomLieu, source: autoCompleteLieu, inputProp: 'nom', labelProp: 'nom',  valueProp: 'id'}, visible: typeLieu().rechercheParLieu() && typeLieu().typeRecherche() == @((int)ADA.Domain.Constantes.TypeRecherche.AutoCompletion)" + />
-            <select class="form-control" name="lieuId" style="@(Model.FonctionLieuViewModel.TypesLieu.First( b => b.Id == Model.TypeLieuId).TypeRecherche == ADA.Domain.Constantes.TypeRecherche.ListeDeroulante ? "" : "display:none" )"
-                    data-bind="options: fonctionLieuViewModel.lieux, optionsText: 'nom', optionsId:'id', visible: typeLieuId() != 1, optionsValue: 'id',value: lieuId, event: { change: lieuChanged },  valueAllowUnset: true, visible: typeLieu().rechercheParLieu() && typeLieu().typeRecherche() == @((int)ADA.Domain.Constantes.TypeRecherche.ListeDeroulante)"></select>
-         
-            
-        </div>
-    </div>
-    <div class="form-group row">
-        @Html.LabelFor(x => x.FonctionId, htmlAttributes: new { @class = "control-label col-md-3" })
-        <div class="col-md-9">
-            <select class="form-control" name="fonctionId" data-bind="options: fonctionLieuViewModel.fonctions, optionsText: 'nom', optionsValue: 'id', value: fonctionId,  valueAllowUnset: true"></select>
-        </div>
-    </div>
-    <div class="form-group row">
-        @Html.LabelFor(x => x.AnneeExercice, htmlAttributes: new { @class = "control-label col-md-3" })
-        <div class="col-md-9">
-            @Html.EditorFor(x => x.AnneeExercice, new { htmlAttributes = new { @class = "form-control" } })
-        </div>
-    </div>
-    <button type="submit" class="btn btn-primary">Rechercher</button>
+                <div class="col-md-9">
+                    <input class="form-control" name="nomLieu" style="@(Model.FonctionLieuViewModel.TypesLieu.First( b => b.Id == Model.TypeLieuId).TypeRecherche == ADA.Domain.Constantes.TypeRecherche.AutoCompletion ? "" : "display:none" )"
+                           data-bind="jqAuto: { value: nomLieu, source: autoCompleteLieu, inputProp: 'nom', labelProp: 'nom',  valueProp: 'id'}, visible: typeLieu().typeRecherche() == @((int)ADA.Domain.Constantes.TypeRecherche.AutoCompletion)" + />
+                    <select class="form-control" name="lieuId" style="@(Model.FonctionLieuViewModel.TypesLieu.First( b => b.Id == Model.TypeLieuId).TypeRecherche == ADA.Domain.Constantes.TypeRecherche.ListeDeroulante ? "" : "display:none" )"
+                            data-bind="options: fonctionLieuViewModel.lieux, optionsText: 'nom', optionsId:'id', visible: typeLieuId() != 1, optionsValue: 'id',value: lieuId, event: { change: lieuChanged },  valueAllowUnset: true, visible: typeLieu().typeRecherche() == @((int)ADA.Domain.Constantes.TypeRecherche.ListeDeroulante)"></select>
 
-    <script type="application/json" class="script-server-data">
-        @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, new Newtonsoft.Json.JsonSerializerSettings
+
+                </div>
+           
+
+            </div>
+        }
+        <div class="form-group row">
+            @Html.LabelFor(x => x.FonctionId, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                <select class="form-control" name="fonctionId" data-bind="options: fonctionLieuViewModel.fonctions, optionsText: 'nom', optionsValue: 'id', value: fonctionId,  valueAllowUnset: true"></select>
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(x => x.ContextHistoriqueId, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                <select class="form-control" name="contextHistoriqueId" data-bind="options: fonctionLieuViewModel.contextHistoriques, optionsText: 'nom', optionsValue: 'id', value: contextHistoriqueId,  valueAllowUnset: true"></select>
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(x => x.AnneeExercice, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(x => x.AnneeExercice, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+
+        <script type="application/json" class="script-server-data">
+            @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, new Newtonsoft.Json.JsonSerializerSettings
         {
             ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver()
         }))
-    </script>
+        </script>
+    </div>
 </div>

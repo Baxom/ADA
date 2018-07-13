@@ -13,6 +13,11 @@ namespace ADA.Domain.RegistresParoissiaux
 
         public Personne Epoux { get; set; }
         public Personne Epouse { get; set; }
+
+        public override string Libelle { get { return "Mariage"; } }
+        public override string LibellePluriel { get { return "Mariages"; } }
+
+        public override string Denomination { get { return String.Format("{0} et {1}", Epoux.NomComplet, Epouse.NomComplet); } }
     }
 }
 

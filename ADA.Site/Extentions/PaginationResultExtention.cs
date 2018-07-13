@@ -19,5 +19,11 @@ namespace ADA.Site.Extentions
         {
             return new StaticPagedList<T>(list.Data, pagedNnumber, pageSize, list.CountResult);
         }
+
+        public static IPagedList<T> ToPagedListMvc<T>(this IList<T> list, int pagedNnumber, int pageSize, int nbResult)
+        {
+            return new StaticPagedList<T>(list, pagedNnumber, pageSize, nbResult);
+        }
+
     }
 }

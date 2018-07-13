@@ -1,4 +1,4 @@
-﻿using ADA.Domain.Pretres;
+using ADA.Domain.Pretres;
 using ADA.Domain.Revues;
 using System;
 using System.Collections.Generic;
@@ -15,8 +15,8 @@ namespace ADA.Data.Configurations
         public ArticleRevueEntityConfiguration()
         {
             this.HasMany(b => b.ArticleRevueIndex).WithRequired();
-            this.Property(b => b.PagesReelles.ListePagesTexte).HasColumnName("PagesReelles");
-            this.Property(b => b.PagesVirtuelles.ListePagesTexte).HasColumnName("PagesAffichees");
+            this.Property(b => b.Pages.ListePagesTexte).HasColumnName("Pages");
+            this.Property(b => b.PagesReferences.ListePagesTexte).HasColumnName("PagesReferences");
             this.Property(b => b.PeriodePublication).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
             this.HasRequired(b => b.Revue);
         }

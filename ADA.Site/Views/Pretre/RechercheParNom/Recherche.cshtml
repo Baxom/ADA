@@ -10,9 +10,9 @@
 {
     Html.RenderPartial("~/Views/Pretre/RechercheParNom/_ChampsRecherche.cshtml", Model);
 
-    if (Model.Recherche) 
-    { 
-        if(Model.Resultats.Any())
+    if (Model.Recherche)
+    {
+        if (Model.Resultats.Any())
         {
 
             <div class="row header-result">
@@ -21,7 +21,14 @@
                     <div class="header-result-item-right"> @{Html.RenderPartial("~/Views/Shared/_Tri.cshtml", Model);} </div>
                     <div class="header-result-item-right"> @{Html.RenderPartial("~/Views/Shared/_PaginationSelect.cshtml", Model.Pagination);} </div>
                     <div class="header-result-item-right">
-                        <button id="genere-pdf" type="button" class="btn btn-secondary "><span class="pdfLink"></span></button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary" data-multi-select-api-button='{"api":"/pretre/fiches", "checkboxKey":"id", "key":"ids"}'><i class="fas fa-file-pdf"></i></button>
+                            <button type="button" class="btn btn-secondary  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" multi-select-api-checkbox-select-all href="javascript:void(0)">Sélectionner tout</a>
+                                <a class="dropdown-item" multi-select-api-checkbox-deselect-all href="javascript:void(0)">Désélectionner tout</a>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -56,7 +63,7 @@
 }
 
 @section Scripts {
-    @Scripts.Render("~/Scripts/Custom/Pretre.js")
+    @Scripts.Render("~/Scripts/Custom/MultiSelectApiButton.js")
     @Scripts.Render("~/Scripts/Custom/Tri.js")
     @Scripts.Render("~/Scripts/Custom/Autocomplete.js")
     @Scripts.Render("~/Scripts/Custom/Pagination.js")

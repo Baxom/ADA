@@ -5,9 +5,11 @@ using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.draw;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ADA.Infrastructure.Services.Core.PdfManager
@@ -24,13 +26,14 @@ namespace ADA.Infrastructure.Services.Core.PdfManager
         Document _docToc = null;
         PdfWriter _writerContent = null;
         PdfWriter _writerToc = null;
+        ParagraphBorder _border = new ParagraphBorder();
 
         PdfTableOfContent _toc;
         
         List<PdfReader> _readers = null;
 
         Font fontTitrePrincipal = new Font(BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, false), 16);
-        Font fontTitreSecondaire = new Font(BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, false), 14);
+        Font fontTitreSecondaire = new Font(BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, false), 13);
         Font fontText = new Font(BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false), 12);
         Font fontStamp = new Font(BaseFont.CreateFont(BaseFont.TIMES_ITALIC, BaseFont.CP1252, false), 10);
 
@@ -51,12 +54,15 @@ namespace ADA.Infrastructure.Services.Core.PdfManager
         private void InitDocuments()
         {
             _streamContent = new MemoryStream();
-            _docContent = new Document(pageSize);
+            //_docContent = new Document(pageSize);
+            _docContent = new Document();
             _writerContent = PdfWriter.GetInstance(_docContent, _streamContent);
+            _writerContent.PageEvent = _border;
             _docContent.Open();
 
             _streamToc = new MemoryStream();
-            _docToc = new Document(pageSize);
+           // _docToc = new Document(pageSize);
+            _docToc = new Document();
             _writerToc = PdfWriter.GetInstance(_docToc, _streamToc);
             _docToc.Open();
         }
@@ -70,12 +76,17 @@ namespace ADA.Infrastructure.Services.Core.PdfManager
             return new iTextSharpPdfManager(stream);
         }
 
-        public int AddPdf(string pdfPath, string stampString = null, string fileNotFoundMessage = null)
+        public int AddPdf(string pdfPath, string stampString = null, string fileNotFoundMessage = null, List<int> pageIndexToPrint = null)
         {
-            AddNewContentPage();
+
+            pageIndexToPrint = pageIndexToPrint ?? new List<int>();
+            pageIndexToPrint = pageIndexToPrint.OrderBy(b => b).ToList();
+
+           
 
             if (!File.Exists(pdfPath))
             {
+                AddNewContentPage();
                 CreateMissingFilePage("Pdf introuvable", pdfPath, fileNotFoundMessage);
                 return 1;
             }
@@ -85,13 +96,21 @@ namespace ADA.Infrastructure.Services.Core.PdfManager
 
             for (int i = 1; i <= reader.NumberOfPages; i++)
             {
+                if (pageIndexToPrint.Any() && !pageIndexToPrint.Contains(i)) continue;
+
+                AddNewContentPage(reader.GetPageSizeWithRotation(i));
+                
                 PdfImportedPage page = _writerContent.GetImportedPage(reader, i);
-                AddNewContentPage();
-                _writerContent.DirectContent.AddTemplate(page,  CreateTransform(page, page.Rotation));
+               
+                // AddNewContentPage(page);
+
+             //   _writerContent.DirectContent.AddTemplate(page, 0, 0);
+                _writerContent.DirectContent.AddTemplate(page, CreateTransform(page, page.Rotation));
+                //_writerContent.DirectContent.Add(page);
                 CreateStamp(stampString);
             }
 
-            return reader.NumberOfPages;
+            return pageIndexToPrint.Count;
         }
 
         private void CreateStamp(string stampString)
@@ -112,10 +131,16 @@ namespace ADA.Infrastructure.Services.Core.PdfManager
             var docWidth = _docContent.Right - _docContent.Left;
             var docHeight = _docContent.Top - _docContent.Bottom;
 
-
             AffineTransform rotate = AffineTransform.GetRotateInstance((Math.PI * (360 - rotation)) / 180, page.Width / 2, page.Height / 2);
             AffineTransform scale = AffineTransform.GetScaleInstance(docWidth / page.Width, docHeight / page.Height);
             AffineTransform translateMargin = AffineTransform.GetTranslateInstance(_docContent.LeftMargin, _docContent.BottomMargin);
+            if(rotation == 90)
+            {
+                scale = AffineTransform.GetScaleInstance(docWidth / page.Height, docHeight / page.Width);
+                translateMargin = AffineTransform.GetTranslateInstance(175, -175);
+            }
+
+            
             AffineTransform transform = AffineTransform.GetTranslateInstance(0, 0);
 
             transform.preConcatenate(rotate);
@@ -261,12 +286,10 @@ namespace ADA.Infrastructure.Services.Core.PdfManager
             return numberOfPage;
         }
 
-        public int AddImage(string imagePath, string stampString = null, string fileNotFoundMessage = null)
+        public int AddImage(string imagePath, string titre = null, string stampString = null, string fileNotFoundMessage = null)
         {
             AssertGoodInitialization();
-
             
-
             if (!File.Exists(imagePath))
             {
                 CreateMissingFilePage("Photo introuvable", imagePath, fileNotFoundMessage);
@@ -274,7 +297,9 @@ namespace ADA.Infrastructure.Services.Core.PdfManager
             else  {
 
                 AddNewContentPage();
-
+                CreateStamp(stampString);
+                WriteText("\n", null, null, null, false);
+                WriteTitle(titre, 1, true, true, false, true);
                 iTextSharp.text.Image pic = iTextSharp.text.Image.GetInstance(imagePath);
 
                 var docHeight = PageSize.A4.Height - _docContent.BottomMargin - _docContent.TopMargin - 150;
@@ -325,33 +350,57 @@ namespace ADA.Infrastructure.Services.Core.PdfManager
             return _writerContent.PageNumber;
         }
 
-        public void WriteTitle(string text, int level = 0, bool center = false, bool underline = false)
+        public void WriteTitle(string text, int level = 0, bool center = false, bool underline = false, bool bold = false, bool italic = false)
         {
             var font = new Font(level == 0 ? fontTitrePrincipal : fontTitreSecondaire);
             var titre = new Paragraph(text, font);
 
-            if(underline) font.SetStyle(Font.UNDERLINE);
+            _border.Active = level == 0;
+            font.SetStyle(Font.NORMAL);
+
+            if (underline) font.SetStyle(font.Style | Font.UNDERLINE);
+            if (bold) font.SetStyle(font.Style | Font.BOLD);
+            if (italic) font.SetStyle(font.Style | Font.ITALIC);
 
             if (center) titre.Alignment = Element.ALIGN_CENTER;
             else
             {
-                titre.FirstLineIndent = (level + 1) * 50;
+                titre.FirstLineIndent = (level) * 20;
             }
 
             _docContent.Add(titre);
-            _docContent.Add(new Paragraph(" "));
+            _border.Active = false;
+            if (level == 0) _docContent.Add(new Paragraph(" "));
+            else WriteText(" ", null, null, null, false, 0);
         }
 
-        public void WriteText(string text, string highlightedText = null, System.Drawing.Color? higlightedTextColor = null, System.Drawing.Color? backgroundHighlightedTextColor = null)
+        public void WriteText(string text,
+           string highlightedText = null,
+           System.Drawing.Color? higlightedTextColor = null,
+           System.Drawing.Color? backgroundHighlightedTextColor = null, bool bold = false)
+        {
+
+            WriteText(text, highlightedText, higlightedTextColor, backgroundHighlightedTextColor, bold, 0);
+        }
+
+        private void WriteText(string text,
+            string highlightedText = null,
+            System.Drawing.Color? higlightedTextColor = null,
+            System.Drawing.Color? backgroundHighlightedTextColor = null, bool bold = false,
+            int indentationLeft = 0)
         {
             var p = new Paragraph();
+
+            var compareInfo = CultureInfo.InvariantCulture.CompareInfo;
 
             if (!String.IsNullOrWhiteSpace(highlightedText))
             {
                 var fontHighlight = new Font(this.fontText);
+                if(bold) fontHighlight.SetStyle(Font.BOLD);
+
                 fontHighlight.Color = higlightedTextColor.HasValue ? new BaseColor(higlightedTextColor.Value) : BaseColor.BLACK;
                 var backgroundHighlightColor = backgroundHighlightedTextColor.HasValue ? new BaseColor(backgroundHighlightedTextColor.Value) : BaseColor.YELLOW;
-                var indexTextToHighlight = text.IndexOf(highlightedText);
+                var indexTextToHighlight = compareInfo.IndexOf(text,highlightedText, CompareOptions.IgnoreCase | CompareOptions.IgnoreNonSpace);
 
                 while (indexTextToHighlight >= 0)
                 {
@@ -368,7 +417,8 @@ namespace ADA.Infrastructure.Services.Core.PdfManager
                         text = text.Substring(indexTextToHighlight);
                     }
 
-                    indexTextToHighlight = text.IndexOf(highlightedText);
+                    indexTextToHighlight = compareInfo.IndexOf(text, highlightedText, CompareOptions.IgnoreCase | CompareOptions.IgnoreNonSpace);
+                        //text.IndexOf(highlightedText, comparisonType: StringComparison.InvariantCultureIgnoreCase);
                 }
 
                
@@ -376,9 +426,29 @@ namespace ADA.Infrastructure.Services.Core.PdfManager
             
              p.Add(new Chunk(text, this.fontText));
 
-             _docContent.Add(p);
+
+            p.IndentationLeft = indentationLeft;
+            _docContent.Add(p);
         }
-        
+
+        private void WriteInRectangle(string text,
+           Rectangle rect, bool bold)
+        {
+            var p = new Paragraph();
+            
+            var font = new Font(this.fontText);
+            
+            if (bold) font.SetStyle(Font.BOLD);
+            Chunk c = new Chunk(text, font);
+            p.Add(c);
+
+            ColumnText ct = new ColumnText(_writerContent.DirectContent);
+            ct.SetSimpleColumn(rect);
+            ct.AddElement(p);
+            ct.Go();
+
+        }
+
         public void AddNewPage()
         {
             AddNewTextPage();
@@ -391,11 +461,31 @@ namespace ADA.Infrastructure.Services.Core.PdfManager
            
         }
 
-        private void AddNewContentPage()
+        // private void AddNewContentPage(PdfImportedPage importedPage = null)
+        private void AddNewContentPage(Rectangle size = null)
         {
+            
+            if(size != null)
+            {
+                if (size.Height < size.Width)
+                {
+                    _docContent.SetPageSize(PageSize.A3.Rotate());
+                }
+            }
+            else _docContent.SetPageSize(PageSize.A4);
+
             _docContent.SetMargins(0, 0, 0, 0);
             _docContent.NewPage();
-            
+
+        }
+
+        public void WriteCatalogue(string text, string cote, string searchText)
+        {
+            var currentVertical = this._writerContent.GetVerticalPosition(false);
+
+            if(currentVertical > 50)  WriteInRectangle(cote, new Rectangle(0 + _docContent.Left, currentVertical - 50, 50 + _docContent.Left, currentVertical), true);
+            WriteText(text, searchText, null, System.Drawing.Color.Yellow, false, 50);
+            if (currentVertical <= 50) WriteInRectangle(cote, new Rectangle(0 + _docContent.Left, _docContent.Top - 50, 50 + _docContent.Left, _docContent.Top), true);
         }
     }
 }

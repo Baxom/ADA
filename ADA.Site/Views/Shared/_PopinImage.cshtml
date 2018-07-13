@@ -1,0 +1,66 @@
+﻿@model ADA.Domain.Media.Medium
+
+@{
+    var triggerElementId = ViewData["triggerElementId"];
+    var modalId = "modal_" + triggerElementId;
+    
+}
+
+<!-- The Modal -->
+<div class="modal fade modal-image" id="@modalId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-fullscreen modal-transparent" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="@Url.HttpRouteUrl("ActionApi", new { controller = "Media", action= "content", id = Model.Id })" class="btn-transparent"><i class="fas fa-download fa-lg"></i></a>
+                &nbsp;&nbsp;&nbsp;
+                <btn class="btn-transparent resizer cursor-pointer"><i class="fas fa-expand-arrows-alt fa-lg"></i></btn>
+                <button type="button" class="close flex-right" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img class="fit-to-screen" data-src="@Url.Action("Image", "Media", new { id = Model.Id })" />
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+    (function () {
+
+        var btnResize = document.getElementById("@modalId").getElementsByClassName("resizer")[0];
+        btnResize.onclick = function () {
+            $("#@modalId img").toggleClass("fit-to-screen");
+        };
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("@triggerElementId");
+
+
+        btn.onclick = function () {
+            $('#@modalId').on('show.bs.modal', function () {
+                var imgDefer = $('#@modalId img');
+                for (var i = 0; i < imgDefer.length; i++) {
+                    if (imgDefer[i].getAttribute('data-src') && !imgDefer[i].getAttribute('src')) {
+                        imgDefer[i].setAttribute('src', imgDefer[i].getAttribute('data-src'));
+                    }
+                }
+
+                $("body").addClass("modal-backdrop-darker");
+                $('#@modalId').on('show.bs.modal', null);
+            });
+
+            $('#@modalId').modal('show');
+
+
+            $('#@modalId').on('hidden.bs.modal', function () {
+                $("body").removeClass("modal-backdrop-darker");
+                $('#@modalId').on('hidden.bs.modal', null);
+                $("#@modalId img").addClass("fit-to-screen");
+            });
+        }
+
+
+
+    })()
+    </script>

@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Iconographie";
+}
+@using PagedList;
+@using PagedList.Mvc;
+@using ADA.Site.Helpers;
+
+@model ADA.Site.Models.RechercheMediaViewModel
+
+
+
+@using (Html.BeginForm("Recherche", "Media", FormMethod.Get, new { name = "recherche" }))
+{
+    Html.RenderPartial("~/Views/Media/_ChampsRecherche.cshtml", Model);
+
+
+    if (Model.Recherche)
+    {
+        if (Model.Resultats.Any())
+        {
+            <div class="row header-result">
+                <div class="col-md-12">
+                    <div class="float-right"> @{Html.RenderPartial("~/Views/Shared/_PaginationSelect.cshtml", Model.Pagination);} </div>
+                    @{ Html.RenderPartial("~/Views/Shared/_Pager.cshtml", Model.Resultats, new ViewDataDictionary { { "Action", "Recherche" }, { "FormName", "recherche" } });}
+                </div>
+            </div>
+            <ul class="list-group">
+                @foreach (var item in Model.Resultats)
+                {
+                <li class="list-group-item">
+                    @{Html.RenderPartial("~/Views/Media/_MediumItem.cshtml", @item);
+                    }
+                </li>
+                }
+
+            </ul>
+            <div class="row footer-result">
+                <div class="col-md-12">
+                    @{ Html.RenderPartial("~/Views/Shared/_Pager.cshtml", Model.Resultats, new ViewDataDictionary { { "Action", "Recherche" }, { "FormName", "recherche" } }); }
+                </div>
+            </div>
+        }
+        else
+        {
+            Html.RenderPartial("~/Views/Shared/_NoResult.cshtml");
+        }
+
+    }
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/Custom/Pagination.js")
+    @Scripts.Render("~/Scripts/Custom/Pager.js")
+}
+

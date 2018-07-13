@@ -40,8 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\CatalogueService.cs" />
+    <Compile Include="Core\ActeService.cs" />
     <Compile Include="Core\ArticleRevueService.cs" />
     <Compile Include="Core\PretreService.cs" />
+    <Compile Include="Interface\ICatalogueService.cs" />
+    <Compile Include="Interface\IActeService.cs" />
     <Compile Include="Interface\IArticleRevueService.cs" />
     <Compile Include="Interface\IPretreService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

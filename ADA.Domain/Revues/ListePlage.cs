@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ADA.Domain.Revues
 {
-    public class ListePlage
+    public class ListePlage 
     {
         private char _separatorPlage = ',';
 
@@ -21,11 +21,21 @@ namespace ADA.Domain.Revues
             {
                 _listePagesTexte = value;
                 if (!String.IsNullOrWhiteSpace(_listePagesTexte))
-                    Plages = _listePagesTexte.Split(_separatorPlage).Select(b => new Plage(b)); 
+                    Plages = _listePagesTexte.Split(_separatorPlage).Select(b => new Plage(b));
             }
         }
 
+
+
         public IEnumerable<Plage> Plages { get; set; }
+
+        public IEnumerable<int> ListePages
+        {
+            get
+            {
+                return Plages.SelectMany(pl => pl.Pages);
+            }
+        }
 
         public ListePlage()
         {

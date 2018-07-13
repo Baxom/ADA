@@ -71,7 +71,7 @@ namespace ADA.Domain.Services.Core
 
             if (pretre.Photos.Any())
             {
-                pdfManager.AddImage(pretre.Photos.First().NomCompletFichier, null, _fileMissingMessage);
+                pdfManager.AddImage(pretre.Photos.First().NomCompletFichier,pretre.NomEtDateVie, null, _fileMissingMessage);
                 totalPage++;
             }
 
@@ -92,7 +92,7 @@ namespace ADA.Domain.Services.Core
             var currentNumberOfPage = pdfManager.GetCurrentPageNumber();
 
             pdfManager.AddNewPage();
-            pdfManager.WriteTitle(pretre.NomEtDateVie, 0, true, true);
+            pdfManager.WriteTitle("Fonctions " + pretre.NomEtDateVie, 1, true, true, false, true);
             if (pretre.FonctionsLieu.Any())
             {
                 foreach (var fl in pretre.GetFormatedFonctions())

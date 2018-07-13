@@ -1,4 +1,4 @@
-﻿using ADA.Domain.Pretres;
+using ADA.Domain.Pretres;
 using ADA.Domain.Revues;
 using System;
 using System.Collections.Generic;

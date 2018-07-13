@@ -10,6 +10,10 @@ namespace ADA.Domain.RegistresParoissiaux
     {
         public DateTime? DateDeces { get; set; }
         public DateTime? DateSepulture { get; set; }
+
+        public override string Libelle { get { return "Sépulture"; } }
+        public override string LibellePluriel { get { return "Sépultures"; } }
     }
 }
+
 

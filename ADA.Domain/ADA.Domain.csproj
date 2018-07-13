@@ -30,9 +30,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MoreLinq, Version=2.10.21623.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.2.10.0\lib\net40\MoreLinq.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,10 +49,30 @@
     <Compile Include="Base\EntityBase.cs" />
     <Compile Include="Base\IEntity.cs" />
     <Compile Include="Bibliotheques\Bibliotheque.cs" />
+    <Compile Include="Catalogues\SerieBase.cs" />
+    <Compile Include="Catalogues\SousSerie.cs" />
+    <Compile Include="Catalogues\Serie.cs" />
+    <Compile Include="Catalogues\Catalogue.cs" />
     <Compile Include="Constantes\Enumerations.cs" />
+    <Compile Include="Contexthistoriques\ContextHistorique.cs" />
     <Compile Include="Fonctions\Fonction.cs" />
     <Compile Include="Fonctions\FonctionLieu.cs" />
+    <Compile Include="Fonds\FondMediumIndex.cs" />
+    <Compile Include="Fonds\InformationFiltreInjectionFond.cs" />
+    <Compile Include="Fonds\InformationFond.cs" />
+    <Compile Include="Fonds\InformationFondMedium.cs" />
+    <Compile Include="Fonds\InformationAffichageFond.cs" />
+    <Compile Include="Fonds\InformationRechercheFond.cs" />
+    <Compile Include="Fonds\Fond.cs" />
+    <Compile Include="Fonds\FondMedium.cs" />
+    <Compile Include="Fonds\FondGroupeIndex .cs" />
+    <Compile Include="Interne\TokenMultiPdf.cs" />
+    <Compile Include="Media\MediaFileLocator.cs" />
+    <Compile Include="Media\MediumTag.cs" />
+    <Compile Include="Media\Tag.cs" />
+    <Compile Include="Media\Medium.cs" />
     <Compile Include="Pretres\PretreArticleRevue.cs" />
+    <Compile Include="Pretres\PretreContextHistorique.cs" />
     <Compile Include="Pretres\PretreFonctionLieu.cs" />
     <Compile Include="Lieux\Lieu.cs" />
     <Compile Include="Pretres\PretrePhoto.cs" />
@@ -58,6 +84,7 @@
     <Compile Include="References\Commune.cs" />
     <Compile Include="RegistresParoissiaux\ActeIndividuel.cs" />
     <Compile Include="RegistresParoissiaux\Acte.cs" />
+    <Compile Include="RegistresParoissiaux\DocumentActe.cs" />
     <Compile Include="RegistresParoissiaux\Mariage.cs" />
     <Compile Include="RegistresParoissiaux\Personne.cs" />
     <Compile Include="RegistresParoissiaux\Sepulture.cs" />
@@ -66,6 +93,7 @@
     <Compile Include="Revues\Document.cs" />
     <Compile Include="Revues\DocumentRevue.cs" />
     <Compile Include="Revues\PeriodesRevueLieu.cs" />
+    <Compile Include="Revues\PlageTagDocument.cs" />
     <Compile Include="Revues\PlageRevue.cs" />
     <Compile Include="Revues\ArticleRevue.cs" />
     <Compile Include="Revues\ListePlage.cs" />
@@ -80,6 +108,9 @@
       <Project>{d85b91ff-236b-4de8-9686-0bc7068ca7e3}</Project>
       <Name>ADA.Infrastructure.Services</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

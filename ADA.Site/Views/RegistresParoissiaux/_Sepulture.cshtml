@@ -1,17 +1,20 @@
 ﻿@model ADA.Domain.RegistresParoissiaux.Sepulture
 
 <div>
-    <span class="font-weight-bold">@Html.DisplayFor(modelItem => modelItem.NomPrenom)</span>
+    <span class="font-weight-bold">@Html.DisplayFor(modelItem => modelItem.NomPrenom)</span>,
     @if (Model.DateDeces.HasValue)
     {
-        <span>, décédé(e) le @Model.DateDeces.Value.ToString("D")</span>
+        <span>décédé(e) le @Model.DateDeces.Value.ToString("D"),</span>
     }
     @if (Model.DateSepulture.HasValue)
     {
-        <span>, à eu des funérailles le @Model.DateSepulture.Value.ToString("D") à @Model.ParoisseRegistre.Nom</span>
+        <span>funérailles le @Model.DateSepulture.Value.ToString("D") à @Model.ParoisseRegistre.Nom</span>
     }
     else
     {
-        <span>, à eu des funérailles en @Model.AnneeRegistreParoissial à @Model.ParoisseRegistre.Nom</span>
+        <span>funérailles en @Model.AnneeRegistreParoissial à @Model.ParoisseRegistre.Nom</span>
     }
+
+    @Html.ActionLink("Acte", "acte", new { id = Model.Id, niceUrl = String.Format("{0}", Model.ShortTag) }, new { target = "_blank", @class = "pdfLink" })
+    <div class="result-right-top">@Model.RegistreParoissial</div>
 </div>

@@ -1,55 +1,59 @@
 ﻿@model ADA.Site.Models.RegistresParoissiauxViewModel
 
-<div class="form-group row">
-    @Html.LabelFor(x => x.TypeActe, htmlAttributes: new { @class = "control-label col-md-3" })
-    <div class="col-md-9">
-        @Html.DropDownList("TypeActe", new SelectList(Model.TypeActes, "Key", "Value", Model.TypeActe), htmlAttributes: new Dictionary<string, object>()
-            {
-                { "class", "form-control" }
-            })
-    </div>
-</div>
-<div class="form-group row">
-    @Html.LabelFor(x => x.Nom, htmlAttributes: new { @class = "control-label col-md-3" })
-    <div class="col-md-9">
-        @Html.EditorFor(x => x.Nom, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-</div>
-<div class="form-group row">
-    @Html.LabelFor(x => x.Prenom, htmlAttributes: new { @class = "control-label col-md-3" })
-    <div class="col-md-9">
-        @Html.EditorFor(x => x.Prenom, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-</div>
-<div class="form-group row">
-    @Html.LabelFor(x => x.ParoisseRegistre, htmlAttributes: new { @class = "control-label col-md-3" })
-    <div class="col-md-9">
-        @Html.EditorFor(x => x.ParoisseRegistre, new { htmlAttributes = new { @class = "form-control lieu", data_type_lieu_fonctionnel = (int)ADA.Domain.Constantes.TypeLieuFonctionnel.Paroisse }})
-    </div>
-</div>
-<div class="form-group row">
-    @Html.LabelFor(x => x.AnneeRegistre, htmlAttributes: new { @class = "control-label col-md-3" })
-    <div class="col-md-9">
-        @Html.EditorFor(x => x.AnneeRegistre, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-</div>
-<div class="form-group row @(Model.TypeActe == ADA.Domain.Constantes.TypeActe.Sepulture ? "" : "d-none")" data-filtre-acte-value="@ADA.Domain.Constantes.TypeActe.Sepulture">
-    @Html.LabelFor(x => x.DateDeDeces, htmlAttributes: new { @class = "control-label col-md-3" })
-    <div class="col-md-9">
-        @Html.EditorFor(x => x.DateDeDeces, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-</div>
-<div class="form-group row @(Model.TypeActe == ADA.Domain.Constantes.TypeActe.Mariage ? "" : "d-none")" data-filtre-acte-value="@ADA.Domain.Constantes.TypeActe.Mariage">
-    @Html.LabelFor(x => x.DateDeMariageCivil, htmlAttributes: new { @class = "control-label col-md-3" })
-    <div class="col-md-9">
-        @Html.EditorFor(x => x.DateDeMariageCivil, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-</div>
-<div class="form-group row @(Model.TypeActe == ADA.Domain.Constantes.TypeActe.Bapteme ? "" : "d-none")" data-filtre-acte-value="@ADA.Domain.Constantes.TypeActe.Bapteme">
-    @Html.LabelFor(x => x.DateDeNaissance, htmlAttributes: new { @class = "control-label col-md-3" })
-    <div class="col-md-9">
-        @Html.EditorFor(x => x.DateDeNaissance, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-</div>
+<div class="row search-form">
+    <div class="col-md-12">
+        <div class="form-group row">
+            @Html.LabelFor(x => x.TypeActe, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.DropDownList("TypeActe", new SelectList(Model.TypeActes, "Key", "Value", Model.TypeActe), htmlAttributes: new Dictionary<string, object>()
+                    {
+                        { "class", "form-control" }
+                    })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(x => x.Nom, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(x => x.Nom, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(x => x.Prenom, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(x => x.Prenom, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(x => x.ParoisseRegistre, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(x => x.ParoisseRegistre, new { htmlAttributes = new { @class = "form-control lieu", data_type_lieu_fonctionnel = (int)ADA.Domain.Constantes.TypeLieuFonctionnel.Paroisse } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(x => x.AnneeRegistre, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(x => x.AnneeRegistre, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="form-group row @(Model.TypeActe == ADA.Domain.Constantes.TypeActe.Sepulture ? "" : "d-none")" data-filtre-acte-value="@ADA.Domain.Constantes.TypeActe.Sepulture">
+            @Html.LabelFor(x => x.DateDeDeces, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(x => x.DateDeDeces, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="form-group row @(Model.TypeActe == ADA.Domain.Constantes.TypeActe.Mariage ? "" : "d-none")" data-filtre-acte-value="@ADA.Domain.Constantes.TypeActe.Mariage">
+            @Html.LabelFor(x => x.DateDeMariageCivil, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(x => x.DateDeMariageCivil, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="form-group row @(Model.TypeActe == ADA.Domain.Constantes.TypeActe.Bapteme ? "" : "d-none")" data-filtre-acte-value="@ADA.Domain.Constantes.TypeActe.Bapteme">
+            @Html.LabelFor(x => x.DateDeNaissance, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(x => x.DateDeNaissance, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
 
-<button type="submit" class="btn btn-primary">Rechercher</button>
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+    </div>
+</div>

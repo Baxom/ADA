@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "Recherche Bibliothèque";
+}
+@using PagedList;
+@using PagedList.Mvc;
+@model ADA.Site.Models.RechercheCatalogueViewModel
+
+@using (Html.BeginForm("Recherche", "Catalogue", FormMethod.Get, new { name = "recherche" }))
+{
+    <div id="recherche-catalogue">
+        @{
+            Html.RenderPartial("~/Views/Catalogue/_ChampsRecherche.cshtml", Model);
+        }
+    </div>
+
+
+    if (Model.Recherche)
+    {
+
+
+        if (Model.Resultats.Any())
+        {
+            <div class="row header-result">
+                <div class="col-md-12">
+                    <div class="header-result-item-right"> @{Html.RenderPartial("~/Views/Shared/_PaginationSelect.cshtml", Model.Pagination);} </div>
+                    @{ Html.RenderPartial("~/Views/Shared/_Pager.cshtml", Model.Resultats, new ViewDataDictionary { { "Action", "Recherche" }, { "FormName", "recherche" } });}
+                    <div class="header-result-item-right">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary" data-multi-select-api-button='{"api":"pdfs", "extendParams": "searchTerms=@Model.Titre", "checkboxKey":"id", "key":"ids"}'><i class="fas fa-file-pdf"></i></button>
+                            <button type="button" class="btn btn-secondary  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" multi-select-api-checkbox-select-all href="javascript:void(0)">Sélectionner tout</a>
+                                <a class="dropdown-item" multi-select-api-checkbox-deselect-all href="javascript:void(0)">Désélectionner tout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ul class="list-group markable-context " data-mark-keyword="@Model.Titre">
+                @foreach (var item in Model.Resultats)
+                {
+                    <li class="list-group-item list-selectable">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" multi-select-api-button-checkbox data-id="@item.Id">
+                                <span class="box"></span>
+                            </label>
+                        </div>
+                        <div class="content">
+
+                            @{ Html.RenderPartial("~/Views/Catalogue/_CatalogueItem.cshtml", @item, new ViewDataDictionary() { { "searchTerms", Model.Titre } });}
+
+                        </div>
+                    </li>
+                }
+
+            </ul>
+            <div class="row footer-result">
+                <div class="col-md-12">
+                    @{ Html.RenderPartial("~/Views/Shared/_Pager.cshtml", Model.Resultats, new ViewDataDictionary { { "Action", "Recherche" }, { "FormName", "recherche" } }); }
+                </div>
+            </div>
+        }
+        else
+        {
+            Html.RenderPartial("~/Views/Shared/_NoResult.cshtml");
+        }
+
+    }
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/Libs/mark.js/dist/mark.min.js")
+    @Scripts.Render("~/Scripts/Custom/Pagination.js")
+    @Scripts.Render("~/Scripts/Custom/Pager.js")
+    @Scripts.Render("~/Scripts/Custom/Mark.js")
+    @Scripts.Render("~/Scripts/Custom/MultiSelectApiButton.js")
+    @Scripts.Render("~/Scripts/Modules/Serie.js")
+}
+

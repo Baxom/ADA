@@ -1,0 +1,40 @@
+﻿@using ADA.Domain.Catalogues
+@model ADA.Site.Models.RechercheCatalogueViewModel
+
+
+<div class="row search-form">
+    <div class="col-md-12">
+        <div class="form-group row">
+            @Html.LabelFor(x => x.Titre, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(x => x.Titre, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(x => x.Series, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                <select class="form-control" name="serieId"
+                        data-bind="options: series, optionsText: 'nom', optionsId:'id', optionsValue: 'id', value: serieId, event: { change: serieChanged },  valueAllowUnset: true"></select>
+
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(x => x.SousSerie, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                <select class="form-control" name="sousSerieId"
+                        data-bind="options: sousSeries, optionsText: 'nom', optionsId:'id', optionsValue: 'id', value: sousSerieId,  valueAllowUnset: true"></select>
+
+            </div>
+        </div>
+
+        <script type="application/json" class="script-server-data">
+            @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, new Newtonsoft.Json.JsonSerializerSettings
+            {
+                ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver(),
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            }))
+        </script>
+
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+    </div>
+</div>

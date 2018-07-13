@@ -10,5 +10,8 @@ namespace ADA.Domain.RegistresParoissiaux
     {
         public DateTime? DateNaissance { get; set; }
         public DateTime? DateBapteme { get; set; }
+
+        public override string Libelle { get { return "Baptême"; } }
+        public override string LibellePluriel { get { return "Baptêmes"; } }
     }
 }

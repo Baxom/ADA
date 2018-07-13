@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using ADA.Data.UnitOfWork;
 using System.Web.Mvc;
+using ADA.Site.Models.Menu;
 
 namespace ADA.Site.Controllers
 {
@@ -18,9 +19,11 @@ namespace ADA.Site.Controllers
 
         public ActionResult MainMenu()
         {
-            var revues = _unitOfWork.Revues.Get( b => b.Active && b.RechercheDirecte).ToList();
-
-            return View(revues);
+            var vm = new MenuViewModel();
+            vm.Revues = _unitOfWork.Revues.Get( b => b.Active && b.RechercheDirecte).ToList();
+            vm.Fonds = _unitOfWork.Fonds.Get(b => b.Actif && b.FondPere == null, null, b => b.FondsFils).ToList();
+            
+            return View(vm);
         }
     }
 }

@@ -1,0 +1,28 @@
+﻿@model ADA.Domain.Media.Medium
+    
+
+<div class="content">
+    <span class="font-weight-bold">@Html.DisplayFor(modelItem => modelItem.Titre)</span>
+    @if ((bool)ViewData["isFond"])
+    {
+        Html.RenderPartial("~/Views/Fonds/_Informations.cshtml", Model);
+    }
+    @{Html.RenderPartial("~/Views/Media/_MediumTags.cshtml", Model); }
+</div>
+<div class="flex-right">
+
+    @if ((bool)ViewData["isFond"])
+    {
+        <img id="modal-btn-@Model.Id" class="img-clickable" src="@Url.Action("Thumbnail", "Media", new { id = Model.Id })" />
+    }
+    else
+    {
+        <a href="#" id="modal-btn-@Model.Id"><i  class="fas fa-play fa-lg"></i></a>
+    }
+
+    @{Html.RenderPartial("~/Views/Shared/_PopinAudio.cshtml", Model, new ViewDataDictionary { { "triggerElementId", "modal-btn-" + @Model.Id } });
+    }
+
+
+
+</div>

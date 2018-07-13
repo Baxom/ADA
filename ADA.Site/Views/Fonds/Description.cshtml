@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@using PagedList;
+@using PagedList.Mvc;
+@model ADA.Site.Models.RechercheFondViewModel
+
+
+@Html.Raw(Model.Fond.Description)
+

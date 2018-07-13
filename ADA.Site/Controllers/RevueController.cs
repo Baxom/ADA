@@ -54,6 +54,16 @@ namespace ADA.Site.Controllers
             return revue;
         }
 
+        private IEnumerable<Domain.Revues.Revue> GetRevue(IEnumerable<int> ids)
+        {
+            var revues = _unitOfWork.Revues.Get(b => ids.Contains(b.Id),
+                null,
+                b => b.RevuesFille);
+
+            return revues;
+        }
+
+
         private IEnumerable<GroupeIndexViewModel> GetGroupeIndex(ADA.Domain.Revues.Revue revue)
         {
 
@@ -91,9 +101,16 @@ namespace ADA.Site.Controllers
             BuildModel(model, revue);
 
             List<int> selectedIndex = model.SelectedIndex.Values.Where(b => b.HasValue).ToList().Cast<int>().ToList();
-            List<int> selectedRevue = model.RechercheGlobale 
-                ? model.RevuesSelectionnees 
-                : new List<int>() { revue.Id }.Union(revue.RevuesFille.Select( rf => rf.Id)).ToList();
+            List<int> selectedRevue = null;
+
+
+            if (model.RechercheGlobale)
+            {
+                var revues = GetRevue(model.RevuesSelectionnees);
+
+                selectedRevue = revues.Select( b => b.Id).Union( revues.SelectMany( r => r.RevuesFille.Select( rf => rf.Id))).Distinct().ToList();
+            }
+            else { selectedRevue = new List<int>() { revue.Id }.Union(revue.RevuesFille.Select(rf => rf.Id)).ToList(); }
 
 
             Expression<Func<ArticleRevue, bool>> filter = b =>
@@ -106,7 +123,7 @@ namespace ADA.Site.Controllers
 
                 && ((!b.Revue.PeriodesParoisses.Any() || model.Paroisse == null) 
                     || (
-                        b.Revue.PeriodesParoisses.Any(pp => pp.Lieu.Nom.Contains(model.Paroisse)
+                        b.Revue.PeriodesParoisses.Any(pp => pp.Lieu.Nom == model.Paroisse
                             && pp.Lieu.TypeLieu.TypeFonctionnel == TypeLieuFonctionnel.Paroisse
                             && pp.AnneeDebutPeriode <= b.DebutPublication
                             && pp.AnneeFinPeriode >= b.FinPublication
@@ -151,10 +168,9 @@ namespace ADA.Site.Controllers
 
         public FileStreamResult Pdfs(int[] ids)
         {
-            var pretres = _unitOfWork.Pretres.Get(b => ids.Contains(b.Id), null, b => b.Documents);
             MemoryStream stream = new MemoryStream();
 
-            var fileName = String.Format("plusieurs pretres.pdf");
+            var fileName = String.Format("plusieurs articles.pdf");
 
             _revueService.CreatePdf(ids, stream);
 

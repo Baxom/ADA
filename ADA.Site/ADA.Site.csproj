@@ -62,6 +62,21 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.HttpListener, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.HttpListener.3.0.1\lib\net45\Microsoft.Owin.Host.HttpListener.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Hosting, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Hosting.3.0.1\lib\net45\Microsoft.Owin.Hosting.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
       <Private>True</Private>
@@ -139,9 +154,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System.Net.Http.Formatting">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
@@ -155,6 +167,11 @@
   <ItemGroup>
     <Compile Include="ActionResults\ImageResult.cs" />
     <Compile Include="ActionResults\JsonHttpStatusResult.cs" />
+    <Compile Include="ApiControllers\FondController.cs" />
+    <Compile Include="ApiControllers\MediaController.cs" />
+    <Compile Include="Controllers\FondController.cs" />
+    <Compile Include="Controllers\MediaController.cs" />
+    <Compile Include="Controllers\CatalogueController.cs" />
     <Compile Include="Controllers\RegistresParoissiauxController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ReferenceController.cs" />
@@ -178,15 +195,20 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\GroupeMimeHelper.cs" />
     <Compile Include="Installers\ControllersInstaller.cs" />
     <Compile Include="ModelBinder\ExtendedModelBinder.cs" />
+    <Compile Include="Models\Catalogue\RechercheCatalogueViewModel.cs" />
     <Compile Include="Models\Common\PaginableViewModel.cs" />
     <Compile Include="Models\Common\PaginableTriableViewModel.cs" />
+    <Compile Include="Models\Fonds\RechercheFondViewModel.cs" />
     <Compile Include="Models\Index\GroupeIndexViewModel.cs" />
     <Compile Include="Models\Index\IndexViewModel.cs" />
     <Compile Include="Models\Interface\ISearchable.cs" />
     <Compile Include="Models\Interface\IPaginable.cs" />
     <Compile Include="Models\Interface\ITriable.cs" />
+    <Compile Include="Models\Media\RechercheMediaViewModel.cs" />
+    <Compile Include="Models\Menu\MenuViewModel.cs" />
     <Compile Include="Models\MultiSelect\MultiSelectRevueModel.cs" />
     <Compile Include="Models\MultiSelect\MultiSelectModel.cs" />
     <Compile Include="Models\Paginable\PaginationViewModel.cs" />
@@ -196,6 +218,7 @@
     <Compile Include="Models\Bibliotheque\RechercheBibliothequeViewModel.cs" />
     <Compile Include="Models\RegistresParoissiaux\RegistresParoissiauxViewModel.cs" />
     <Compile Include="Models\Revue\RechercheRevueViewModel.cs" />
+    <Compile Include="Plumbing\WindsorControllerActivator.cs" />
     <Compile Include="Plumbing\WindsorControllerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -255,6 +278,14 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Libs\mark.js\dist\jquery.mark.es6.js" />
+    <Content Include="Libs\mark.js\dist\jquery.mark.es6.min.js" />
+    <Content Include="Libs\mark.js\dist\jquery.mark.js" />
+    <Content Include="Libs\mark.js\dist\jquery.mark.min.js" />
+    <Content Include="Libs\mark.js\dist\mark.es6.js" />
+    <Content Include="Libs\mark.js\dist\mark.es6.min.js" />
+    <Content Include="Libs\mark.js\dist\mark.js" />
+    <Content Include="Libs\mark.js\dist\mark.min.js" />
     <Content Include="Libs\multiselect-master\demo.html" />
     <Content Include="Libs\multiselect-master\multiselect.min.js" />
     <Content Include="Libs\multiselect-master\scripts\helper.js" />
@@ -275,13 +306,17 @@
     <Content Include="Content\bootstrap-reboot.min.css.map" />
     <Content Include="Libs\multiselect-master\LICENSE" />
     <Content Include="Libs\multiselect-master\README.md" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Custom\Autocomplete.js" />
+    <Content Include="Scripts\Custom\BootstrapSubMenu.js" />
     <Content Include="Scripts\Custom\Pager.js" />
     <Content Include="Scripts\Custom\Pagination.js" />
+    <Content Include="Scripts\Custom\MultiSelectApiButton.js" />
     <Content Include="Scripts\Custom\RegistreParoissiaux.js" />
+    <Content Include="Scripts\Custom\Mark.js" />
     <Content Include="Scripts\Custom\Revue.js" />
     <Content Include="Scripts\Custom\Tri.js" />
     <Content Include="Scripts\Custom\Pretre.js" />
@@ -306,11 +341,14 @@
     <Content Include="Scripts\knockout.mapping-latest.debug.js" />
     <Content Include="Scripts\knockout.mapping-latest.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\Modules\Serie.js" />
     <Content Include="Scripts\Modules\FonctionLieu.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -321,8 +359,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Pretre\RechercheParNom\_ChampsRecherche.cshtml" />
     <Content Include="Views\Pretre\RechercheParNom\Recherche.cshtml" />
@@ -352,6 +388,28 @@
     <Content Include="Views\RegistresParoissiaux\Recherche.cshtml" />
     <Content Include="Views\RegistresParoissiaux\_Sepulture.cshtml" />
     <Content Include="Views\RegistresParoissiaux\_Mariage.cshtml" />
+    <Content Include="Views\Catalogue\_CatalogueItem.cshtml" />
+    <Content Include="Views\Catalogue\_ChampsRecherche.cshtml" />
+    <Content Include="Views\Catalogue\Recherche.cshtml" />
+    <Content Include="Views\Media\_MediumItem.cshtml" />
+    <Content Include="Views\Media\_ChampsRecherche.cshtml" />
+    <Content Include="Views\Media\Recherche.cshtml" />
+    <Content Include="Views\Media\_VideoItem.cshtml" />
+    <Content Include="Views\Shared\_PopinVideo.cshtml" />
+    <Content Include="Views\Shared\_PopinImage.cshtml" />
+    <Content Include="Views\Media\_ImageItem.cshtml" />
+    <Content Include="Views\Media\_DownloadableItem.cshtml" />
+    <Content Include="Views\Media\_PdfItem.cshtml" />
+    <Content Include="Views\Shared\_PopinAudio.cshtml" />
+    <Content Include="Views\Media\_AudioItem.cshtml" />
+    <Content Include="Views\Media\_MediumTags.cshtml" />
+    <Content Include="Views\Fonds\_ChampsRecherche.cshtml" />
+    <Content Include="Views\Fonds\Recherche.cshtml" />
+    <Content Include="Views\Fonds\_Informations.cshtml" />
+    <Content Include="Views\Fonds\Description.cshtml" />
+    <Content Include="Views\Media\_ThumbnailItem.cshtml" />
+    <Content Include="Views\Media\_MediaItems.cshtml" />
+    <Content Include="Views\Media\_NonMediaItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

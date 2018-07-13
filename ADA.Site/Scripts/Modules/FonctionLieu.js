@@ -8,10 +8,10 @@
         
         self.typeLieuChanged = function () {
 
-            var typeRecherche = self.fonctionLieuViewModel.typesLieu().find(function (x) { return x.id() == self.typeLieuId() }).typeRecherche();
+            var typeRecherche = self.fonctionLieuViewModel.typesLieu().find(function (x) { return x.id() === self.typeLieuId() }).typeRecherche();
 
 
-            if (typeRecherche == 2) {
+            if (typeRecherche === 2) {
                 getLieu(self.typeLieuId())
             }
             else {
@@ -78,13 +78,14 @@
 
             self.fonctionLieuViewModel.lieux.unshift({ id: null, nom: 'Tous' });
             self.fonctionLieuViewModel.fonctions.unshift({ id: null, nom: 'Toutes' });
+            self.fonctionLieuViewModel.contextHistoriques.unshift({ id: null, nom: 'Tous' });
 
-            self.typeLieu = ko.observable(self.fonctionLieuViewModel.typesLieu().find(function (l) { return l.id() == self.typeLieuId(); }));
+            self.typeLieu = ko.observable(self.fonctionLieuViewModel.typesLieu().find(function (l) { return l.id() === self.typeLieuId(); }));
         }
 
         self.selectTypeLieu = function () {
             // selection du typeLieuSelectionne
-            self.typeLieu(self.fonctionLieuViewModel.typesLieu().find(function (l) { return l.id() == self.typeLieuId(); }))
+            self.typeLieu(self.fonctionLieuViewModel.typesLieu().find(function (l) { return l.id() === self.typeLieuId(); }))
         }
 
         self.init();

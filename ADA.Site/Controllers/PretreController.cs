@@ -17,7 +17,7 @@ using ADA.Domain.Fonctions;
 
 namespace ADA.Site.Controllers
 {
-    public class PretreController : Controller
+    public class PretreController : ImageController
     {
 
         public IUnitOfWork _unitOfWork;
@@ -48,7 +48,7 @@ namespace ADA.Site.Controllers
                                                         && (searchParameters.Prenom == null || b.Prenom.Contains(searchParameters.Prenom))
                                                         && (searchParameters.AnneeDeces == null || b.AnneeDeces == searchParameters.AnneeDeces)
                                                         && (searchParameters.AnneeNaissance == null || b.AnneeNaissance == searchParameters.AnneeNaissance)
-                                                        && (searchParameters.Commune == null || b.Commune.Nom.Contains(searchParameters.Commune));
+                                                        && (searchParameters.Commune == null || b.Commune.Nom == searchParameters.Commune);
 
             searchParameters.Resultats = _unitOfWork.Pretres.PaginateWithTriModel(new PaginationRequest(searchParameters.Pagination.Valeur, searchParameters.Page),
                 filter, searchParameters.Tri, b => b.Photos, b => b.Documents, b => b.ArticlesRevue).ToPagedListMvc(searchParameters.Page, searchParameters.Pagination.Valeur);
@@ -80,8 +80,9 @@ namespace ADA.Site.Controllers
             filter = p => p.FonctionsLieu.Any(fl => (!rp.LieuId.HasValue || fl.Lieu.Id == rp.LieuId)
                 && fl.Lieu.TypeLieu.Id == rp.TypeLieuId
                 && (!rp.AnneeExercice.HasValue || (fl.AnneeDebut <= rp.AnneeExercice.Value && fl.AnneeFin >= rp.AnneeExercice.Value))
-                && (rp.NomLieu == null || fl.Lieu.Nom.Contains(rp.NomLieu))
-                && (!rp.FonctionId.HasValue || fl.Fonction.Id == rp.FonctionId.Value));
+                && (rp.NomLieu == null || fl.Lieu.Nom == rp.NomLieu )
+                && (!rp.FonctionId.HasValue || fl.Fonction.Id == rp.FonctionId.Value))
+                && (!rp.ContextHistoriqueId.HasValue || p.ContextHistoriques.Any( ch => ch.ContextHistorique.Id == rp.ContextHistoriqueId.Value));
 
             rp.FonctionLieuViewModel = GetFonctionLieuViewModel(rp.TypeLieuId, rp.LieuId, rp.NomLieu, rp.FonctionId);
             
@@ -95,11 +96,11 @@ namespace ADA.Site.Controllers
                             b => b.FonctionsLieu.Select(fl => fl.Lieu))
                             .ToPagedListMvc(rp.Page, rp.Pagination.Valeur);
 
-            // on affiche que les fonctioLieu relatives à la séléction, pour les lieux et les fonctions
+            // on affiche que les fonctions lieu relatives à la séléction, pour les lieux et les fonctions
             rp.Resultats.ToList().ForEach(p => p.FonctionsLieu = p.FonctionsLieu.Where(fl => (!rp.LieuId.HasValue || fl.Lieu.Id == rp.LieuId)
                 && fl.Lieu.TypeLieu.Id == rp.TypeLieuId
                 && (!rp.AnneeExercice.HasValue || (fl.AnneeDebut <= rp.AnneeExercice.Value && fl.AnneeFin >= rp.AnneeExercice.Value))
-                && ( fl.Lieu.TypeLieu.RechercheParLieu == true || (rp.NomLieu == null || fl.Lieu.Nom.Contains(rp.NomLieu)))
+                && ( rp.NomLieu == null || fl.Lieu.Nom == rp.NomLieu)
                 && (!rp.FonctionId.HasValue || fl.Fonction.Id == rp.FonctionId.Value)).ToList());
 
             return View("~/Views/Pretre/RechercheParFonctionLieu/Recherche.cshtml", rp);
@@ -132,7 +133,40 @@ namespace ADA.Site.Controllers
 
             }
 
+
+            vm.ContextHistoriques = this._unitOfWork.ContextHistoriques.Get().ToList();
+
             return vm;
+        }
+
+        [OutputCache(Duration = 3600, VaryByParam = "id")]
+        public ActionResult Thumbnail(int id)
+        {
+            var pretre = _unitOfWork.Pretres.Get(b => b.Photos.Any(p => p.Id == id), null, b => b.Photos).FirstOrDefault();
+
+            if (pretre == null)
+            {
+                throw new HttpException(404, "Not found");
+            }
+
+            var photo = pretre.Photos.Single(b => b.Id == id);
+            
+            return Thumbnail(photo.RepertoireNomFichier);
+        }
+
+        [OutputCache(Duration = 3600, VaryByParam = "id")]
+        public ActionResult Image(int id)
+        {
+            var pretre = _unitOfWork.Pretres.Get(b => b.Photos.Any(p => p.Id == id), null, b => b.Photos).FirstOrDefault();
+
+            if (pretre == null)
+            {
+                throw new HttpException(404, "Not found");
+            }
+
+            var photo = pretre.Photos.Single(b => b.Id == id);
+            
+            return Image(photo.RepertoireNomFichier);
         }
 
         public ActionResult Fiche(int id, string niceUrl)
@@ -158,7 +192,6 @@ namespace ADA.Site.Controllers
 
         public FileStreamResult Fiches(int[] ids)
         {
-            var pretres = _unitOfWork.Pretres.Get(b => ids.Contains(b.Id), null, b => b.Documents);
             MemoryStream stream = new MemoryStream();
 
             var fileName = String.Format("plusieurs pretres.pdf");

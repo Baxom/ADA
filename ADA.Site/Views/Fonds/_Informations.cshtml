@@ -1,0 +1,11 @@
+﻿
+@using PagedList;
+@using PagedList.Mvc;
+@model ADA.Domain.Fonds.FondMedium
+
+<ul class="informations-fonds">
+    @foreach (var displayElement in Model.GetInformationsAffichage())
+    {
+        <li>@displayElement.Key: @displayElement.Value</li>
+    }
+</ul>

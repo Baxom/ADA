@@ -6,16 +6,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ADA.Domain.Indexation;
+using System.Text.RegularExpressions;
 
 namespace ADA.Domain.Revues
 {
     public class Revue : EntityBase
     {
-        private const string _codePage = "[NUMERO_PAGE]";
-        private const string _codePeriodePublication = "[PERIODE_PUBLICATION]";
-        private const string _codeCodeRevue = "[CODE_REVUE]";
-        private const string _codeNomRevue = "[NOM_REVUE]";
-        private const string _codeCodeRevueMere = "[CODE_REVUE_MERE]";
+        public delegate string RevueMatchEvaluator(Match match, string periodePublication, int page, int? numeroRevue, Revue revue);
+
+        private const string _codePage = "NUMERO_PAGE";
+        private const string _codePeriodePublication = "PERIODE_PUBLICATION";
+        private const string _codeCodeRevue = "CODE_REVUE";
+        private const string _codeNomRevue = "NOM_REVUE";
+        private const string _codeNumeroRevue = "NUMERO_REVUE";
+        private const string _codeCodeRevueMere = "CODE_REVUE_MERE";
+
+        private Dictionary<string, object> _dctCodeValue;
 
         public string Code { get; set; }
         public string Nom { get; set; }
@@ -37,6 +43,10 @@ namespace ADA.Domain.Revues
         public ICollection<RevueGroupeIndex> RevueGroupeIndex { get; set; }
         public ICollection<PeriodesRevueLieu> PeriodesParoisses { get; set; }
 
+        private Regex regExCurlyBrakets = new Regex(@"{[A-Za-z_]+}");
+        private Regex regExConditionalTag = new Regex(@"\(\?{[A-Za-z_]+}.*\?\)");
+
+
         public Revue()
         {
             RevuesFille = new List<Revue>();
@@ -44,28 +54,69 @@ namespace ADA.Domain.Revues
             RevueGroupeIndex = new List<RevueGroupeIndex>();
         }
 
-        private string BuildTemplate(string chaine, string periodePublication, int page)
+        private string BuildTemplate(string chaine, string periodePublication, int page, int? numeroRevue)
         {
-            var retour = chaine;
-
+            var templateReplaceTag = "[{0}]";
+            if (string.IsNullOrWhiteSpace(chaine)) return String.Empty;
+            var retour = DeleteCondionalTag(chaine, periodePublication, page, numeroRevue);
             if (string.IsNullOrWhiteSpace(retour)) return String.Empty;
 
             return retour
-                .Replace(_codeCodeRevueMere, this.RevueMere != null ? this.RevueMere.Code : "[CODE_REVUE_MERE]")
-                .Replace(_codeCodeRevue, this.Code)
-                .Replace(_codeNomRevue, this.Nom)
-                .Replace(_codePeriodePublication, periodePublication)
-                .Replace(_codePage, page.ToString());
+                .Replace(String.Format(templateReplaceTag, _codeCodeRevueMere), this.RevueMere != null ? this.RevueMere.Code : String.Format(templateReplaceTag, _codeCodeRevueMere))
+                .Replace(String.Format(templateReplaceTag, _codeCodeRevue), this.Code)
+                .Replace(String.Format(templateReplaceTag, _codeNomRevue), this.Nom)
+                .Replace(String.Format(templateReplaceTag, _codePeriodePublication), periodePublication)
+                .Replace(String.Format(templateReplaceTag, _codeNumeroRevue), numeroRevue.HasValue ? numeroRevue.Value.ToString() : String.Empty)
+                .Replace(String.Format(templateReplaceTag, _codePage), page.ToString());
         }
 
-        public string BuildNomCompletFichier(int page, string periodePublication)
+        private RevueMatchEvaluator evaluatorConditionalTags = delegate(Match match, string periodePublication, int page, int? numeroRevue, Revue revue)
         {
-            return Path.Combine(BuildTemplate(NomDossierModele, periodePublication, page), BuildTemplate(NomFichierModele, periodePublication, page));
+            Regex regExCurlyBrakets = new Regex(@"{[A-Za-z_]+}");
+        var matchTagCondition = regExCurlyBrakets.Match(match.Value);
+
+        var code = matchTagCondition.Value.Replace("{", "").Replace("}", "");
+
+            bool keepConditionalTag = !ConditionalIsNullOrEmpty(code, periodePublication, page, numeroRevue, revue);
+
+            if (keepConditionalTag) {
+                return match.Value.Replace(String.Format("(?{{{0}}}", code), String.Empty).Replace("?)", String.Empty);
+            }
+            else
+            {
+                return String.Empty;
+            }
+        };
+
+        private static bool ConditionalIsNullOrEmpty(string code, string periodePublication, int page, int? numeroRevue, Revue revue)
+        {
+            switch(code)
+            {
+                case _codePage: return false;
+                case _codePeriodePublication: return String.IsNullOrEmpty(periodePublication);
+                case _codeCodeRevue: return String.IsNullOrEmpty(revue.Code);
+                case _codeNomRevue: return String.IsNullOrEmpty(revue.Nom);
+                case _codeNumeroRevue: return !numeroRevue.HasValue;
+                case _codeCodeRevueMere: return revue.RevueMere == null ? true : String.IsNullOrEmpty(revue.RevueMere.Code);
+
+                default: return true;
+            }
+                
         }
 
-        public string BuildTag(int page, string periodePublication)
+        private string DeleteCondionalTag(string chaine, string periodePublication, int page, int? numeroRevue)
         {
-            return BuildTemplate(TagModel, periodePublication, page);
+            return regExConditionalTag.Replace(chaine, match => this.evaluatorConditionalTags(match, periodePublication, page, numeroRevue, this));
+        }
+
+        public string BuildNomCompletFichier(int page, string periodePublication, int? numeroRevue)
+        {
+            return Path.Combine(BuildTemplate(NomDossierModele, periodePublication, page, numeroRevue), BuildTemplate(NomFichierModele, periodePublication, page, numeroRevue));
+        }
+
+        public string BuildTag(int page, string periodePublication, int? numeroRevue)
+        {
+            return BuildTemplate(TagModel, periodePublication, page, numeroRevue);
         }
     }
 }

@@ -20,24 +20,47 @@
                     @{ Html.RenderPartial("~/Views/Shared/_Pager.cshtml", Model.Resultats, new ViewDataDictionary { { "Action", "Recherche" }, { "FormName", "recherche" } });}
                     <div class="header-result-item-right"> @{Html.RenderPartial("~/Views/Shared/_Tri.cshtml", Model);} </div>
                     <div class="header-result-item-right"> @{Html.RenderPartial("~/Views/Shared/_PaginationSelect.cshtml", Model.Pagination);} </div>
+                    <div class="header-result-item-right">
+                        <div class="btn-group">
+                            <button data-multi-select-api-button='{"api":"actes", "checkboxKey":"id", "key":"ids"}' type="button" class="btn btn-secondary "><i class="fas fa-file-pdf"></i></button>
+                            <button type="button" class="btn btn-secondary  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" multi-select-api-checkbox-select-all href="javascript:void(0)">Sélectionner tout</a>
+                                <a class="dropdown-item" multi-select-api-checkbox-deselect-all href="javascript:void(0)">Désélectionner tout</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <ul class="list-group">
                 @foreach (var item in Model.Resultats)
                 {
-                    <li class="list-group-item">
-                        @{
-                            if((item as Bapteme) != null) {
-                                Html.RenderPartial("~/Views/RegistresParoissiaux/_Bapteme.cshtml", @item as Bapteme);
+                    <li class="list-group-item list-selectable pt-3">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" multi-select-api-button-checkbox data-id="@item.Id">
+                                <span class="box"></span>
+                            </label>
+                        </div>
+                        <div class="content">
+                            @{
+                                if ((item as Bapteme) != null)
+                                {
+                                    Html.RenderPartial("~/Views/RegistresParoissiaux/_Bapteme.cshtml", @item as Bapteme);
+                                }
+                                else if ((item as Sepulture) != null)
+                                {
+                                    Html.RenderPartial("~/Views/RegistresParoissiaux/_Sepulture.cshtml", @item as Sepulture);
+                                }
+                                else if ((item as Mariage) != null)
+                                {
+                                    Html.RenderPartial("~/Views/RegistresParoissiaux/_Mariage.cshtml", @item as Mariage, new ViewDataDictionary { { "NomRecherche", Model.Nom }, { "PrenomRecherche", Model.Prenom } });
+                                }
                             }
-                            else if((item as Sepulture) != null) {
-                                Html.RenderPartial("~/Views/RegistresParoissiaux/_Sepulture.cshtml", @item as Sepulture);
-                            }
-                            else if((item as Mariage) != null) {
-                                Html.RenderPartial("~/Views/RegistresParoissiaux/_Mariage.cshtml", @item as Mariage, new ViewDataDictionary { { "NomRecherche", Model.Nom }, { "PrenomRecherche", Model.Prenom } });
-                            }
-                    
-                        }
+
+                        </div>
+
+
 
 
                     </li>
@@ -65,5 +88,6 @@
     @Scripts.Render("~/Scripts/Custom/Autocomplete.js")
     @Scripts.Render("~/Scripts/Custom/RegistreParoissiaux.js")
     @Scripts.Render("~/Scripts/Custom/Tri.js")
+    @Scripts.Render("~/Scripts/Custom/MultiSelectApiButton.js")
 }
 

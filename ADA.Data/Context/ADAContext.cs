@@ -1,7 +1,10 @@
 ﻿using ADA.Data.Conventions;
 using ADA.Domain.Bibliotheques;
+using ADA.Domain.Catalogues;
+using ADA.Domain.Contexthistoriques;
 using ADA.Domain.Fonctions;
 using ADA.Domain.Lieux;
+using ADA.Domain.Media;
 using ADA.Domain.Pretres;
 using ADA.Domain.References;
 using ADA.Domain.RegistresParoissiaux;
@@ -29,7 +32,7 @@ namespace ADA.Data.Context
 
         private void Init()
         {
-            this.Configuration.LazyLoadingEnabled = false;
+            this.Configuration.LazyLoadingEnabled = true;
             Database
                 .SetInitializer<ADAContext>
                 (new MigrateDatabaseToLatestVersion<ADAContext, ADA.Data.Migrations.Configuration>(true));
@@ -51,13 +54,17 @@ namespace ADA.Data.Context
         DbSet<ArticleRevue> ArticlesRevue { get; set; }
 
         DbSet<Bibliotheque> Bibliotheques { get; set; }
+        DbSet<Catalogue> Catalogues { get; set; }
         DbSet<Commune> Communes { get; set; }
-        
+        DbSet<ContextHistorique> ContextHistoriques { get; set; }
+
         DbSet<Fonction> Fonctions { get; set; }
         DbSet<FonctionLieu> FonctionsLieu { get; set; }
         DbSet<FonctionTypeLieu> FonctionsTypeLieu { get; set; }
         
         DbSet<Lieu> Lieux { get; set; }
+
+        DbSet<Medium> Media { get; set; }
 
         DbSet<Pretre> Pretres { get; set; }
         DbSet<PretreFonctionLieu> PretreFonctionsLieu { get; set; }

@@ -1,17 +1,22 @@
 ﻿@model ADA.Domain.RegistresParoissiaux.Bapteme
 
 <div>
-    <span class="font-weight-bold">@Html.DisplayFor(modelItem => modelItem.NomPrenom)</span>
+    <span class="font-weight-bold">@Html.DisplayFor(modelItem => modelItem.NomPrenom)</span>,
     @if (Model.DateNaissance.HasValue)
     {
-        <span>, né(e) le @Model.DateNaissance.Value.ToString("D")</span>
+        <span>né(e) le @Model.DateNaissance.Value.ToString("D"),</span>
     }
     @if (Model.DateBapteme.HasValue)
     {
-        <span>, baptisé(e) le @Model.DateBapteme.Value.ToString("D") à @Model.ParoisseRegistre.Nom</span>
+        <span>baptisé(e) le @Model.DateBapteme.Value.ToString("D") à @Model.ParoisseRegistre.Nom</span> 
     }
     else
     {
-        <span>, baptisé(e) en @Model.AnneeRegistreParoissial à @Model.ParoisseRegistre.Nom</span>
+        <span>baptisé(e) en @Model.AnneeRegistreParoissial à @Model.ParoisseRegistre.Nom</span>
     }
+
+    @Html.ActionLink("Acte", "acte", new { id = Model.Id, niceUrl = String.Format("{0}", Model.ShortTag) }, new { target = "_blank", @class = "pdfLink" })
+
+    <div class="result-right-top">@Model.RegistreParoissial</div>
+
 </div>

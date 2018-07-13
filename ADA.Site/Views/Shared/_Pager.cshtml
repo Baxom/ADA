@@ -3,13 +3,30 @@
 
 @model PagedList.IPagedList
 
-@if(Model.PageCount > 1)
-{ 
-@Html.PagedListPager(Model, page => Url.Action(@ViewData["Action"] as string, new { page }), new PagedList.Mvc.PagedListRenderOptions() 
-    {
-        FunctionToTransformEachPageLink = (li, a) => { a.AddCssClass("page-link form-" + @ViewData["FormName"]); li.InnerHtml = a.ToString();  return li; },
-        ContainerDivClasses = new List<string>() { "pagination-container", "custom-pagination-container" },
-        UlElementClasses = new List<string>() { "pagination", "pagination-container" },
-        LiElementClasses = new List<string>() { "page-item" } 
+
+
+@if (Model.PageCount > 1)
+{
+    @Html.PagedListPager(Model, page => Url.Action(@ViewData["Action"] as string, new { page }), new PagedList.Mvc.PagedListRenderOptions()
+{
+    FunctionToTransformEachPageLink = (li, a) => { a.AddCssClass("page-link form-" + @ViewData["FormName"]); li.InnerHtml = a.ToString(); return li; },
+    ContainerDivClasses = new List<string>() { "pagination-container", "custom-pagination-container" },
+    UlElementClasses = new List<string>() { "pagination", "pagination-container" },
+    LiElementClasses = new List<string>() { "page-item" },
+    MaximumPageNumbersToDisplay = 5,
+    DisplayLinkToNextPage = PagedListDisplayMode.Never,
+    DisplayLinkToPreviousPage = PagedListDisplayMode.Never
+        
     })
+
+
+<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
 }
+
+@{ var debutPage = (Model.PageNumber - 1) * Model.PageSize + 1;
+    var finPage = (Model.PageNumber) * Model.PageSize;
+
+    if (finPage > Model.TotalItemCount) { finPage = Model.TotalItemCount; }
+}
+
+<strong>@String.Format("{2} résultats ({0}-{1})", debutPage, finPage, Model.TotalItemCount)</strong>

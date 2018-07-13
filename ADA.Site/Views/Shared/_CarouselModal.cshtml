@@ -32,7 +32,7 @@
                         @foreach (var photo in Model)
                         {
                             <div class="carousel-item @(@compteur == 1 ? "active" : "")">
-                                <img class="d-block center" src="@Url.Action("Image", "Image", new { filename = photo.NomFichier })">
+                                <img class="d-block center" data-src="@Url.Action("Image", "Pretre", new { id = photo.Id })">
                             </div>
                             compteur++;
                         }
@@ -61,7 +61,18 @@
 
         btn.onclick = function () {
 
+
+
+
             $('#@modalId').on('show.bs.modal', function () {
+
+                var imgDefer = $('#@modalId img');
+                for (var i = 0; i < imgDefer.length; i++) {
+                    if (imgDefer[i].getAttribute('data-src') && !imgDefer[i].getAttribute('src')) {
+                        imgDefer[i].setAttribute('src', imgDefer[i].getAttribute('data-src'));
+                    }
+                }
+
                 $("body").addClass("modal-backdrop-darker");
                 $('#@modalId').on('show.bs.modal', null);
             });

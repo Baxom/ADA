@@ -1,0 +1,9 @@
+﻿@model ADA.Domain.Media.Medium
+    
+
+<div class="tag">
+    @foreach(var tag in Model.Tags.Select( b => b.Tag ))
+    {
+        <span>#@tag.Libelle </span> 
+    }
+</div>

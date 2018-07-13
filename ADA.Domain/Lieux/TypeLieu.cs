@@ -13,7 +13,6 @@ namespace ADA.Domain.Lieux
         public TypeRecherche TypeRecherche { get; set; }
         public string Nom { get; set; }
         public TypeLieuFonctionnel? TypeFonctionnel { get; set; }
-        public bool RechercheParLieu { get; set; }
 
     }
 }

@@ -12,6 +12,15 @@ namespace ADA.Domain.Pretres
     {
         public int PretreId { get; set; }
         public string NomFichier { get; set; }
+
+        public string RepertoireNomFichier
+        {
+            get
+            {
+                return System.IO.Path.Combine(System.Configuration.ConfigurationManager.AppSettings["RepertoirePhotoPretre"], NomFichier);
+            }
+        }
+
         public string NomCompletFichier { 
             get {
                 return System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory,Path.Combine(System.Configuration.ConfigurationManager.AppSettings["RepertoirePhotoPretre"], NomFichier));

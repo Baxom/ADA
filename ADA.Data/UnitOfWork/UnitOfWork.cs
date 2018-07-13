@@ -2,8 +2,12 @@
 using ADA.Data.Repositories.Common;
 using ADA.Data.Repositories.Interfaces;
 using ADA.Domain.Bibliotheques;
+using ADA.Domain.Catalogues;
+using ADA.Domain.Contexthistoriques;
 using ADA.Domain.Fonctions;
+using ADA.Domain.Fonds;
 using ADA.Domain.Lieux;
+using ADA.Domain.Media;
 using ADA.Domain.Pretres;
 using ADA.Domain.References;
 using ADA.Domain.RegistresParoissiaux;
@@ -26,30 +30,45 @@ namespace ADA.Data.UnitOfWork
         private readonly ADAContext _context;
 
         public UnitOfWork(ADAContext context,
-            IPretreRepository pretres,
-            IGenericRepository<Lieu> lieux,
             IGenericRepository<Acte> actes,
+            IGenericRepository<ArticleRevue> articlesRevue,
             IGenericRepository<Bibliotheque> bibliotheque,
-            IGenericRepository<FonctionTypeLieu> fonctionsTypeLieu,
-            IGenericRepository<FonctionLieu> fonctionsLieu,
-            IGenericRepository<Fonction> fonctions,
+            IGenericRepository<Catalogue> catalogues,
             IGenericRepository<Commune> communes,
-            IGenericRepository<TypeLieu> typeLieu,
+            IGenericRepository<ContextHistorique> contextHistoriques,
+            IGenericRepository<Fonction> fonctions,
+            IGenericRepository<FonctionLieu> fonctionsLieu,
+            IGenericRepository<FonctionTypeLieu> fonctionsTypeLieu,
+            IFondMediumRepository fondMediums,
+            IGenericRepository<Fond> fonds,
+            IGenericRepository<InformationFondMedium> informationFondMedia,
+            IGenericRepository<Lieu> lieux,
+            IGenericRepository<Medium> media,
+            IPretreRepository pretres,
             IGenericRepository<Revue> revues,
-            IGenericRepository<ArticleRevue> articlesRevue)
+            IGenericRepository<Serie> series,
+            IGenericRepository<TypeLieu> typeLieu
+            )
         {
             _context = context;
-            Pretres = pretres;
-            Lieux = lieux;
+            Actes = actes;
+            ArticlesRevue = articlesRevue;
             Bibliotheques = bibliotheque;
+            Catalogues = catalogues;
+            Communes = communes;
+            ContextHistoriques = contextHistoriques;
+            Fonctions = fonctions;
             FonctionsLieu = fonctionsLieu;
             FonctionsTypeLieu = fonctionsTypeLieu;
-            Fonctions = fonctions;
-            TypeLieu = typeLieu;
-            Communes = communes;
+            FondMediums = fondMediums;
+            Fonds = fonds;
+            InformationFondMedia = informationFondMedia;
+            Lieux = lieux;
+            Media = media;
+            Pretres = pretres;
             Revues = revues;
-            ArticlesRevue = articlesRevue;
-            Actes = actes;
+            Series = series;
+            TypeLieu = typeLieu;
         }
         
         public virtual void Save()
@@ -128,19 +147,30 @@ namespace ADA.Data.UnitOfWork
 
         public IGenericRepository<Bibliotheque> Bibliotheques { get; private set; }
 
+        public IGenericRepository<Catalogue> Catalogues { get; private set; }
         public IGenericRepository<Commune> Communes { get; private set; }
-        
+        public IGenericRepository<ContextHistorique> ContextHistoriques { get; private set; }
+
         public IGenericRepository<Fonction> Fonctions { get; private set; }
         public IGenericRepository<FonctionLieu> FonctionsLieu { get; private set; }
         public IGenericRepository<FonctionTypeLieu> FonctionsTypeLieu { get; private set; }
+        public IFondMediumRepository FondMediums { get; private set; }
+        public IGenericRepository<Fond> Fonds { get; private set; }
+
+        public IGenericRepository<InformationFondMedium> InformationFondMedia { get; private set; }
 
         public IGenericRepository<Lieu> Lieux { get; private set; }
+
+        public IGenericRepository<Medium> Media { get; private set; }
 
         public IPretreRepository Pretres { get; private set; }
 
         public IGenericRepository<Revue> Revues { get; private set; }
 
+        public IGenericRepository<Serie> Series { get; private set; }
+
         public IGenericRepository<TypeLieu> TypeLieu { get; private set; }
 
     }
 }
+

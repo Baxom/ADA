@@ -1,0 +1,17 @@
+﻿@model ADA.Domain.Media.Medium
+    
+
+<div class="content">
+    <span class="font-weight-bold">@Html.DisplayFor(modelItem => modelItem.Titre)</span>
+    @if ((bool)ViewData["isFond"])
+    {
+        Html.RenderPartial("~/Views/Fonds/_Informations.cshtml", Model);
+    }
+    @{ Html.RenderPartial("~/Views/Media/_MediumTags.cshtml", Model); }
+</div>
+<div class="flex-right">
+        @if (!String.IsNullOrEmpty(Model.RepertoireNomThumbnail))
+        {
+            <img src="@Url.Action("Thumbnail", "Media", new { id = Model.Id })" />
+        }
+</div>

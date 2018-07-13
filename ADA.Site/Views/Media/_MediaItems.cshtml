@@ -1,0 +1,33 @@
+﻿@model IEnumerable<ADA.Domain.Media.Medium>
+@using ADA.Site.Helpers;
+
+@{
+
+
+    var isFond = ViewData["isFond"] == null ? false : (bool)ViewData["isFond"];
+    var inlineItem = false;
+
+
+    if (isFond && Model.Any())
+    {
+        var fond = (Model.First() as ADA.Domain.Fonds.FondMedium).Fond;
+
+        if(fond.TypeVue == ADA.Domain.Constantes.TypeVueFond.ImageMiniature)
+        {
+            inlineItem = true;
+        }
+    }
+
+}
+
+
+<ul class="list-group @(inlineItem ? "inline-display": "")">
+    @foreach (var fondMedium in Model)
+    {
+        <li class="list-group-item">
+            @{Html.RenderPartial("~/Views/Media/_MediumItem.cshtml", @fondMedium, new ViewDataDictionary { { "isFond", true } });
+            }
+        </li>
+    }
+
+</ul>

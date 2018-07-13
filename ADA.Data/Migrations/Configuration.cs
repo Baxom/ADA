@@ -1,8 +1,9 @@
-namespace ADA.Data.Migrations
+﻿namespace ADA.Data.Migrations
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
+    using System.IO;
     using System.Linq;
 
     internal sealed class Configuration : DbMigrationsConfiguration<ADA.Data.Context.ADAContext>
@@ -14,18 +15,34 @@ namespace ADA.Data.Migrations
 
         protected override void Seed(ADA.Data.Context.ADAContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            InitialisationProcedureStockee(context);
+        }
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+        private void InitialisationProcedureStockee(ADA.Data.Context.ADAContext context)
+        {
+
+            var baseDirectory = String.Empty;
+
+            if (String.IsNullOrEmpty(AppDomain.CurrentDomain.RelativeSearchPath))
+            {
+                baseDirectory = AppDomain.CurrentDomain.BaseDirectory; //exe folder for WinForms, Consoles, Windows Services
+            }
+            else
+            {
+                baseDirectory = AppDomain.CurrentDomain.RelativeSearchPath; //bin folder for Web Apps 
+            }
+
+            // Delete all stored procs, views
+            foreach (var file in Directory.GetFiles(Path.Combine(baseDirectory, "Sql\\Seed"), "*.sql"))
+            {
+                context.Database.ExecuteSqlCommand(File.ReadAllText(file), new object[0]);
+            }
+
+            // Add Stored Procedures
+            foreach (var file in Directory.GetFiles(Path.Combine(baseDirectory, "Sql\\ProceduresStockees"), "*.sql"))
+            {
+                context.Database.ExecuteSqlCommand(File.ReadAllText(file), new object[0]);
+            }
         }
     }
 }

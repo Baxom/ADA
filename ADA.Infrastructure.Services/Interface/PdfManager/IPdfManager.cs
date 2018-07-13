@@ -11,13 +11,14 @@ namespace ADA.Infrastructure.Services.Interface.PdfManager
     public interface IPdfManager
     {
         IPdfManager Create(Stream stream);
-        int AddPdf(string pdfPath, string stampString = null, string fileNotFoundMessage = null);
-        int AddImage(string imagePath, string stampString = null, string fileNotFoundMessage = null);
+        int AddPdf(string pdfPath, string stampString = null, string fileNotFoundMessage = null, List<int> pageIndexToPrint = null);
+        int AddImage(string imagePath, string titre = null, string stampString = null, string fileNotFoundMessage = null);
         int AddTableOfContent(PdfTableOfContent toc);
         int ComputeTableOfContent(PdfTableOfContent toc);
         int GetCurrentPageNumber();
-        void WriteTitle(string text, int level = 0, bool center = false, bool underline = false);
-        void WriteText(string text, string higlightedText = null, Color? higlightedTextColor = null, Color? backgroundHighlightedTextColor = null);
+        void WriteTitle(string text, int level = 0, bool center = false, bool underline = false, bool bold = false, bool italic = false);
+        void WriteText(string text, string higlightedText = null, Color? higlightedTextColor = null, Color? backgroundHighlightedTextColor = null, bool bold = false);
+        void WriteCatalogue(string text, string cote, string searchText);
         void AddNewPage();
         void Close();
     }

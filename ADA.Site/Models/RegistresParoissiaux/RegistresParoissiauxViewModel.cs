@@ -72,32 +72,30 @@ namespace ADA.Site.Models
 
         protected override void InitTris()
         {
-            string nom = this.Nom ?? String.Empty;
-            string prenom = this.Prenom ?? String.Empty;
 
             AddTri<Acte>("Nom prénom croissant", b => b.OrderBy(o => (o is Bapteme) ? (o as Bapteme).Nom :
                                         (o is Sepulture) ? (o as Sepulture).Nom :
-                                        ((o as Mariage).Epoux.Nom.Contains(nom) && (o as Mariage).Epoux.Prenom.Contains(prenom) ?
-                                            (o as Mariage).Epoux.Nom : (o as Mariage).Epouse.Nom))
+                                        ( ((this.Nom != null) && (o as Mariage).Epouse.Nom.Contains(this.Nom)) || ((this.Prenom != null) && (o as Mariage).Epouse.Prenom.Contains(this.Prenom)) ?
+                                            (o as Mariage).Epouse.Nom : (o as Mariage).Epoux.Nom))
                                         .ThenBy(o => (o is Bapteme) ? (o as Bapteme).Prenom :
                                         (o is Sepulture) ? (o as Sepulture).Prenom :
-                                        ((o as Mariage).Epoux.Nom.Contains(nom) && (o as Mariage).Epoux.Prenom.Contains(prenom) ?
-                                            (o as Mariage).Epoux.Prenom : (o as Mariage).Epouse.Prenom)));
+                                        (((this.Nom != null) && (o as Mariage).Epouse.Nom.Contains(this.Nom)) || ((this.Prenom != null) && (o as Mariage).Epouse.Prenom.Contains(this.Prenom)) ?
+                                            (o as Mariage).Epouse.Prenom : (o as Mariage).Epoux.Prenom)));
 
 
             AddTri<Acte>("Nom prénom décroissant", b => b.OrderByDescending(o => (o is Bapteme) ? (o as Bapteme).Nom :
                                         (o is Sepulture) ? (o as Sepulture).Nom :
-                                        ((o as Mariage).Epoux.Nom.Contains(nom) && (o as Mariage).Epoux.Prenom.Contains(prenom) ?
-                                            (o as Mariage).Epoux.Nom : (o as Mariage).Epouse.Nom))
+                                        (((this.Nom != null) && (o as Mariage).Epouse.Nom.Contains(this.Nom)) || ((this.Prenom != null) && (o as Mariage).Epouse.Prenom.Contains(this.Prenom)) ?
+                                            (o as Mariage).Epouse.Nom : (o as Mariage).Epoux.Nom))
                                         .ThenByDescending(o => (o is Bapteme) ? (o as Bapteme).Prenom :
                                         (o is Sepulture) ? (o as Sepulture).Prenom :
-                                        ((o as Mariage).Epoux.Nom.Contains(nom) && (o as Mariage).Epoux.Prenom.Contains(prenom) ?
-                                            (o as Mariage).Epoux.Prenom : (o as Mariage).Epouse.Prenom)));
+                                        (((this.Nom != null) && (o as Mariage).Epouse.Nom.Contains(this.Nom)) || ((this.Prenom != null) && (o as Mariage).Epouse.Prenom.Contains(this.Prenom)) ?
+                                            (o as Mariage).Epouse.Prenom : (o as Mariage).Epoux.Prenom)));
 
-        AddTri<Acte>("Registre paroissial croissant", o => o.OrderBy(p => p.ParoisseRegistre.Nom + " - " + p.AnneeRegistreParoissial));
+            AddTri<Acte>("Registre paroissial croissant", o => o.OrderBy(p => p.ParoisseRegistre.Nom + " - " + p.AnneeRegistreParoissial));
         AddTri<Acte>("Registre paroissial décroissant", o => o.OrderByDescending(p => p.ParoisseRegistre.Nom + " - " + p.AnneeRegistreParoissial));
-        AddTri<Acte>("Page croissante", o => o.OrderBy(p => p.Pages));
-        AddTri<Acte>("Page décroissante", o => o.OrderByDescending(p => p.Pages));
+        AddTri<Acte>("Page croissante", o => o.OrderBy(p => p.Pages.ListePagesTexte));
+        AddTri<Acte>("Page décroissante", o => o.OrderByDescending(p => p.Pages.ListePagesTexte));
 
 
         Tri = Tris.First();

@@ -1,0 +1,43 @@
+﻿@model ADA.Domain.Media.Medium
+@using ADA.Site.Helpers;
+
+@{
+    Dictionary<GroupeMime, string> groupeMimeView = new Dictionary<GroupeMime, string>();
+    Dictionary<ADA.Domain.Constantes.TypeVueFond, string> specificView = new Dictionary<ADA.Domain.Constantes.TypeVueFond, string>();
+
+    specificView.Add(ADA.Domain.Constantes.TypeVueFond.ImageMiniature, "~/Views/Media/_ThumbnailItem.cshtml");
+
+    groupeMimeView.Add(GroupeMime.Video, "~/Views/Media/_VideoItem.cshtml");
+    groupeMimeView.Add(GroupeMime.Audio, "~/Views/Media/_AudioItem.cshtml");
+    groupeMimeView.Add(GroupeMime.Image, "~/Views/Media/_ImageItem.cshtml");
+    groupeMimeView.Add(GroupeMime.Pdf, "~/Views/Media/_PdfItem.cshtml");
+    groupeMimeView.Add(GroupeMime.Downloadable, "~/Views/Media/_DownloadableItem.cshtml");
+
+    var isFond = ViewData["isFond"] == null ? false : (bool)ViewData["isFond"];
+
+    var view = "";
+    if (Model.Type == ADA.Domain.Constantes.TypeMedium.NonMedia)
+    {
+        view = "~/Views/Media/_NonMediaItem.cshtml";
+    }
+    else
+    {
+
+        view = groupeMimeView[GroupeMimeHelper.GetGroupeMime(Model.FileName)];
+
+        if (isFond)
+        {
+            var fond = (Model as ADA.Domain.Fonds.FondMedium).Fond;
+
+            if (fond.TypeVue != ADA.Domain.Constantes.TypeVueFond.DefautMedia)
+            {
+                view = specificView[fond.TypeVue];
+            }
+
+
+        }
+    }
+}
+
+@{Html.RenderPartial(view, Model, new ViewDataDictionary { { "isFond", isFond } });
+}

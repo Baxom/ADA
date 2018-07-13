@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@using PagedList;
+@using PagedList.Mvc;
+@model ADA.Site.Models.RechercheFondViewModel
+
+@using (Html.BeginForm("Recherche", "Fond", new { id = Model.Id }, FormMethod.Get, new { name = "recherche" }))
+{
+    Html.RenderPartial("~/Views/Fonds/_ChampsRecherche.cshtml", Model);
+
+    if (Model.Recherche)
+    {
+        if (Model.Resultats.Any())
+        {
+            <div class="row header-result">
+                <div class="col-md-12">
+                    @{ Html.RenderPartial("~/Views/Shared/_Pager.cshtml", Model.Resultats, new ViewDataDictionary { { "Action", "Recherche" }, { "FormName", "recherche" } }); }
+                    <div class="header-result-item-right"> @{Html.RenderPartial("~/Views/Shared/_PaginationSelect.cshtml", Model.Pagination);} </div>
+                </div>
+            </div>
+
+            @*<ul class="list-group">
+                    @foreach (var fondMedium in Model.Resultats)
+                    {
+                        <li class="list-group-item">
+                                @{Html.RenderPartial("~/Views/Media/_MediumItem.cshtml", @fondMedium, new ViewDataDictionary { { "isFond", true } } );
+                                }
+                        </li>
+                    }
+
+                </ul>*@
+                Html.RenderPartial("~/Views/Media/_MediaItems.cshtml", Model.Resultats, new ViewDataDictionary { { "isFond", true } });
+               
+
+            <div class="row header-result">
+                <div class="col-md-12">
+                    @{ Html.RenderPartial("~/Views/Shared/_Pager.cshtml", Model.Resultats, new ViewDataDictionary { { "Action", "Recherche" }, { "FormName", "recherche" } }); }
+                </div>
+            </div>
+        }
+        else
+        {
+            Html.RenderPartial("~/Views/Shared/_NoResult.cshtml");
+        }
+    }
+}
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/Custom/Pagination.js")
+    @Scripts.Render("~/Scripts/Custom/Pager.js")
+    @Scripts.Render("~/Scripts/Custom/Autocomplete.js")
+}
+

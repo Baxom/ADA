@@ -1,4 +1,4 @@
-﻿using ADA.Data.UnitOfWork;
+using ADA.Data.UnitOfWork;
 using ADA.Domain.Pretres;
 using ADA.Domain.Revues;
 using ADA.Domain.Services.Interface;
@@ -27,14 +27,14 @@ namespace ADA.Domain.Services.Core
 
         public void CreatePdf(int articleRevueId, System.IO.Stream memoryStream)
         {
-            ArticleRevue articleRevue = _uow.ArticlesRevue.Get(b => b.Id == articleRevueId, null, b => b.Revue).FirstOrDefault();
+            ArticleRevue articleRevue = _uow.ArticlesRevue.Get(b => b.Id == articleRevueId, null, b => b.Revue.RevueMere).FirstOrDefault();
             var documentToMerge = articleRevue.GetDocuments();
 
             var pdfManager = _pdfManager.Create(memoryStream);
 
             foreach (var doc in documentToMerge)
             {
-                pdfManager.AddPdf(doc.NomCompletFichier, doc.Tag, _fileMissingMessage);
+                pdfManager.AddPdf(doc.NomCompletFichier, doc.Tag, _fileMissingMessage, articleRevue.PagesReferences.ListePages.ToList());
             }
 
             pdfManager.Close();
@@ -43,8 +43,8 @@ namespace ADA.Domain.Services.Core
         public void CreatePdf(IEnumerable<int> articleRevueIds, Stream memoryStream)
         {
             var articlesRevues = _uow.ArticlesRevue.Get(b => articleRevueIds.Contains(b.Id), 
-                p => p.OrderBy(b => b.Revue.Nom).ThenBy(b => b.PeriodePublication).ThenBy( b => b.PagesReelles), 
-                b => b.Revue);
+                p => p.OrderBy(b => b.Revue.Nom).ThenBy(b => b.PeriodePublication).ThenBy( b => b.Pages), 
+                b => b.Revue.RevueMere);
 
             var pdfManager = _pdfManager.Create(memoryStream);
             PdfTableOfContent toc = new PdfTableOfContent("Sommaire");
@@ -59,7 +59,7 @@ namespace ADA.Domain.Services.Core
     
                 foreach (var doc in documentToMerge)
                 {
-                    totalPage += pdfManager.AddPdf(doc.NomCompletFichier, doc.Tag, _fileMissingMessage);
+                    totalPage += pdfManager.AddPdf(doc.NomCompletFichier, doc.Tag, _fileMissingMessage, articleRevue.PagesReferences.ListePages.ToList());
                 }
 
             }

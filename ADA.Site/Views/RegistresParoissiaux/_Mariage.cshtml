@@ -1,30 +1,33 @@
 ﻿@model ADA.Domain.RegistresParoissiaux.Mariage
 
 @{
-    string nomRecherche = @ViewData["NomRecherche"] as string;
-    string prenomRecherche = @ViewData["PrenomRecherche"] as string;
+    string nomRecherche = @ViewData["NomRecherche"] as string; 
+    string prenomRecherche = @ViewData["PrenomRecherche"] as string; 
 
-    bool epouxPrincipalEstEpouse = false;
+    bool epouxPrincipalEstEpouse = false;    
 
     if (Model.Epouse.Match(nomRecherche, prenomRecherche) && !Model.Epoux.Match(nomRecherche, prenomRecherche))
         epouxPrincipalEstEpouse = true;
 
     ADA.Domain.RegistresParoissiaux.Personne epouxPrincipal = epouxPrincipalEstEpouse ? Model.Epouse : Model.Epoux;
     ADA.Domain.RegistresParoissiaux.Personne epouxSecondaire = epouxPrincipalEstEpouse ? Model.Epoux : Model.Epouse;
-}
-
+} 
+ 
 <div>
-    <span class="font-weight-bold">@epouxPrincipal.NomComplet</span>
+    <span class="font-weight-bold">@epouxPrincipal.NomComplet</span>,
     @if (Model.DateMariageReligieux.HasValue)
     {
-        <span>, à été @(epouxPrincipalEstEpouse ? "mariée" : "marié") le @Model.DateMariageReligieux.Value.ToString("D") à @Model.ParoisseRegistre.Nom avec </span>
+        <span>@(epouxPrincipalEstEpouse ? "mariée" : "marié") le @Model.DateMariageReligieux.Value.ToString("D") à @Model.ParoisseRegistre.Nom avec </span>
     }
     else
     {
-        <span>, à été @(epouxPrincipalEstEpouse ? "mariée" : "marié") en @Model.AnneeRegistreParoissial à @Model.ParoisseRegistre.Nom avec </span>
+        <span>@(epouxPrincipalEstEpouse ? "mariée" : "marié") en @Model.AnneeRegistreParoissial à @Model.ParoisseRegistre.Nom avec </span>
     }
     <span class="font-weight-bold">@epouxSecondaire.NomComplet</span>@if (Model.DateMariageCivil.HasValue)
     {
         <span>(Mariage civil le @Model.DateMariageCivil.Value.ToString("D"))</span>
     }
+
+    @Html.ActionLink("Acte", "acte", new { id = Model.Id, niceUrl = String.Format("{0}", Model.ShortTag) }, new { target = "_blank", @class = "pdfLink" })
+    <div class="result-right-top">@Model.RegistreParoissial</div>
 </div>

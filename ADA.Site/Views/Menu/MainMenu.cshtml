@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ADA.Domain.Revues.Revue>
+﻿@model ADA.Site.Models.Menu.MenuViewModel
+
 
 @{
     Layout = null;
@@ -31,11 +32,12 @@
                             Revues
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            @Html.ActionLink("Globale", "Index", "Revue", new { codeRevue =  "" }, new { @class = "dropdown-item" })
+                            @Html.ActionLink("Globale", "Index", "Revue", new { codeRevue = "" }, new { @class = "dropdown-item" })
 
-                            @if (Model.Any()) { <div class="dropdown-divider"></div>}
+                            @if (Model.Revues.Any())
+                            {<div class="dropdown-divider"></div>}
 
-                            @foreach (var revue in Model.OrderBy( b => b.Nom))
+                            @foreach (var revue in Model.Revues.OrderBy(b => b.Nom))
                             {
                                 @Html.ActionLink(revue.Nom, "Index", "Revue", new { codeRevue = revue.Code.ToLower() }, new { @class = "dropdown-item" })
                             }
@@ -48,6 +50,47 @@
                     <li class="nav-item">
                         @Html.ActionLink("Bibliothèque", "Index", "Bibliotheque", new { area = "" }, new { @class = "nav-link" })
                     </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Catalogues", "Index", "Catalogue", new { area = "" }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Iconographie", "Index", "Media", new { area = "" }, new { @class = "nav-link" })
+                    </li> @if (Model.Fonds.Any())
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Fonds
+                            </a>
+
+                            <div class="dropdown-menu dropdown-submenu" aria-labelledby="navbarDropdownMenuLink">
+
+                                @foreach (var fond in Model.Fonds.OrderBy(b => b.Nom))
+                                {
+                                    <a class="dropdown-item dropdown-toggle" href="javascript:void(0);">@fond.Nom</a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                        @Html.ActionLink("Description", "Description", "Fond", new { id = fond.Id }, new { @class = "dropdown-item" })
+                                        <div class="dropdown-divider"></div>
+
+                                        @if (fond.FondsFils.Any())
+                                        {
+                                            foreach (var sousFond in fond.FondsFils)
+                                            {
+                                                @Html.ActionLink(sousFond.Nom, "Index", "Fond", new { id = sousFond.Id }, new { @class = "dropdown-item" })
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @Html.ActionLink("Recherche", "Index", "Fond", new { id = fond.Id }, new { @class = "dropdown-item" })
+                                        }
+
+                                    </div>
+                                }
+                            </div>
+
+
+
+                        </li>
+                    }
                 </ul>
             </div>
         </div>

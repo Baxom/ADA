@@ -27,6 +27,30 @@
             }
         });
 
+        $('input.information-fond').autocomplete({
+            delay: 300,
+            source: function (request, response) {
+
+                $.ajax({
+                    dataType: "json",
+                    url: "/api/fond/auto-complete/" + $('input.information-fond').data("id-info")  + "/" + request.term,
+                }).done(function (result) {
+
+
+
+                    response(result.map(function (info) {
+                        return {
+                            label: info.ValueString,
+                            value: info.ValueString
+                        }
+                    }));
+
+
+                });
+
+            }
+        });
+
         $('input.lieu').autocomplete({
             delay: 300,
             source: function (request, response) {

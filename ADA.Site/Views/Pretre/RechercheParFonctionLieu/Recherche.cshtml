@@ -12,22 +12,33 @@
 
     if (Model.Recherche)
     {
-        if(Model.Resultats.Any()) {
-            <button id="genere-pdf" type="button" class="btn btn-secondary">Générer le pdfs de plusieurs prêtres</button>
+        if (Model.Resultats.Any())
+        {
+
             <div class="row header-result">
                 <div class="col-md-12">
                     @{ Html.RenderPartial("~/Views/Shared/_Pager.cshtml", Model.Resultats, new ViewDataDictionary { { "Action", "RecherchePretreFonctionLieu" }, { "FormName", "recherche" } }); }
                     <div class="header-result-item-right"> @{Html.RenderPartial("~/Views/Shared/_Tri.cshtml", Model);} </div>
                     <div class="header-result-item-right"> @{Html.RenderPartial("~/Views/Shared/_PaginationSelect.cshtml", Model.Pagination);} </div>
+                    <div class="header-result-item-right">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary" data-multi-select-api-button='{"api":"/pretre/fiches", "checkboxKey":"id", "key":"ids"}'><i class="fas fa-file-pdf"></i></button>
+                            <button type="button" class="btn btn-secondary  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" multi-select-api-checkbox-select-all href="javascript:void(0)">Sélectionner tout</a>
+                                <a class="dropdown-item" multi-select-api-checkbox-deselect-all href="javascript:void(0)">Désélectionner tout</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <ul class="list-group list-selectable">
                 @foreach (var pretre in Model.Resultats)
-            {
+                {
                     <li class="list-group-item">
                         @{ Html.RenderPartial("~/Views/Pretre/Shared/_PretreItem.cshtml", pretre); }
                     </li>
-            }
+                }
             </ul>
 
             <div class="row footer-result">
@@ -41,12 +52,12 @@
             Html.RenderPartial("~/Views/Shared/_NoResult.cshtml");
         }
     }
-    
+
 
 }
 
 @section Scripts {
-    @Scripts.Render("~/Scripts/Custom/Pretre.js")
+    @Scripts.Render("~/Scripts/Custom/MultiSelectApiButton.js")
     @Scripts.Render("~/Scripts/Custom/Tri.js")
     @Scripts.Render("~/Scripts/Custom/Pager.js")
     @Scripts.Render("~/Scripts/Custom/Pagination.js")

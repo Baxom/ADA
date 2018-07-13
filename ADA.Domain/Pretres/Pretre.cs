@@ -56,6 +56,7 @@ namespace ADA.Domain.Pretres
         public ICollection<PretreArticleRevue> ArticlesRevue { get; set; }
         public ICollection<PretreDocument> Documents { get; set; }
         public ICollection<PretreFonctionLieu> FonctionsLieu { get; set; }
+        public ICollection<PretreContextHistorique> ContextHistoriques { get; set; }
         public ICollection<PretrePhoto> Photos { get; set; }
         
         private Pretre ()
@@ -64,6 +65,7 @@ namespace ADA.Domain.Pretres
             Documents = new List<PretreDocument>();
             FonctionsLieu = new List<PretreFonctionLieu>();
             Photos = new List<PretrePhoto>();
+            ContextHistoriques = new List<PretreContextHistorique>();
 	    }
 
         public IEnumerable<string> GetFiles()

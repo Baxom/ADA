@@ -1,4 +1,4 @@
-﻿using ADA.Domain.Base;
+using ADA.Domain.Base;
 using ADA.Domain.Indexation;
 using System;
 using System.Collections.Generic;
@@ -13,16 +13,13 @@ namespace ADA.Domain.Revues
         public string Titre { get; set; }
         public string Auteur { get; set; }
 
-        public ListePlage PagesVirtuelles { get; set; }
-
-        public string PagesAffichees { 
-            get {
-                if (string.IsNullOrWhiteSpace(PagesVirtuelles.ListePagesTexte)) return PagesReelles.ListePagesTexte;
-
-                return PagesVirtuelles.ListePagesTexte;
-            } 
-        }
+        public ListePlage PagesReferences { get; set; }
 
         public ICollection<ArticleRevueIndex> ArticleRevueIndex { get; set; }
+
+        public ArticleRevue()
+        {
+            PagesReferences = new ListePlage();
+        }
     }
 }

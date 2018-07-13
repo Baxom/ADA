@@ -1,0 +1,10 @@
+﻿@model ADA.Domain.Catalogues.Catalogue
+
+
+<div>
+    <div class="font-weight-bold">@Html.DisplayFor(modelItem => modelItem.Titre)</div>
+    <div class="font-italic">
+        Cote: @Html.DisplayFor(modelItem => modelItem.Cote)
+        @Html.ActionLink("Catalogue", "Pdf", new { id = Model.Id, searchTerms = ViewData["searchTerms"] }, new { target = "_blank", @class = "pdfLink" })
+    </div>
+</div>

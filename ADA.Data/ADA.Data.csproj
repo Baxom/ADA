@@ -49,9 +49,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configurations\ComplexType\RegistresParoissiaux\PersonneComplexTypeConfiguration.cs" />
+    <Compile Include="Configurations\Entity\Catalogue\CatalogueEntityConfiguration.cs" />
+    <Compile Include="Configurations\Entity\Catalogue\SousSerieEntityConfiguration.cs" />
+    <Compile Include="Configurations\Entity\Fonds\FondEntityConfiguration.cs" />
+    <Compile Include="Configurations\Entity\Interne\TokenEntityConfiguration.cs" />
     <Compile Include="Configurations\Entity\Lieux\LieuEntityConfiguration.cs" />
     <Compile Include="Configurations\Entity\Fonctions\FonctionTypeLieuEntityConfiguration.cs" />
     <Compile Include="Configurations\Entity\Pretres\PretreFonctionLieuEntityConfiguration.cs" />
+    <Compile Include="Configurations\Entity\Medium\MediumEntityConfiguration.cs" />
     <Compile Include="Configurations\Entity\RegistresParoissiaux\ActeEntityConfiguration.cs" />
     <Compile Include="Configurations\Entity\Revue\ArticleRevueEntityConfiguration.cs" />
     <Compile Include="Configurations\Entity\Pretres\PretreArticleRevueEntityConfiguration.cs" />
@@ -145,12 +150,74 @@
     <Compile Include="Migrations\201804201348086_AjoutActe.Designer.cs">
       <DependentUpon>201804201348086_AjoutActe.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804251244210_renommagePageVirtuelles.cs" />
+    <Compile Include="Migrations\201804251244210_renommagePageVirtuelles.Designer.cs">
+      <DependentUpon>201804251244210_renommagePageVirtuelles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805071452482_CreationContextHistorique.cs" />
+    <Compile Include="Migrations\201805071452482_CreationContextHistorique.Designer.cs">
+      <DependentUpon>201805071452482_CreationContextHistorique.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805091308333_AjoutCatalogue.cs" />
+    <Compile Include="Migrations\201805091308333_AjoutCatalogue.Designer.cs">
+      <DependentUpon>201805091308333_AjoutCatalogue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805091329369_AjoutCatalogue1.cs" />
+    <Compile Include="Migrations\201805091329369_AjoutCatalogue1.Designer.cs">
+      <DependentUpon>201805091329369_AjoutCatalogue1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805091438545_AjourSousSerieCatalogue.cs" />
+    <Compile Include="Migrations\201805091438545_AjourSousSerieCatalogue.Designer.cs">
+      <DependentUpon>201805091438545_AjourSousSerieCatalogue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805091606332_ModifSousSerieCatalogue.cs" />
+    <Compile Include="Migrations\201805091606332_ModifSousSerieCatalogue.Designer.cs">
+      <DependentUpon>201805091606332_ModifSousSerieCatalogue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805191606065_AjoutMedium.cs" />
+    <Compile Include="Migrations\201805191606065_AjoutMedium.Designer.cs">
+      <DependentUpon>201805191606065_AjoutMedium.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806101232519_AjoutInformationFond.cs" />
+    <Compile Include="Migrations\201806101232519_AjoutInformationFond.Designer.cs">
+      <DependentUpon>201806101232519_AjoutInformationFond.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806101247225_AjoutInformationFiltreInjection.cs" />
+    <Compile Include="Migrations\201806101247225_AjoutInformationFiltreInjection.Designer.cs">
+      <DependentUpon>201806101247225_AjoutInformationFiltreInjection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806102230409_AjoutTypeVUeFond.cs" />
+    <Compile Include="Migrations\201806102230409_AjoutTypeVUeFond.Designer.cs">
+      <DependentUpon>201806102230409_AjoutTypeVUeFond.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806102233458_AjoutDescription.cs" />
+    <Compile Include="Migrations\201806102233458_AjoutDescription.Designer.cs">
+      <DependentUpon>201806102233458_AjoutDescription.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806121204411_AjoutCodeFond.cs" />
+    <Compile Include="Migrations\201806121204411_AjoutCodeFond.Designer.cs">
+      <DependentUpon>201806121204411_AjoutCodeFond.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807021443333_AjoutNumeroRevue.cs" />
+    <Compile Include="Migrations\201807021443333_AjoutNumeroRevue.Designer.cs">
+      <DependentUpon>201807021443333_AjoutNumeroRevue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807051251048_ModificationCatalogueNtext.cs" />
+    <Compile Include="Migrations\201807051251048_ModificationCatalogueNtext.Designer.cs">
+      <DependentUpon>201807051251048_ModificationCatalogueNtext.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807051423546_TokenMultiPdf.cs" />
+    <Compile Include="Migrations\201807051423546_TokenMultiPdf.Designer.cs">
+      <DependentUpon>201807051423546_TokenMultiPdf.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\TriModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Common\GenericRepository.cs" />
     <Compile Include="Repositories\Common\IGenericRepository.cs" />
+    <Compile Include="Repositories\Core\FondMediumRepository.cs" />
     <Compile Include="Repositories\Core\PretreRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IFondMediumRepository.cs" />
     <Compile Include="Repositories\Interfaces\IPretreRepository.cs" />
     <Compile Include="UnitOfWork\IUnitOfWork.cs" />
     <Compile Include="UnitOfWork\UnitOfWork.cs" />
@@ -159,7 +226,20 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Sql\ProceduresStockees\ImportFond.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sql\ProceduresStockees\ProcessTags.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sql\ProceduresStockees\GetMediaFond.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sql\Seed\ClearDB.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ADA.Domain\ADA.Domain.csproj">
       <Project>{028111cd-8a9c-465f-925b-6deebd5fd794}</Project>
@@ -234,6 +314,51 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804201348086_AjoutActe.resx">
       <DependentUpon>201804201348086_AjoutActe.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804251244210_renommagePageVirtuelles.resx">
+      <DependentUpon>201804251244210_renommagePageVirtuelles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805071452482_CreationContextHistorique.resx">
+      <DependentUpon>201805071452482_CreationContextHistorique.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805091308333_AjoutCatalogue.resx">
+      <DependentUpon>201805091308333_AjoutCatalogue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805091329369_AjoutCatalogue1.resx">
+      <DependentUpon>201805091329369_AjoutCatalogue1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805091438545_AjourSousSerieCatalogue.resx">
+      <DependentUpon>201805091438545_AjourSousSerieCatalogue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805091606332_ModifSousSerieCatalogue.resx">
+      <DependentUpon>201805091606332_ModifSousSerieCatalogue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805191606065_AjoutMedium.resx">
+      <DependentUpon>201805191606065_AjoutMedium.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806101232519_AjoutInformationFond.resx">
+      <DependentUpon>201806101232519_AjoutInformationFond.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806101247225_AjoutInformationFiltreInjection.resx">
+      <DependentUpon>201806101247225_AjoutInformationFiltreInjection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806102230409_AjoutTypeVUeFond.resx">
+      <DependentUpon>201806102230409_AjoutTypeVUeFond.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806102233458_AjoutDescription.resx">
+      <DependentUpon>201806102233458_AjoutDescription.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806121204411_AjoutCodeFond.resx">
+      <DependentUpon>201806121204411_AjoutCodeFond.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807021443333_AjoutNumeroRevue.resx">
+      <DependentUpon>201807021443333_AjoutNumeroRevue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807051251048_ModificationCatalogueNtext.resx">
+      <DependentUpon>201807051251048_ModificationCatalogueNtext.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807051423546_TokenMultiPdf.resx">
+      <DependentUpon>201807051423546_TokenMultiPdf.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

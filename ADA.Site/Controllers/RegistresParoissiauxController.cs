@@ -13,33 +13,25 @@ using System.Linq.Expressions;
 using ADA.Domain.Bibliotheques;
 using ADA.Domain.RegistresParoissiaux;
 using ADA.Domain.Constantes;
+using System.IO;
+using ADA.Domain.Services.Interface;
 
 namespace ADA.Site.Controllers
 {
     public class RegistresParoissiauxController : Controller
     {
         IUnitOfWork _unitOfWork;
+        IActeService _acteService;
 
-        public RegistresParoissiauxController(IUnitOfWork unitOfWork)
+        public RegistresParoissiauxController(IUnitOfWork unitOfWork, IActeService acteService)
         {
             _unitOfWork = unitOfWork;
+            _acteService = acteService;
         }
 
         // GET: Revue
         public ActionResult Index()
         {
-            var titi = _unitOfWork
-                .Actes
-                .Get(b => b.ParoisseRegistreId == 2103, 
-                b => b.OrderBy( o => (o is Bapteme) ? (o as Bapteme).Nom : 
-                                        (o is Sepulture) ? (o as Sepulture).Nom : 
-                                        (o as Mariage).Epoux.Nom)
-                                        .ThenBy( o => (o is Bapteme) ? (o as Bapteme).Prenom : 
-                                        (o is Sepulture) ? (o as Sepulture).Prenom :
-                                        (o as Mariage).Epoux.Prenom)
-                ).ToList();
-
-
             return View("~/Views/RegistresParoissiaux/Recherche.cshtml", new RegistresParoissiauxViewModel(false));
         }
 
@@ -77,6 +69,41 @@ namespace ADA.Site.Controllers
                 .ToPagedListMvc(model.Page, model.Pagination.Valeur);
 
             return View("~/Views/RegistresParoissiaux/Recherche.cshtml", model);
+        }
+
+        public ActionResult Acte(int id, string niceUrl)
+        {
+            var acte = _unitOfWork.Actes.FindBy(id);
+
+            if (acte == null)
+            {
+                throw new HttpException(404, "Not found");
+            }
+
+            MemoryStream stream = new MemoryStream();
+
+            var fileName = String.Format("{0}-{1}.pdf", acte.Libelle, acte.Denomination);
+
+            this._acteService.CreatePdf(id, stream);
+
+            stream.Flush();
+            stream.Position = 0;
+
+            return File(stream, "application/pdf");
+        }
+
+        public ActionResult Actes(int[] ids)
+        {
+            MemoryStream stream = new MemoryStream();
+
+            var fileName = String.Format("plusieurs actes.pdf");
+
+            _acteService.CreatePdf(ids, stream);
+
+            stream.Flush(); //Always catches me out
+            stream.Position = 0; //Not sure if this is required
+
+            return File(stream, "application/pdf");
         }
 
     }

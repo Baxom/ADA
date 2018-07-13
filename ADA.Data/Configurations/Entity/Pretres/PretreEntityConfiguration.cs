@@ -1,4 +1,4 @@
-﻿using ADA.Domain.Pretres;
+using ADA.Domain.Pretres;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -20,6 +20,7 @@ namespace ADA.Data.Configurations
             this.HasMany(b => b.Documents).WithRequired();
             this.HasMany(b => b.ArticlesRevue).WithRequired();
             this.HasMany(b => b.Photos).WithRequired();
+            
 
                         
         }

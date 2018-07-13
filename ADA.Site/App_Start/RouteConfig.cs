@@ -81,8 +81,8 @@ namespace ADA.Site
                     "image/thumbnail/{filename}",
                     new { controller = "Image", action = "Thumbnail", filename = "" }
                 );
+            
 
-          
         }
     }
 }
