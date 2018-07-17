@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ADA.Data</RootNamespace>
     <AssemblyName>ADA.Data</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -210,6 +211,10 @@
     <Compile Include="Migrations\201807051423546_TokenMultiPdf.Designer.cs">
       <DependentUpon>201807051423546_TokenMultiPdf.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201807171351182_AjoutPlageReferences.cs" />
+    <Compile Include="Migrations\201807171351182_AjoutPlageReferences.Designer.cs">
+      <DependentUpon>201807171351182_AjoutPlageReferences.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\TriModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -359,6 +364,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201807051423546_TokenMultiPdf.resx">
       <DependentUpon>201807051423546_TokenMultiPdf.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807171351182_AjoutPlageReferences.resx">
+      <DependentUpon>201807171351182_AjoutPlageReferences.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

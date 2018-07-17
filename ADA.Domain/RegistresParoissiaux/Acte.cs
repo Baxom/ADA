@@ -23,6 +23,8 @@ namespace ADA.Domain.RegistresParoissiaux
         public int ParoisseRegistreId { get; set; }
         public Lieu ParoisseRegistre { get; set; }
 
+        public ListePlage PagesReferences { get; set; }
+
         public string RegistreParoissial { get { return String.Format("{0}-{1}", ParoisseRegistre.Nom, AnneeRegistreParoissial); } }
 
         public abstract string Libelle { get; }

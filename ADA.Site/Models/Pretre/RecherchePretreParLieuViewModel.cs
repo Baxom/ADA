@@ -42,7 +42,7 @@ namespace ADA.Site.Models
         {
             Recherche = activeSearch;
             FonctionLieuViewModel = new FonctionLieuViewModel();
-            this.TypeLieuId = 1;
+            this.TypeLieuId = null;
 
             InitTris();
         }

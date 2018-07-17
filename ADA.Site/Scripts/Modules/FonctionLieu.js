@@ -76,6 +76,7 @@
 
             $.extend(self, ko.mapping.fromJS(JSON.parse($(".script-server-data", jqHtmlModuleDiv).html())));
 
+            self.fonctionLieuViewModel.typesLieu.unshift({ id: ko.observable(null), nom: ko.observable('Tous'), typeRecherche : ko.observable(null) });
             self.fonctionLieuViewModel.lieux.unshift({ id: null, nom: 'Tous' });
             self.fonctionLieuViewModel.fonctions.unshift({ id: null, nom: 'Toutes' });
             self.fonctionLieuViewModel.contextHistoriques.unshift({ id: null, nom: 'Tous' });

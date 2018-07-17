@@ -77,11 +77,14 @@ namespace ADA.Site.Controllers
 
             Expression<Func<Pretre, bool>> filter;
                         
-            filter = p => p.FonctionsLieu.Any(fl => (!rp.LieuId.HasValue || fl.Lieu.Id == rp.LieuId)
+            filter = p => (!rp.TypeLieuId.HasValue ||
+            p.FonctionsLieu.Any(fl => (!rp.LieuId.HasValue || fl.Lieu.Id == rp.LieuId)
                 && fl.Lieu.TypeLieu.Id == rp.TypeLieuId
                 && (!rp.AnneeExercice.HasValue || (fl.AnneeDebut <= rp.AnneeExercice.Value && fl.AnneeFin >= rp.AnneeExercice.Value))
                 && (rp.NomLieu == null || fl.Lieu.Nom == rp.NomLieu )
-                && (!rp.FonctionId.HasValue || fl.Fonction.Id == rp.FonctionId.Value))
+                && (!rp.FonctionId.HasValue || fl.Fonction.Id == rp.FonctionId.Value)) )
+                
+
                 && (!rp.ContextHistoriqueId.HasValue || p.ContextHistoriques.Any( ch => ch.ContextHistorique.Id == rp.ContextHistoriqueId.Value));
 
             rp.FonctionLieuViewModel = GetFonctionLieuViewModel(rp.TypeLieuId, rp.LieuId, rp.NomLieu, rp.FonctionId);

@@ -13,13 +13,13 @@
 </div>
 <div class="flex-right">
 
-    @if ((bool)ViewData["isFond"])
+    @if (!String.IsNullOrEmpty(Model.RepertoireNomThumbnail))
     {
-        <img id="modal-btn-@Model.Id" class="img-clickable" src="@Url.Action("Thumbnail", "Media", new { id = Model.Id })" />
+        <img src="@Url.Action("Thumbnail", "Media", new { id = Model.Id })" />
     }
     else
     {
-        <a href="#" id="modal-btn-@Model.Id"><i  class="fas fa-play fa-lg"></i></a>
+        <a href="#" id="modal-btn-@Model.Id"><i class="fas fa-play fa-lg"></i></a>
     }
 
 

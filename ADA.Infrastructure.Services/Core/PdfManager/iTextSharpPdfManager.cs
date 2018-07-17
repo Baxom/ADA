@@ -110,7 +110,7 @@ namespace ADA.Infrastructure.Services.Core.PdfManager
                 CreateStamp(stampString);
             }
 
-            return pageIndexToPrint.Count;
+            return pageIndexToPrint.Any() ? pageIndexToPrint.Count : reader.NumberOfPages;
         }
 
         private void CreateStamp(string stampString)

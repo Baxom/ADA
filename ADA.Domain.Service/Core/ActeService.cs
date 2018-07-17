@@ -1,4 +1,4 @@
-using ADA.Data.UnitOfWork;
+﻿using ADA.Data.UnitOfWork;
 using ADA.Domain.Pretres;
 using ADA.Domain.RegistresParoissiaux;
 using ADA.Domain.Revues;
@@ -35,7 +35,7 @@ namespace ADA.Domain.Services.Core
 
             foreach (var doc in documentToMerge)
             {
-                pdfManager.AddPdf(doc.NomCompletFichier, doc.Tag, _fileMissingMessage);
+                pdfManager.AddPdf(doc.NomCompletFichier, doc.Tag, _fileMissingMessage, acte.PagesReferences.ListePages.ToList());
             }
 
             pdfManager.Close();
@@ -60,7 +60,7 @@ namespace ADA.Domain.Services.Core
 
                 foreach (var doc in documentToMerge)
                 {
-                    totalPage += pdfManager.AddPdf(doc.NomCompletFichier, doc.Tag, _fileMissingMessage);
+                    totalPage += pdfManager.AddPdf(doc.NomCompletFichier, doc.Tag, _fileMissingMessage, acte.PagesReferences.ListePages.ToList());
                 }
 
             }

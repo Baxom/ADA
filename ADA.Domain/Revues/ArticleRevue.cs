@@ -1,4 +1,4 @@
-using ADA.Domain.Base;
+﻿using ADA.Domain.Base;
 using ADA.Domain.Indexation;
 using System;
 using System.Collections.Generic;
