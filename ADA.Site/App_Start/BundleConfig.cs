@@ -18,7 +18,7 @@ namespace ADA.Site
             bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
                 "~/Scripts/knockout-3.4.2.js",
                 "~/Scripts/knockout-jqAutocomplete.js",
-                "~/Scripts/knockout.mapping-latest.js"
+                "~/Scripts/knockout.mapping-latest.js" 
                 ));
 
             bundles.Add(new ScriptBundle("~/bundles/external-lib").Include(
