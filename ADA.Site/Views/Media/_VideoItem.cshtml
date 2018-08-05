@@ -12,17 +12,17 @@
 
 </div>
 <div class="flex-right">
-
-    @if (!String.IsNullOrEmpty(Model.RepertoireNomThumbnail))
+    <a href="#" id="modal-btn-@Model.Id">
+        @if (!String.IsNullOrEmpty(Model.RepertoireNomThumbnail))
     {
         <img src="@Url.Action("Thumbnail", "Media", new { id = Model.Id })" />
-    }
-    else
-    {
-        <a href="#" id="modal-btn-@Model.Id"><i class="fas fa-play fa-lg"></i></a>
-    }
+}
+else
+{
+    <i class="fas fa-play fa-lg"></i>
 
-
+}
+    </a>
 
     @{Html.RenderPartial("~/Views/Shared/_PopinVideo.cshtml", Model, new ViewDataDictionary { { "triggerElementId", "modal-btn-" + @Model.Id } });
     }
