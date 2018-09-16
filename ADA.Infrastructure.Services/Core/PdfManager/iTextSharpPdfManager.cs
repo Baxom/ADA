@@ -115,7 +115,7 @@ namespace ADA.Infrastructure.Services.Core.PdfManager
             _writerContent.AddNamedDestination("p" + _writerContent.CurrentPageNumber.ToString(), _writerContent.CurrentPageNumber,
                 new PdfDestination(PdfDestination.XYZ, 0, _writerContent.PageSize.Top, 0));
         }
-
+        
         private void CreateStamp(string stampString)
         {
             if (!String.IsNullOrEmpty(stampString))
@@ -209,6 +209,7 @@ namespace ADA.Infrastructure.Services.Core.PdfManager
         private int CreateTableOfContent(PdfTableOfContent toc, PdfWriter writer, Document doc, bool reorderPage)
         {
             var numberOfPageBeforeInsertTOC = writer.PageNumber;
+            doc.SetPageSize(PageSize.A4);
             doc.SetMargins(36, 36, 36, 36);
             doc.NewPage();
             Paragraph p;
@@ -227,7 +228,7 @@ namespace ADA.Infrastructure.Services.Core.PdfManager
             foreach (var content in toc.Contents)
             {
 
-                //action = PdfAction.GotoLocalPage(content.RealPage, new PdfDestination(PdfDestination.XYZ, 0f, PageSize.A4.Top, 0f), writer);
+              //  action = PdfAction.GotoLocalPage("p" + content.RealPage, new PdfDestination(PdfDestination.XYZ, 0f, PageSize.A4.Top, 0f), writer);
                 action = PdfAction.GotoLocalPage("p" + content.RealPage, false);
                 p = new Paragraph(content.Titre, fontText);
                 p.Add(new Chunk(new DottedLineSeparator()));

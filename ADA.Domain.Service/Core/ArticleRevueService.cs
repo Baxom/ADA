@@ -42,8 +42,8 @@ namespace ADA.Domain.Services.Core
 
         public void CreatePdf(IEnumerable<int> articleRevueIds, Stream memoryStream)
         {
-            var articlesRevues = _uow.ArticlesRevue.Get(b => articleRevueIds.Contains(b.Id), 
-                p => p.OrderBy(b => b.Revue.Nom).ThenBy(b => b.PeriodePublication).ThenBy( b => b.Pages), 
+            var articlesRevues = _uow.ArticlesRevue.Get(b => articleRevueIds.Contains(b.Id),
+                 p => p.OrderBy(b => b.Revue.Nom).ThenBy(b => b.PeriodePublication).ThenBy( b => b.Pages), 
                 b => b.Revue.RevueMere);
 
             var pdfManager = _pdfManager.Create(memoryStream);
