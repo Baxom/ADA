@@ -37,39 +37,7 @@ namespace ADA.CompositionRoot.CastleWindsor.Installer
           //  InstallHandlers(container, store);
         }
 
-        private void InstallModules(IWindsorContainer container, IConfigurationStore store)
-        {
-            var registrations =
-                Types
-                .FromAssemblyNamed("Zen.Api.Tarification")
-                .InNamespace("Zen.Api.Tarification.Modules", true)
-                .LifestyleSingleton();
-
-            container.Register(registrations);
-        }
-
-        private void InstallFilters(IWindsorContainer container, IConfigurationStore store)
-        {
-            var registrations =
-                Types
-                .FromAssemblyNamed("Zen.Api.Tarification")
-                .InNamespace("Zen.Api.Tarification.Filters", true)
-                .LifestyleSingleton();
-
-            container.Register(registrations);
-        }
-
-        private void InstallHandlers(IWindsorContainer container, IConfigurationStore store)
-        {
-            var registrations =
-                Types
-                .FromAssemblyNamed("Zen.Api.Tarification")
-                .InNamespace("Zen.Api.Tarification.Handlers", true)
-                .LifestyleSingleton();
-
-            container.Register(registrations);
-        }
-
+   
 
     }
 }

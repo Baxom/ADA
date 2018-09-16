@@ -11,10 +11,18 @@ namespace ADA.Domain.Revues
     {
         public ListePlage Pages { get; set; }
 
+        public ListePlage PagesReferences { get; set; }
+
         public abstract string Tag { get; }
 
         public abstract string ShortTag { get; }
 
         public abstract IEnumerable<Document> GetDocuments();
+
+        public PlageTagDocument()
+        {
+
+            PagesReferences = new ListePlage();
+        }
     }
 }

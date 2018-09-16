@@ -13,7 +13,7 @@ namespace ADA.Data.Configurations
     {
         public PretreEntityConfiguration()
         {
-            this.ToTable("Pretre").HasKey<int>(k => k.Id);
+            this.ToTable("Pretre");
 
 
             this.HasMany(b => b.FonctionsLieu).WithRequired();

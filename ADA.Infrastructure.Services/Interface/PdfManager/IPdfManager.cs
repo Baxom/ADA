@@ -11,14 +11,14 @@ namespace ADA.Infrastructure.Services.Interface.PdfManager
     public interface IPdfManager
     {
         IPdfManager Create(Stream stream);
-        int AddPdf(string pdfPath, string stampString = null, string fileNotFoundMessage = null, List<int> pageIndexToPrint = null);
+        int AddPdf(string pdfPath, string stampString = null, string fileNotFoundMessage = null, List<int> pageIndexToPrint = null, bool autoResize = true);
         int AddImage(string imagePath, string titre = null, string stampString = null, string fileNotFoundMessage = null);
         int AddTableOfContent(PdfTableOfContent toc);
         int ComputeTableOfContent(PdfTableOfContent toc);
         int GetCurrentPageNumber();
         void WriteTitle(string text, int level = 0, bool center = false, bool underline = false, bool bold = false, bool italic = false);
-        void WriteText(string text, string higlightedText = null, Color? higlightedTextColor = null, Color? backgroundHighlightedTextColor = null, bool bold = false);
-        void WriteCatalogue(string text, string cote, string searchText);
+        void WriteText(string text, List<KeyValuePair<string, bool>> hightightedTerms = null, Color? higlightedTextColor = null, Color? backgroundHighlightedTextColor = null, bool bold = false);
+        void WriteCatalogue(string text, string cote, List<KeyValuePair<string, bool>> searchTerms);
         void AddNewPage();
         void Close();
     }
@@ -40,10 +40,12 @@ namespace ADA.Infrastructure.Services.Interface.PdfManager
             }
         }
 
-        public void AddContent(string titre, int page)
+        public void AddContent( string titre, int page)
         {
-            _contents.Add(new ItemTableOfContent(titre, page));
+            var content = new ItemTableOfContent( titre, page);
+            _contents.Add(content);
             _contents = _contents.OrderBy(b => b.RealPage).ToList();
+            
         }
 
         public void DecalePage(int nbPage)
@@ -60,14 +62,15 @@ namespace ADA.Infrastructure.Services.Interface.PdfManager
             Titre = titre;
             PageNumber = page;
             RealPage = page;
+
         }
 
         public string AnchorName { 
             get {
-                return "p" + RealPage.ToString();
+                return "page_" + RealPage.ToString();
             } 
         }
-
+        
         public string Titre { get; set; }
         public int RealPage { get; set; }
         public int PageNumber { get; set; }

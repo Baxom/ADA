@@ -7,10 +7,19 @@
 
         contextElement.each(function (ind, elt) {
             var instance = new Mark(elt);
-            instance.mark(contextElement.data('mark-keyword'), {
-                element: 'span',
-                className: 'highlighted-text'
-            });
+
+            var keyWords = contextElement.data('mark-keyword');
+
+            $.each(keyWords, function (indKeyword, keyWord) {
+                instance.mark(keyWord.val, {
+                    element: 'span',
+                    className: 'highlighted-text',
+                    accuracy: keyWord.wordBoundary ? 'exactly' : 'partially'
+                });
+            }
+            );
+
+            
         });
 
       

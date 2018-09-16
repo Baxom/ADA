@@ -1,4 +1,5 @@
 ﻿using ADA.Data.Context;
+using ADA.Data.Helpers;
 using ADA.Data.Model;
 using ADA.Data.Repositories.Common;
 using ADA.Data.Repositories.Interfaces;
@@ -6,10 +7,12 @@ using ADA.Domain.Pretres;
 using ADA.Infrastructure.PaginationHandler;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Data.Entity.Core.Objects;
 using System.Data.SqlClient;
 using System.Linq;
+using ADA.Infrastructure.Extentions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,73 +26,60 @@ namespace ADA.Data.Repositories.Core
 
         }
 
-        //        public IList<Pretre> GetPretreByLieu(int? typeLieuId, int? lieuId, int? fonctionId, string nomLieu, TriModel tri, PaginationRequest paginationRequest)
-        //        {
-        //            var setPretreFonctionsLieu = this.Context.Set<PretreFonctionLieu>();
-        //            var query = (this
-        //                .Set
-        //                .Join(setPretreFonctionsLieu, p => p.Id, pfl => pfl.PretreId, (pretres, pfls) => new { pretres = pretres, pfls = pfls })
-        //                .OrderBy(b => b.pfls.AnneeDebut)
-        //                .Select(b => b.pretres)) as System.Data.Entity.Infrastructure.DbQuery<Pretre>;
+        public PaginationResult<IList<Pretre>> GetPretreByLieu(int? typeLieuId, int? lieuId, int? fonctionId, string nomLieu, 
+            int? contextHistoriqueId, int? anneeExercice, TriModel tri, PaginationRequest paginationRequest)
+        {
 
-        //            query = query.Include("FonctionsLieu");
-        //          /*  var query = this
-        //               .Set.Include("FonctionsLieu")
-        //               .Where( b => b.FonctionsLieu.Any())
-        //               .OrderBy(b => b.FonctionsLieu.Min( fl => fl.AnneeDebut));*/
+            ResultAndCountModel result;
 
+            try
+            {
+                if (Context.Database.Connection.State != ConnectionState.Open) Context.Database.Connection.Open();
 
-        //            return query.ToList();
-        //        }
-
-        //        public PaginationResult<IList<Pretre>> GetPretre(string nom, string prenom, int? anneeNaissance, int? anneeDeces, 
-        //            string commune, TriModel tri, PaginationRequest paginationRequest)
-        //        {
-        //            var queryCount = buildQuery(nom, prenom, anneeNaissance, anneeDeces, commune, tri, paginationRequest, true);
-        //            var queryPretre = buildQuery(nom, prenom, anneeNaissance, anneeDeces, commune, tri, paginationRequest);
-
-        //            List<SqlParameter> parameters = new List<SqlParameter>();
-
-        //            parameters.Add(new SqlParameter("@nom", nom));
-        //            parameters.Add(new SqlParameter("@prenom", prenom));
-        //            parameters.Add(new SqlParameter("@anneeNaissance", anneeNaissance));
-        //            parameters.Add(new SqlParameter("@anneeDeces", anneeDeces));
-        //            parameters.Add(new SqlParameter("@commune", commune));
-
-        //            parameters.ToList().ForEach(p => { if (p.Value == null) { p.Value = (object)DBNull.Value; } });
-
-        //            var pretres = this.Context.Set<Pretre>().SqlQuery(queryPretre, parameters.ToArray()).ToList();
-        //            int countPretre = countQuery(queryCount, parameters.ToArray());
-
-        //            return new PaginationResult<IList<Pretre>>(countPretre, pretres);
-        //        }
+                var cmd = Context.Database.Connection.CreateCommand();
+                
+                SqlParameter stypeLieuIdParams = new SqlParameter("@typeLieuId", SqlDbType.Int) { Value = typeLieuId };
+                SqlParameter lieuIdParams = new SqlParameter("@lieuId", SqlDbType.Int) { Value = lieuId };
+                SqlParameter fonctionIdPraram = new SqlParameter("@fonctionId", SqlDbType.Int) { Value = fonctionId };
+                SqlParameter nomLieuParam = new SqlParameter("@nomLieu", SqlDbType.NVarChar) { Value = nomLieu };
+                SqlParameter contextHistoriqueParam = new SqlParameter("@contextHistoriqueId", SqlDbType.Int) { Value = contextHistoriqueId };
+                SqlParameter anneeExerciceParam = new SqlParameter("@anneeExercice", SqlDbType.Int) { Value = anneeExercice };
+                SqlParameter pageNumberParams = new SqlParameter("@pageNumber", SqlDbType.Int) { Value = paginationRequest.PageNumber };
+                SqlParameter pageSizeParams = new SqlParameter("@pageSize", SqlDbType.Int) { Value = paginationRequest.PageSize };
+                SqlParameter triParams = new SqlParameter("@tri", SqlDbType.Int) { Value = tri.Key };
 
 
-        //        private string buildQuery(string nom, string prenom, int? anneeNaissance, int? anneeDeces,
-        //            string commune, TriModel tri, PaginationRequest paginationRequest, bool count = false)
-        //        {
-        //            string select = String.Format("SELECT {0} FROM Pretre P LEFT JOIN Commune C ON C.Id = P.CommuneId ", count ? "COUNT(1)" : "P.*");
-        //            string where = @"WHERE 
-        //                            (@nom IS NULL OR @nom = '' OR p.nom like '%' + @nom + '%' ) 
-        //                            AND (@prenom IS NULL OR @prenom = '' OR p.prenom like '%' + @prenom + '%' )
-        //                            AND (@commune IS NULL OR @commune = '' OR c.nom like '%' + @commune + '%' )
-        //                            AND (@anneeNaissance IS NULL OR p.AnneeNaissance = @anneeNaissance)
-        //                            AND (@anneeDeces IS NULL OR p.AnneeDeces = @anneeNaissance) ";
+                cmd.CommandText = "dbo.GetPretreFonctionLieu";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(stypeLieuIdParams);
+                cmd.Parameters.Add(lieuIdParams);
+                cmd.Parameters.Add(fonctionIdPraram);
+                cmd.Parameters.Add(contextHistoriqueParam);
+                cmd.Parameters.Add(nomLieuParam);
+                cmd.Parameters.Add(anneeExerciceParam);
+                cmd.Parameters.Add(triParams);
+                cmd.Parameters.Add(pageNumberParams);
+                cmd.Parameters.Add(pageSizeParams);
 
-        //            string orderBy = string.Empty;
-        //            string pagination = string.Empty;
+                result = SqlDataReaderHelper.ExecuteCommand(cmd);
+
+            }
+            finally
+            {
+                if (Context.Database.Connection.State == ConnectionState.Open) Context.Database.Connection.Close();
+            }
 
 
-        //            if (!count)
-        //            {
-        //                orderBy = tri.GetOrderBy();
-        //                if (String.IsNullOrEmpty(orderBy)) orderBy = " ORDER BY P.Id ";
-        //                pagination = String.Format(@" OFFSET {0} ROWS -- skip 10 rows
-        //                                                FETCH NEXT {1} ROWS ONLY; ", (paginationRequest.PageNumber - 1) * paginationRequest.PageSize, paginationRequest.PageSize);
-        //            }
+            var pretres = this.Get(b => result.Ids.Contains(b.Id), null, b => b.Photos,
+                            b => b.Documents,
+                            b => b.ArticlesRevue,
+                            b => b.FonctionsLieu.Select(fl => fl.Fonction),
+                            b => b.FonctionsLieu.Select(fl => fl.Lieu)).OrderByExtList<Pretre, int>(result.Ids.ToList(), b => b.Id);
 
-        //            return select + where + orderBy + pagination;
-        //        }
-        //    }
+            return new PaginationResult<IList<Pretre>>(result.Count, pretres);
+
+            
+        }
+
     }
 }

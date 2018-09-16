@@ -29,6 +29,7 @@ namespace ADA.CompositionRoot.CastleWindsor.Installer
                     !b.GetInterfaces().Any() ||
                     (!b.Namespace.Contains("Data.Repositories")
                     && !b.Namespace.Contains("Data.Context")
+                    && !b.Namespace.Contains("Data.SqlServer.Core")
                     && !b.Namespace.Contains("Data.UnitOfWork")))
                 .WithService
                 .FirstNonGenericCoreInterface("ADA.Data")

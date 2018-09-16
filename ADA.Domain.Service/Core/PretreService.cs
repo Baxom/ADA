@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ADA.Infrastructure.Extentions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,13 +43,13 @@ namespace ADA.Domain.Services.Core
 
         public void CreatePdf(IEnumerable<int> pretreIds, Stream memoryStream)
         {
-            var pretres = _uow.Pretres.Get(b => pretreIds.Contains(b.Id), p => p.OrderBy(b => b.Nom).ThenBy(b => b.Prenom), 
+            var pretres = _uow.Pretres.Get(b => pretreIds.Contains(b.Id), null, 
                 b => b.Documents, 
                 b => b.Photos, 
                 b => b.ArticlesRevue.Select(ar => ar.Revue),
                 b => b.FonctionsLieu.Select(fl => fl.Fonction),
-                b => b.FonctionsLieu.Select(fl => fl.Lieu.TypeLieu));
-
+                b => b.FonctionsLieu.Select(fl => fl.Lieu.TypeLieu)).OrderByExtList<Pretre, int>(pretreIds.ToList(), b => b.Id);
+            
             var pdfManager = _pdfManager.Create(memoryStream);
             PdfTableOfContent toc = new PdfTableOfContent("Sommaire");
             var totalPage = 0;
@@ -75,18 +76,23 @@ namespace ADA.Domain.Services.Core
                 totalPage++;
             }
 
-
+            
             var pdfFilesToMerge = pretre.Documents;
-            var documentToMerge = pretre.ArticlesRevue.SelectMany(b => b.GetDocuments());
+           
             foreach (var pdf in pdfFilesToMerge)
             {
-                var nbPagePdf = pdfManager.AddPdf(pdf.NomCompletFichier, null, _fileMissingMessage);
+                var nbPagePdf = pdfManager.AddPdf(pdf.NomCompletFichier, null, _fileMissingMessage, null, true);
                 totalPage += nbPagePdf;
             }
 
-            foreach (var doc in documentToMerge)
+            foreach(var articleRevue in pretre.ArticlesRevue)
             {
-                totalPage += pdfManager.AddPdf(doc.NomCompletFichier, doc.Tag, _fileMissingMessage);
+                var documentToMerge = articleRevue.GetDocuments();
+                foreach (var doc in documentToMerge)
+                {
+                    totalPage += pdfManager.AddPdf(doc.NomCompletFichier, doc.Tag, _fileMissingMessage, articleRevue.PagesReferences.ListePages.ToList());
+                }
+
             }
 
             var currentNumberOfPage = pdfManager.GetCurrentPageNumber();

@@ -29,6 +29,12 @@ namespace ADA.CompositionRoot.CastleWindsor.Installer
                    .ImplementedBy<ADA.Infrastructure.Services.Core.PdfManager.iTextSharpPdfManager>().LifestylePerWebRequest()
                    );
 
+            container
+               .Register(
+                   Component.For<ADA.Infrastructure.Services.Interface.WordSearchParser.IWordSearchParser>()
+                   .ImplementedBy<ADA.Infrastructure.Services.Core.WordSearchParser.SprachWordSearchParser>().LifestyleSingleton()
+                   );
+
             container.AddFacility<Castle.Facilities.Logging.LoggingFacility>(b => b.LogUsing<Log4netFactory>().WithConfig("Config/log4net.config"));
             
         }

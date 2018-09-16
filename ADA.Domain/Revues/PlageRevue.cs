@@ -13,6 +13,7 @@ namespace ADA.Domain.Revues
         public int? DebutPublication { get; set; }
         public int? FinPublication { get; set; }
         public string PeriodePublication { get; private set; }
+        public int PremierePage { get; private set; }
         public int? NumeroRevue { get; set; }
         public Revue Revue { get; set; }
 

@@ -12,16 +12,19 @@ using ADA.Domain.Revues;
 using System.Linq.Expressions;
 using ADA.Domain.Bibliotheques;
 using ADA.Domain.Media;
+using ADA.Infrastructure.Services.Interface.WordSearchParser;
 
 namespace ADA.Site.Controllers
 {
     public class MediaController : ImageController
     {
         IUnitOfWork _unitOfWork;
+        IWordSearchParser _wordSearchparser;
 
-        public MediaController(IUnitOfWork unitOfWork)
+        public MediaController(IUnitOfWork unitOfWork, IWordSearchParser wordSearchparser)
         {
             _unitOfWork = unitOfWork;
+            _wordSearchparser = wordSearchparser;
         }
 
         // GET: MEdia
@@ -33,7 +36,10 @@ namespace ADA.Site.Controllers
        
         public ActionResult Recherche(RechercheMediaViewModel model)
         {
-            Expression<Func<Medium, bool>> filter = b => (model.Nom == null || b.Titre.Contains(model.Nom) || b.Tags.Any( t => t.Tag.Libelle.Contains(model.Nom))) && (b.Type != Domain.Constantes.TypeMedium.NonMedia) && (!model.TypeMedium.HasValue || model.TypeMedium.Value == b.Type );
+
+            var titre = _unitOfWork.FTSContains(model.Nom);
+
+            Expression<Func<Medium, bool>> filter = b => (model.Nom == null || b.Titre.Contains(titre) || b.Tags.Any( t => t.Tag.Libelle.Contains(model.Nom))) && (b.Type != Domain.Constantes.TypeMedium.NonMedia) && (!model.TypeMedium.HasValue || model.TypeMedium.Value == b.Type );
             model.Resultats = _unitOfWork.Media
                 .Paginate(new PaginationRequest(model.Pagination.Valeur, model.Page), filter,
                  b => b.OrderByDescending( o => o.Titre.Contains(model.Nom) ),

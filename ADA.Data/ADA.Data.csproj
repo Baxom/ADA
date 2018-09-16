@@ -58,6 +58,7 @@
     <Compile Include="Configurations\Entity\Fonctions\FonctionTypeLieuEntityConfiguration.cs" />
     <Compile Include="Configurations\Entity\Pretres\PretreFonctionLieuEntityConfiguration.cs" />
     <Compile Include="Configurations\Entity\Medium\MediumEntityConfiguration.cs" />
+    <Compile Include="Configurations\Entity\Reference\CommuneEntityConfiguration.cs" />
     <Compile Include="Configurations\Entity\RegistresParoissiaux\ActeEntityConfiguration.cs" />
     <Compile Include="Configurations\Entity\Revue\ArticleRevueEntityConfiguration.cs" />
     <Compile Include="Configurations\Entity\Pretres\PretreArticleRevueEntityConfiguration.cs" />
@@ -71,6 +72,9 @@
     <Compile Include="Conventions\ForeignKeyNamingConvention.cs" />
     <Compile Include="Conventions\StringRequiredConvention.cs" />
     <Compile Include="Extention\EfExtention.cs" />
+    <Compile Include="Helpers\ResultAndCountModel.cs" />
+    <Compile Include="Helpers\SqlDataReaderHelper.cs" />
+    <Compile Include="Interceptors\FtsIntercepteur.cs" />
     <Compile Include="Migrations\201711041626138_CreationBase.cs" />
     <Compile Include="Migrations\201711041626138_CreationBase.Designer.cs">
       <DependentUpon>201711041626138_CreationBase.cs</DependentUpon>
@@ -215,6 +219,42 @@
     <Compile Include="Migrations\201807171351182_AjoutPlageReferences.Designer.cs">
       <DependentUpon>201807171351182_AjoutPlageReferences.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808270512333_CreationCatalogueFTS.cs" />
+    <Compile Include="Migrations\201808270512333_CreationCatalogueFTS.Designer.cs">
+      <DependentUpon>201808270512333_CreationCatalogueFTS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808270517351_AjoutIndexFullText.cs" />
+    <Compile Include="Migrations\201808270517351_AjoutIndexFullText.Designer.cs">
+      <DependentUpon>201808270517351_AjoutIndexFullText.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809111144042_removeIXINtegral.cs" />
+    <Compile Include="Migrations\201809111144042_removeIXINtegral.Designer.cs">
+      <DependentUpon>201809111144042_removeIXINtegral.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809111148496_ModifCatalogueTitreType.cs" />
+    <Compile Include="Migrations\201809111148496_ModifCatalogueTitreType.Designer.cs">
+      <DependentUpon>201809111148496_ModifCatalogueTitreType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809111251395_AjoutIndex.cs" />
+    <Compile Include="Migrations\201809111251395_AjoutIndex.Designer.cs">
+      <DependentUpon>201809111251395_AjoutIndex.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809121936279_AJoutPremierePageArticleRevue.cs" />
+    <Compile Include="Migrations\201809121936279_AJoutPremierePageArticleRevue.Designer.cs">
+      <DependentUpon>201809121936279_AJoutPremierePageArticleRevue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809121950504_AJout.cs" />
+    <Compile Include="Migrations\201809121950504_AJout.Designer.cs">
+      <DependentUpon>201809121950504_AJout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809122114110_ModificationTypeCleCommune.cs" />
+    <Compile Include="Migrations\201809122114110_ModificationTypeCleCommune.Designer.cs">
+      <DependentUpon>201809122114110_ModificationTypeCleCommune.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809131719282_AjoutPageReferencePretreArticleRevue.cs" />
+    <Compile Include="Migrations\201809131719282_AjoutPageReferencePretreArticleRevue.Designer.cs">
+      <DependentUpon>201809131719282_AjoutPageReferencePretreArticleRevue.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\TriModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -224,6 +264,8 @@
     <Compile Include="Repositories\Core\PretreRepository.cs" />
     <Compile Include="Repositories\Interfaces\IFondMediumRepository.cs" />
     <Compile Include="Repositories\Interfaces\IPretreRepository.cs" />
+    <Compile Include="SqlServer\Core\SqlServerFTSStringProvider.cs" />
+    <Compile Include="SqlServer\Interface\IFTSStringProvider.cs" />
     <Compile Include="UnitOfWork\IUnitOfWork.cs" />
     <Compile Include="UnitOfWork\UnitOfWork.cs" />
   </ItemGroup>
@@ -232,6 +274,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Sql\ProceduresStockees\GetPretreFonctionLieu.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Sql\ProceduresStockees\ImportFond.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -367,6 +412,33 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201807171351182_AjoutPlageReferences.resx">
       <DependentUpon>201807171351182_AjoutPlageReferences.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808270512333_CreationCatalogueFTS.resx">
+      <DependentUpon>201808270512333_CreationCatalogueFTS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808270517351_AjoutIndexFullText.resx">
+      <DependentUpon>201808270517351_AjoutIndexFullText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809111144042_removeIXINtegral.resx">
+      <DependentUpon>201809111144042_removeIXINtegral.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809111148496_ModifCatalogueTitreType.resx">
+      <DependentUpon>201809111148496_ModifCatalogueTitreType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809111251395_AjoutIndex.resx">
+      <DependentUpon>201809111251395_AjoutIndex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809121936279_AJoutPremierePageArticleRevue.resx">
+      <DependentUpon>201809121936279_AJoutPremierePageArticleRevue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809121950504_AJout.resx">
+      <DependentUpon>201809121950504_AJout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809122114110_ModificationTypeCleCommune.resx">
+      <DependentUpon>201809122114110_ModificationTypeCleCommune.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809131719282_AjoutPageReferencePretreArticleRevue.resx">
+      <DependentUpon>201809131719282_AjoutPageReferencePretreArticleRevue.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

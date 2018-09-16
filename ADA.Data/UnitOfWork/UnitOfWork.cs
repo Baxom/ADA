@@ -140,6 +140,13 @@ namespace ADA.Data.UnitOfWork
             GC.SuppressFinalize(this);
         }
 
+        public string FTSContains(string search)
+        {
+            if (String.IsNullOrWhiteSpace(search)) return String.Empty;
+
+            return string.Format("({0}{1})", Intercepteurs.FtsInterceptor.FullTextPrefix, search);
+        }
+
         #endregion
 
         public IGenericRepository<Acte> Actes { get; private set; }

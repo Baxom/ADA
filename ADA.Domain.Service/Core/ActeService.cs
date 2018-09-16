@@ -54,7 +54,7 @@ namespace ADA.Domain.Services.Core
             foreach (var acte in actes)
             {
 
-                toc.AddContent(String.Format("{0} ({1})", acte.ShortTag, acte.ShortTag), totalPage + 1);
+                toc.AddContent( String.Format("{0} ({1})", acte.ShortTag, acte.ShortTag), totalPage + 1);
 
                 var documentToMerge = acte.GetDocuments();
 

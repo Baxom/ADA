@@ -13,6 +13,6 @@ namespace ADA.Data.Repositories.Interfaces
     public interface IPretreRepository : IGenericRepository<Pretre>
     {
         //PaginationResult<IList<Pretre>> GetPretre(string nom, string prenom, int? anneeNaissance, int? anneeDeces, string commune, TriModel tri, PaginationRequest paginationRequest);
-       // IList<Pretre> GetPretreByLieu(int? typeLieuId, int? lieuId, int? fonctionId, string nomLieu, TriModel tri, PaginationRequest paginationRequest);
+        PaginationResult<IList<Pretre>> GetPretreByLieu(int? typeLieuId, int? lieuId, int? fonctionId, string nomLieu, int? contextHistoriqueId, int? anneeExercice, TriModel tri, PaginationRequest paginationRequest);
     }
 }

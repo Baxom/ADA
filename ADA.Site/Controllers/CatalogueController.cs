@@ -14,6 +14,8 @@ using ADA.Domain.Bibliotheques;
 using ADA.Domain.Catalogues;
 using System.IO;
 using ADA.Domain.Services.Interface;
+using ADA.Infrastructure.Services.Interface.WordSearchParser;
+using ADA.Data.SqlServer.Interface;
 
 namespace ADA.Site.Controllers
 {
@@ -21,11 +23,14 @@ namespace ADA.Site.Controllers
     {
         IUnitOfWork _unitOfWork;
         ICatalogueService _catalogueService;
+        IWordSearchParser _wordSearchparser;
 
-        public CatalogueController(IUnitOfWork unitOfWork, ICatalogueService catalogueService)
+        public CatalogueController(IUnitOfWork unitOfWork, ICatalogueService catalogueService, IWordSearchParser wordSearchparser, IFTSStringProvider fTSStringProvider)
         {
             _unitOfWork = unitOfWork;
             _catalogueService = catalogueService;
+            _wordSearchparser = wordSearchparser;
+
         }
 
         // GET: Revue
@@ -48,11 +53,14 @@ namespace ADA.Site.Controllers
 
                 if (model.SousSerie == null) model.SousSerieId = null;
             }
+
+            model.MarkableElement = _wordSearchparser.Parse(model.Titre).ToList();
         }
 
         public ActionResult Recherche(RechercheCatalogueViewModel model)
         {
-            Expression<Func<Catalogue, bool>> filter = b => (model.Titre == null || b.Titre.Contains(model.Titre))
+            var titre = _unitOfWork.FTSContains(model.Titre);
+            Expression<Func<Catalogue, bool>> filter = b => (model.Titre == null || b.Titre.Contains(titre))
                                                     && (!model.SousSerieId.HasValue || b.SousSerie.Id == model.SousSerieId.Value)
                                                     && (!model.SerieId.HasValue || b.SousSerie.SerieId == model.SerieId.Value);
             initModel(model);

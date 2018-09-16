@@ -64,6 +64,10 @@
       <Project>{d85b91ff-236b-4de8-9686-0bc7068ca7e3}</Project>
       <Name>ADA.Infrastructure.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ADA.Infrastructure\ADA.Infrastructure.csproj">
+      <Project>{9f2912c9-b7e2-4227-accc-db5df1ea889c}</Project>
+      <Name>ADA.Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Web;
 using ADA.Domain.Catalogues;
+using ADA.Infrastructure.Services.Interface.WordSearchParser;
 
 namespace ADA.Site.Models
 {
@@ -17,6 +18,8 @@ namespace ADA.Site.Models
     {   
         [DisplayName("Titre")]
         public string Titre { get; set; }
+
+        public List<Word> MarkableElement { get; set; }
 
         public int? SerieId { get; set; }
         public int? SousSerieId { get; set; }
@@ -40,6 +43,7 @@ namespace ADA.Site.Models
         public RechercheCatalogueViewModel(bool activeSearch)
         {
             this.Recherche = activeSearch;
+            this.MarkableElement = new List<Word>();
         }
      
     }

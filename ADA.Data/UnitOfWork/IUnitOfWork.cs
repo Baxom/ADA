@@ -53,5 +53,7 @@ namespace ADA.Data.UnitOfWork
         IGenericRepository<Serie> Series { get; }
 
         IGenericRepository<TypeLieu> TypeLieu { get; }
+
+        string FTSContains(string search);
     }
 }

@@ -12,14 +12,11 @@ namespace ADA.Domain.Revues
     {
         public string Titre { get; set; }
         public string Auteur { get; set; }
-
-        public ListePlage PagesReferences { get; set; }
-
+        
         public ICollection<ArticleRevueIndex> ArticleRevueIndex { get; set; }
 
         public ArticleRevue()
         {
-            PagesReferences = new ListePlage();
         }
     }
 }

@@ -5,6 +5,7 @@ using ADA.Domain.RegistresParoissiaux;
 using ADA.Domain.Revues;
 using ADA.Domain.Services.Interface;
 using ADA.Infrastructure.Services.Interface.PdfManager;
+using ADA.Infrastructure.Services.Interface.WordSearchParser;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,23 +19,27 @@ namespace ADA.Domain.Services.Core
     {
         IUnitOfWork _uow;
         IPdfManager _pdfManager;
+        IWordSearchParser _wordSearchParser;
 
         string _fileMissingMessage = "Pensez à contacter l'administration des archives diocesaines d'Angers pour corriger ce problème";
 
-        public CatalogueService(IUnitOfWork uow, IPdfManager pdfManager)
+        public CatalogueService(IUnitOfWork uow, IPdfManager pdfManager, IWordSearchParser wordSearchParser)
         {
             _uow = uow;
             _pdfManager = pdfManager;
+            _wordSearchParser = wordSearchParser;
         }
 
-        public void CreatePdf(int catalogueId, string searchTerms, System.IO.Stream memoryStream)
+        public void CreatePdf(int catalogueId, string searchPhrase, System.IO.Stream memoryStream)
         {
             Catalogue catalogue = _uow.Catalogues.Get(b => b.Id == catalogueId, null, b => b.SousSerie.Serie).FirstOrDefault();
-            string motRecherche = searchTerms;
+
+            var searchTerms = _wordSearchParser.Parse(searchPhrase);
+
             var pdfManager = _pdfManager.Create(memoryStream);
 
             pdfManager.AddNewPage();
-            if(!string.IsNullOrWhiteSpace(motRecherche)) pdfManager.WriteText(String.Format("[Mot recherche : {0}]", motRecherche), null, null, null, true);
+            if(searchTerms.Any()) pdfManager.WriteText(String.Format("[Mot recherche : {0}]", String.Join(", " , searchTerms.Select(b => b.SearchVal))), null, null, null, true);
 
             var serie = catalogue.SousSerie.Serie;
             var serieName = String.Format("Série {0} - {1}", serie.Code, serie.Nom);
@@ -42,21 +47,21 @@ namespace ADA.Domain.Services.Core
             pdfManager.WriteTitle(serieName, 0, true);
             pdfManager.WriteTitle(catalogue.SousSerie.Nom, 1, true, true, false, true);
                 
-            pdfManager.WriteCatalogue(catalogue.Titre, catalogue.Cote, motRecherche);
+            pdfManager.WriteCatalogue(catalogue.Titre, catalogue.Cote, searchTerms.Select( b => new KeyValuePair<string, bool>(b.Val, b.WordBoundary)).ToList());
             pdfManager.Close();
         }
 
-        public void CreatePdf(IEnumerable<int> catalogueIds, string searchTerms, Stream memoryStream)
+        public void CreatePdf(IEnumerable<int> catalogueIds, string searchPhrase, Stream memoryStream)
         {
             List<Catalogue> catalogues = _uow.Catalogues.Get(b => catalogueIds.Contains(b.Id), null, b => b.SousSerie.Serie).ToList();
-            string motRecherche = searchTerms;
+            var searchTerms = _wordSearchParser.Parse(searchPhrase);
             var pdfManager = _pdfManager.Create(memoryStream);
             int countGroupSerie = 0;
             int countGroupSousSerie = 0;
             pdfManager.AddNewPage();
-            if (!string.IsNullOrWhiteSpace(motRecherche)) pdfManager.WriteText(String.Format("[Mot recherche : {0}]", motRecherche), null, null, null, true);
+            if (searchTerms.Any()) pdfManager.WriteText(String.Format("[Mot recherche : {0}]", String.Join(", ", searchTerms.Select(b => b.SearchVal))), null, null, null, true);
 
-            foreach(var groupeSerie in catalogues.GroupBy( grp => grp.SousSerie.Serie ) )
+            foreach (var groupeSerie in catalogues.GroupBy( grp => grp.SousSerie.Serie ) )
             {
 
                 if(countGroupSerie++ > 0)
@@ -85,7 +90,7 @@ namespace ADA.Domain.Services.Core
                         {
                             pdfManager.WriteText(" ");
                         }
-                        pdfManager.WriteCatalogue(catalogue.Titre, catalogue.Cote, motRecherche); 
+                        pdfManager.WriteCatalogue(catalogue.Titre, catalogue.Cote, searchTerms.Select(b => new KeyValuePair<string, bool>(b.Val, b.WordBoundary)).ToList()); 
                     }
                 }
 

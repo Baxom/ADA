@@ -13,6 +13,7 @@ using System.Linq.Expressions;
 using System.IO;
 using ADA.Domain.Services.Interface;
 using ADA.Domain.Constantes;
+using ADA.Infrastructure.Services.Interface.WordSearchParser;
 
 namespace ADA.Site.Controllers
 {
@@ -21,7 +22,7 @@ namespace ADA.Site.Controllers
         IUnitOfWork _unitOfWork;
         IArticleRevueService _revueService;
 
-        public RevueController(IUnitOfWork unitOfWork, IArticleRevueService revueService)
+        public RevueController(IUnitOfWork unitOfWork, IArticleRevueService revueService, IWordSearchParser wordSearchparser)
         {
             _unitOfWork = unitOfWork;
             _revueService = revueService;
@@ -112,14 +113,16 @@ namespace ADA.Site.Controllers
             }
             else { selectedRevue = new List<int>() { revue.Id }.Union(revue.RevuesFille.Select(rf => rf.Id)).ToList(); }
 
+            var titre = _unitOfWork.FTSContains(model.Nom);
 
             Expression<Func<ArticleRevue, bool>> filter = b =>
-                selectedRevue.Contains(b.Revue.Id)
+               (model.Nom == null || b.Titre.Contains(titre))
+                && selectedRevue.Contains(b.Revue.Id)
                 && (!b.Revue.RechercheParAnnee || 
-                    ((!model.AnneeDebut.HasValue || model.AnneeDebut.Value <= b.DebutPublication) 
-                    && (!model.AnneeFin.HasValue || model.AnneeFin.Value >= b.FinPublication )))
+                    ((!model.AnneeDebut.HasValue || model.AnneeDebut.Value <= b.FinPublication) 
+                    && (!model.AnneeFin.HasValue || model.AnneeFin.Value >= b.DebutPublication )))
                 && (model.Auteur == null || b.Auteur.Contains(model.Auteur))
-                && (model.Nom == null || b.Titre.Contains(model.Nom))
+                
 
                 && ((!b.Revue.PeriodesParoisses.Any() || model.Paroisse == null) 
                     || (
@@ -133,7 +136,9 @@ namespace ADA.Site.Controllers
             
             model.Resultats = _unitOfWork
                 .ArticlesRevue
-                .Paginate(new PaginationRequest(model.Pagination.Valeur, model.Page), filter).ToPagedListMvc(model.Page, model.Pagination.Valeur);
+                .Paginate(new PaginationRequest(model.Pagination.Valeur, model.Page), filter
+                , o => o.OrderBy( ar => ar.PeriodePublication).ThenBy( ar => ar.NumeroRevue.HasValue ? ar.NumeroRevue.Value : 0).ThenBy( ar => ar.PremierePage ))
+                .ToPagedListMvc(model.Page, model.Pagination.Valeur);
 
             return View("~/Views/Revue/Recherche.cshtml", model);
         }

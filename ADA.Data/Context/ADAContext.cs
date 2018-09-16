@@ -1,4 +1,6 @@
 ﻿using ADA.Data.Conventions;
+using ADA.Data.Intercepteurs;
+using ADA.Data.SqlServer.Interface;
 using ADA.Domain.Bibliotheques;
 using ADA.Domain.Catalogues;
 using ADA.Domain.Contexthistoriques;
@@ -12,6 +14,7 @@ using ADA.Domain.Revues;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure.Interception;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Reflection;
@@ -22,12 +25,20 @@ namespace ADA.Data.Context
 {
     public class ADAContext : DbContext
     {
+        IFTSStringProvider _iFTSStringProvider;
+
         public ADAContext() :
             base("name=ADAContext")
         {
-            Init();
 
-            
+        }
+        
+        public ADAContext(IFTSStringProvider iFTSStringProvider) :
+            base("name=ADAContext")
+        {
+            _iFTSStringProvider = iFTSStringProvider;
+
+            Init();
         }
 
         private void Init()
@@ -36,6 +47,8 @@ namespace ADA.Data.Context
             Database
                 .SetInitializer<ADAContext>
                 (new MigrateDatabaseToLatestVersion<ADAContext, ADA.Data.Migrations.Configuration>(true));
+
+            DbInterception.Add(new FtsInterceptor(_iFTSStringProvider));
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

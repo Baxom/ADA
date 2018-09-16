@@ -1,4 +1,5 @@
-﻿CREATE PROCEDURE [dbo].[GetMediaFond] @fondId INT, @index [dbo].[ListInt] READONLY, @FondInformationValues FondInformationValue READONLY, @pageNumber int, @pageSize int, @searchTerm nvarchar(500) = null
+﻿CREATE PROCEDURE [dbo].[GetMediaFond] @fondId INT, @index [dbo].[ListInt] READONLY, @FondInformationValues FondInformationValue READONLY, 
+@pageNumber int, @pageSize int, @searchTerm dbo.WordSearch READONLY
 AS 
 BEGIN
 
@@ -37,7 +38,7 @@ BEGIN
 		    + CAST(Inj.InformationFondId as nvarchar(10)) 
 		    + '.FondMediumID AND IFM' 
 		    + CAST(Inj.InformationFondId as nvarchar(10))
-		     + '.InformationFondId = ' + CAST(Inj.InformationFondId as nvarchar(10))
+		    + '.InformationFondId = ' + CAST(Inj.InformationFondId as nvarchar(10))
 	    FROM @FondInformationValues F
 	    INNER JOIN InformationFiltreInjectionFond Inj ON Inj.InformationRechercheFondId = F.Id
 	    ORDER BY Inj.InformationFondId
@@ -80,10 +81,33 @@ BEGIN
 
 	SET @whereClause = ' WHERE FM.FondId = ' + CONVERT(varchar(10), @fondId); 
 
-	if(@searchTerm IS NOT NULL ) BEGIN
-		SET @whereClause += ' AND (FM.Titre LIKE ''%' + @searchTerm + '%''  '
+	DECLARE @searchTermClause NVARCHAR(max)
+	DECLARE @searchTermClauseTag NVARCHAR(max)
+
+	  SELECT @searchTermClause = ' 1 = 1' + 
+	  (
+	  SELECT CASE WHEN Wordboundary = 1 THEN ' AND ''#'' + Titre + ''#'' Like ''%[^a-z]' + Libelle + '[^a-z]%'''
+		ELSE ' AND Titre Like ''%' + Libelle + '%''' 
+		END
+	  FROM
+	  @searchTerm
+	  FOR XML PATH('')
+	  )
+
+	  SELECT @searchTermClauseTag = ' 1 = 1' + 
+	  (
+	  SELECT CASE WHEN Wordboundary = 1 THEN ' AND ''#'' + T.Libelle + ''#'' Like ''%[^a-z]' + Libelle + '[^a-z]%'''
+		ELSE ' AND T.Libelle Like ''%' + Libelle + '%''' 
+		END
+	  FROM
+	  @searchTerm
+	  FOR XML PATH('')
+	  )
+
+	if(@searchTermClause IS NOT NULL AND @searchTermClause != '' ) BEGIN
+		SET @whereClause += ' AND ' + @searchTermClause + ' '
 		SET @whereClause += ' OR (EXISTS (SELECT 1 FROM Tag T INNER JOIN MediumTag MT ON MT.TagId = T.Id ) '
-		SET @whereClause += ' AND EXISTS (SELECT 1 FROM Tag T INNER JOIN MediumTag MT ON MT.TagId = T.Id WHERE T.Libelle LIKE ''%' + @searchTerm + '%'' AND MT.Medium_Id = FM.Id )) ) '
+		SET @whereClause += ' AND EXISTS (SELECT 1 FROM Tag T INNER JOIN MediumTag MT ON MT.TagId = T.Id WHERE ' + @searchTermClauseTag +' AND MT.Medium_Id = FM.Id )) '
 	END
 	SET @whereClause += @InfoWhereClause
 	-- construction script
@@ -115,4 +139,3 @@ BEGIN
 	EXEC sp_ExecuteSql @sqlScriptCount, N' @index [dbo].[ListInt] READONLY', @index
 
 END
-

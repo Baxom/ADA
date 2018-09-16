@@ -14,7 +14,7 @@ namespace ADA.Data.Repositories.Interfaces
 {
     public interface IFondMediumRepository : IGenericRepository<FondMedium>
     {
-        PaginationResult<IList<int>> GetFondMediumIds(int fondId, string searchTerms, IEnumerable<int> index, List<Tuple<int, string, TypeColonneFond>> informationsFilters, PaginationRequest paginationRequest);
+        PaginationResult<IList<FondMedium>> GetFondMedium(int fondId, string searchTerms, IEnumerable<int> index, List<Tuple<int, string, TypeColonneFond>> informationsFilters, PaginationRequest paginationRequest);
        
     }
 }

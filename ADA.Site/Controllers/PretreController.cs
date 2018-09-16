@@ -56,58 +56,70 @@ namespace ADA.Site.Controllers
             return View("~/Views/Pretre/RechercheParNom/Recherche.cshtml", searchParameters);
         }
 
-        //     public ActionResult Recherche(RecherchePretreViewModel searchParameters)
+        //public ActionResult RecherchePretreFonctionLieu(RecherchePretreParLieuViewModel rp)
         //{
-        //    Expression<Func<Pretre, bool>> filter = b => (searchParameters.Nom == null || b.Nom.Contains(searchParameters.Nom))
-        //                                                && (searchParameters.Prenom == null || b.Prenom.Contains(searchParameters.Prenom))
-        //                                                && (searchParameters.AnneeDeces == null || b.AnneeDeces == searchParameters.AnneeDeces)
-        //                                                && (searchParameters.AnneeNaissance == null || b.AnneeNaissance == searchParameters.AnneeNaissance)
-        //                                                && (searchParameters.Commune == null || b.Commune.Nom.Contains(searchParameters.Commune));
 
-        //    searchParameters.Resultats = _unitOfWork.Pretres.GetPretre(searchParameters.Nom, searchParameters.Prenom, 
-        //        searchParameters.AnneeNaissance, searchParameters.AnneeDeces, searchParameters.Commune,
-        //        searchParameters.Tri,
-        //        new PaginationRequest(searchParameters.Pagination.Valeur, searchParameters.Page)).ToPagedListMvc(searchParameters.Page, searchParameters.Pagination.Valeur);
+        //    Expression<Func<Pretre, bool>> filter;
 
-        //    return View("~/Views/Pretre/RechercheParNom/Recherche.cshtml",searchParameters);
+        //    filter = p => (!rp.TypeLieuId.HasValue
+        //    ||
+        //        p.FonctionsLieu.Any(fl => fl.Lieu.TypeLieu.Id == rp.TypeLieuId
+        //            && (!rp.LieuId.HasValue || fl.Lieu.Id == rp.LieuId)
+        //            && (!rp.AnneeExercice.HasValue || (fl.AnneeDebut <= rp.AnneeExercice.Value && fl.AnneeFin >= rp.AnneeExercice.Value))
+        //            && (rp.NomLieu == null || fl.Lieu.Nom == rp.NomLieu)
+        //            && (!rp.FonctionId.HasValue || fl.Fonction.Id == rp.FonctionId.Value))
+        //    )
+        //    && (!rp.ContextHistoriqueId.HasValue || p.ContextHistoriques.Any(ch => ch.ContextHistorique.Id == rp.ContextHistoriqueId.Value));
+
+        //    rp.FonctionLieuViewModel = GetFonctionLieuViewModel(rp.TypeLieuId, rp.LieuId, rp.NomLieu, rp.FonctionId);
+
+        //    rp.Resultats = _unitOfWork
+        //        .Pretres
+        //        .PaginateWithTriModel(new PaginationRequest(rp.Pagination.Valeur, rp.Page), filter, rp.Tri,
+        //                    b => b.Photos,
+        //                    b => b.Documents,
+        //                    b => b.ArticlesRevue,
+        //                    b => b.FonctionsLieu.Select(fl => fl.Fonction),
+        //                    b => b.FonctionsLieu.Select(fl => fl.Lieu))
+        //                    .ToPagedListMvc(rp.Page, rp.Pagination.Valeur);
+
+        //    // on affiche que les fonctions lieu relatives à la séléction, pour les lieux et les fonctions
+        //    rp.Resultats.ToList().ForEach(p => p.FonctionsLieu = p.FonctionsLieu.Where(fl => (!rp.LieuId.HasValue || fl.Lieu.Id == rp.LieuId)
+        //        && fl.Lieu.TypeLieu.Id == rp.TypeLieuId
+        //        && (!rp.AnneeExercice.HasValue || (fl.AnneeDebut <= rp.AnneeExercice.Value && fl.AnneeFin >= rp.AnneeExercice.Value))
+        //        && (rp.NomLieu == null || fl.Lieu.Nom == rp.NomLieu)
+        //        && (!rp.FonctionId.HasValue || fl.Fonction.Id == rp.FonctionId.Value)).ToList());
+
+        //    return View("~/Views/Pretre/RechercheParFonctionLieu/Recherche.cshtml", rp);
         //}
+
 
         public ActionResult RecherchePretreFonctionLieu(RecherchePretreParLieuViewModel rp)
         {
 
-            Expression<Func<Pretre, bool>> filter;
-                        
-            filter = p => (!rp.TypeLieuId.HasValue ||
-            p.FonctionsLieu.Any(fl => (!rp.LieuId.HasValue || fl.Lieu.Id == rp.LieuId)
-                && fl.Lieu.TypeLieu.Id == rp.TypeLieuId
-                && (!rp.AnneeExercice.HasValue || (fl.AnneeDebut <= rp.AnneeExercice.Value && fl.AnneeFin >= rp.AnneeExercice.Value))
-                && (rp.NomLieu == null || fl.Lieu.Nom == rp.NomLieu )
-                && (!rp.FonctionId.HasValue || fl.Fonction.Id == rp.FonctionId.Value)) )
-                
-
-                && (!rp.ContextHistoriqueId.HasValue || p.ContextHistoriques.Any( ch => ch.ContextHistorique.Id == rp.ContextHistoriqueId.Value));
-
             rp.FonctionLieuViewModel = GetFonctionLieuViewModel(rp.TypeLieuId, rp.LieuId, rp.NomLieu, rp.FonctionId);
-            
+
             rp.Resultats = _unitOfWork
                 .Pretres
-                .PaginateWithTriModel(new PaginationRequest(rp.Pagination.Valeur, rp.Page), filter, rp.Tri, 
-                            b => b.Photos, 
-                            b => b.Documents, 
-                            b => b.ArticlesRevue,
-                            b => b.FonctionsLieu.Select( fl => fl.Fonction),
-                            b => b.FonctionsLieu.Select(fl => fl.Lieu))
-                            .ToPagedListMvc(rp.Page, rp.Pagination.Valeur);
+                .GetPretreByLieu(rp.TypeLieuId,
+                                rp.LieuId,
+                                rp.FonctionId,
+                                rp.NomLieu,
+                                rp.ContextHistoriqueId,
+                                rp.AnneeExercice,
+                                rp.Tri,
+                                new PaginationRequest(rp.Pagination.Valeur, rp.Page)).ToPagedListMvc(rp.Page, rp.Pagination.Valeur);
 
             // on affiche que les fonctions lieu relatives à la séléction, pour les lieux et les fonctions
             rp.Resultats.ToList().ForEach(p => p.FonctionsLieu = p.FonctionsLieu.Where(fl => (!rp.LieuId.HasValue || fl.Lieu.Id == rp.LieuId)
                 && fl.Lieu.TypeLieu.Id == rp.TypeLieuId
                 && (!rp.AnneeExercice.HasValue || (fl.AnneeDebut <= rp.AnneeExercice.Value && fl.AnneeFin >= rp.AnneeExercice.Value))
-                && ( rp.NomLieu == null || fl.Lieu.Nom == rp.NomLieu)
+                && (rp.NomLieu == null || fl.Lieu.Nom == rp.NomLieu)
                 && (!rp.FonctionId.HasValue || fl.Fonction.Id == rp.FonctionId.Value)).ToList());
 
             return View("~/Views/Pretre/RechercheParFonctionLieu/Recherche.cshtml", rp);
         }
+
 
         private FonctionLieuViewModel GetFonctionLieuViewModel(int? defautTypeLieuId, int? lieuId = null, string nomLieu = null, int? fonctionId = null)
         {

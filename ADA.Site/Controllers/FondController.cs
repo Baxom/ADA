@@ -50,16 +50,13 @@ namespace ADA.Site.Controllers
                 throw new HttpException(404, "Not found");
             }
             BuildModel(model, fond);
-            var ids = _unitOfWork.FondMediums.GetFondMediumIds(model.Id.Value,
+            var fondMedium = _unitOfWork.FondMediums.GetFondMedium(model.Id.Value,
                 model.Nom,
                 model.SelectedIndex.Where( b => b.Value.HasValue).Select( b => b.Value.Value),
                 model.InformationsFilters,
                 new PaginationRequest(model.Pagination.Valeur, model.Page));
-
-            Expression<Func<Medium, bool>> filter = b => ids.Data.Contains(b.Id);
-            model.Resultats = _unitOfWork.FondMediums.Get(b => ids.Data.Contains(b.Id),
-                b => b.OrderByDescending(o => o.Titre.Contains(model.Nom)), b => b.ColonneFondMedium, b => b.Tags.Select( t => t.Tag))
-                .ToPagedListMvc(model.Page, model.Pagination.Valeur, ids.CountResult);
+            
+            model.Resultats = fondMedium.ToPagedListMvc(model.Page, model.Pagination.Valeur);
             
             return View("~/Views/Fonds/Recherche.cshtml", model);
         }

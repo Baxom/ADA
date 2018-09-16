@@ -1,11 +1,14 @@
 ﻿using ADA.Data.Context;
+using ADA.Data.Helpers;
 using ADA.Data.Model;
 using ADA.Data.Repositories.Common;
 using ADA.Data.Repositories.Interfaces;
+using ADA.Data.SqlServer.Interface;
 using ADA.Domain.Constantes;
 using ADA.Domain.Fonds;
 using ADA.Domain.Pretres;
 using ADA.Infrastructure.PaginationHandler;
+using ADA.Infrastructure.Services.Interface.WordSearchParser;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -20,18 +23,20 @@ namespace ADA.Data.Repositories.Core
 {
     public class FondMediumRepository : GenericRepository<FondMedium>, IFondMediumRepository
     {
-        public FondMediumRepository(ADAContext context)
+        IWordSearchParser _wordSearchParser;
+
+        public FondMediumRepository(ADAContext context, IWordSearchParser wordSearchParser)
             : base(context)
         {
-
+            _wordSearchParser = wordSearchParser;
         }
 
-        public PaginationResult<IList<int>> GetFondMediumIds(int fondId, string searchTerms, IEnumerable<int> index, List<Tuple<int, string, TypeColonneFond>> informationsFilters,
+        public PaginationResult<IList<FondMedium>> GetFondMedium(int fondId, string searchTerms, IEnumerable<int> index, List<Tuple<int, string, TypeColonneFond>> informationsFilters,
             PaginationRequest paginationRequest)
         {
-            List<int> result = new List<int>();
-            DbDataReader reader = null;
-            int nbResult = 0;
+
+            ResultAndCountModel result;
+
             try
             {
                 if (Context.Database.Connection.State != ConnectionState.Open) Context.Database.Connection.Open();
@@ -48,7 +53,12 @@ namespace ADA.Data.Repositories.Core
                 dtFondInformationValue.Columns.Add("Value", typeof(string));
                 informationsFilters.ToList().ForEach(b => dtFondInformationValue.Rows.Add(b.Item1, GetValue(b.Item2, b.Item3)));
 
-                SqlParameter searchTermsParams = new SqlParameter("@searchTerm", SqlDbType.NVarChar) { Value = searchTerms };
+                DataTable dtWordSearch = new DataTable();
+                dtWordSearch.Columns.Add("Libelle", typeof(string));
+                dtWordSearch.Columns.Add("WordBoundary", typeof(bool));
+                _wordSearchParser.Parse(searchTerms).ToList().ForEach(b => dtWordSearch.Rows.Add(b.Val, b.WordBoundary));
+
+                SqlParameter searchTermsParams = new SqlParameter("@searchTerm", SqlDbType.Structured) { Value = dtWordSearch };
                 SqlParameter fondIdParams = new SqlParameter("@fondId", SqlDbType.Int) { Value = fondId };
                 SqlParameter indexPraram = new SqlParameter("@index", SqlDbType.Structured) { Value = dtIndex };
                 SqlParameter fondInformationValueParam = new SqlParameter("@FondInformationValues", SqlDbType.Structured) { Value = dtFondInformationValue };
@@ -65,25 +75,22 @@ namespace ADA.Data.Repositories.Core
                 cmd.Parameters.Add(pageNumberParams);
                 cmd.Parameters.Add(pageSizeParams);
 
-                reader = cmd.ExecuteReader();
-
-                while(reader.Read())
-                {
-                    result.Add(reader.GetInt32(0));
-                }
-
-                reader.NextResult();
-                reader.Read();
-                nbResult = reader.GetInt32(0);
+                result = SqlDataReaderHelper.ExecuteCommand(cmd);
 
             }
             finally
             {
-                if (reader != null) reader.Close();
                 if (Context.Database.Connection.State == ConnectionState.Open) Context.Database.Connection.Close();
             }
 
-            return new PaginationResult<IList<int>>(nbResult, result);
+
+            var fondMediums = this.Get(b => result.Ids.Contains(b.Id),
+               b => b.OrderByDescending(o => o.Titre.Contains(searchTerms)), b => b.ColonneFondMedium, 
+               b => b.Fond.InformationAffichageFonds, 
+               b => b.ColonneFondMedium.Select( col => col.InformationFond),
+               b => b.Tags.Select(t => t.Tag));
+
+            return new PaginationResult<IList<FondMedium>>(result.Count, fondMediums);
         }
 
         private string GetValue(string val, TypeColonneFond type)

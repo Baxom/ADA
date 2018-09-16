@@ -9,7 +9,7 @@ namespace ADA.Domain.Services.Interface
 {
     public interface ICatalogueService
     {
-        void CreatePdf(int catalogueId, string searchTerms, Stream memoryStream);
-        void CreatePdf(IEnumerable<int> catalogueIds, string searchTerms, Stream memoryStream);
+        void CreatePdf(int catalogueId, string searchPhrase, Stream memoryStream);
+        void CreatePdf(IEnumerable<int> catalogueIds, string searchPhrase, Stream memoryStream);
     }
 }

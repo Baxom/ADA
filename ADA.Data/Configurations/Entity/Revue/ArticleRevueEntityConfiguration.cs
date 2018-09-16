@@ -18,6 +18,7 @@ namespace ADA.Data.Configurations
             this.Property(b => b.Pages.ListePagesTexte).HasColumnName("Pages");
             this.Property(b => b.PagesReferences.ListePagesTexte).HasColumnName("PagesReferences");
             this.Property(b => b.PeriodePublication).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
+            this.Property(b => b.PremierePage).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
             this.HasRequired(b => b.Revue);
         }
         

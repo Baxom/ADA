@@ -36,7 +36,10 @@
                     </div>
                 </div>
             </div>
-            <ul class="list-group markable-context " data-mark-keyword="@Model.Titre">
+            <ul class="list-group markable-context " data-mark-keyword='@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.MarkableElement, new Newtonsoft.Json.JsonSerializerSettings
+        {
+            ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver()
+        }))'>
                 @foreach (var item in Model.Resultats)
                 {
                     <li class="list-group-item list-selectable">

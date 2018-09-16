@@ -15,7 +15,9 @@ namespace ADA.Data.Configurations
         public PretreArticleRevueEntityConfiguration()
         {
             this.Property(b => b.Pages.ListePagesTexte).HasColumnName("Pages");
-            this.Property(b => b.PeriodePublication).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed); 
+            this.Property(b => b.PagesReferences.ListePagesTexte).HasColumnName("PagesReferences");
+            this.Property(b => b.PeriodePublication).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
+            this.Ignore(b => b.PremierePage);
             this.HasRequired(b => b.Revue);
         }
         

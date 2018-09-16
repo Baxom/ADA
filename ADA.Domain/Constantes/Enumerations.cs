@@ -16,13 +16,7 @@ namespace ADA.Domain.Constantes
     {
         Paroisse = 1,
     }
-
-    public enum TypeRevue
-    {
-        Revue = 1,
-        RevueVirtuelle = 2
-    }
-
+    
     public enum TypeActe
     {
         Bapteme = 1,

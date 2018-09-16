@@ -34,7 +34,7 @@ namespace ADA.Domain.Services.Core
 
             foreach (var doc in documentToMerge)
             {
-                pdfManager.AddPdf(doc.NomCompletFichier, doc.Tag, _fileMissingMessage, articleRevue.PagesReferences.ListePages.ToList());
+                pdfManager.AddPdf(doc.NomCompletFichier, doc.Tag, _fileMissingMessage, articleRevue.PagesReferences.ListePages.ToList(), true);
             }
 
             pdfManager.Close();
@@ -53,13 +53,13 @@ namespace ADA.Domain.Services.Core
             foreach (var articleRevue in articlesRevues)
             {
 
-                toc.AddContent(String.Format("{0} ({1})", articleRevue.Titre, articleRevue.ShortTag), totalPage + 1);
+                toc.AddContent( String.Format("{0} ({1})", articleRevue.Titre, articleRevue.ShortTag), totalPage + 1);
 
                 var documentToMerge = articleRevue.GetDocuments();
-    
                 foreach (var doc in documentToMerge)
                 {
-                    totalPage += pdfManager.AddPdf(doc.NomCompletFichier, doc.Tag, _fileMissingMessage, articleRevue.PagesReferences.ListePages.ToList());
+                    totalPage += pdfManager.AddPdf(doc.NomCompletFichier, doc.Tag, _fileMissingMessage, articleRevue.PagesReferences.ListePages.ToList(), true);
+                  
                 }
 
             }
