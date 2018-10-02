@@ -86,8 +86,8 @@ BEGIN
 
 	  SELECT @searchTermClause = ' 1 = 1' + 
 	  (
-	  SELECT CASE WHEN Wordboundary = 1 THEN ' AND ''#'' + Titre + ''#'' Like ''%[^a-z]' + Libelle + '[^a-z]%'''
-		ELSE ' AND Titre Like ''%' + Libelle + '%''' 
+	  SELECT CASE WHEN Wordboundary = 1 THEN ' AND ''#'' + Titre + ''#'' Like ''%[^a-z]' + REPLACE(Libelle, '''', '''''') + '[^a-z]%'''
+		ELSE ' AND Titre Like ''%' + REPLACE(Libelle, '''', '''''') + '%''' 
 		END
 	  FROM
 	  @searchTerm
@@ -96,8 +96,8 @@ BEGIN
 
 	  SELECT @searchTermClauseTag = ' 1 = 1' + 
 	  (
-	  SELECT CASE WHEN Wordboundary = 1 THEN ' AND ''#'' + T.Libelle + ''#'' Like ''%[^a-z]' + Libelle + '[^a-z]%'''
-		ELSE ' AND T.Libelle Like ''%' + Libelle + '%''' 
+	  SELECT CASE WHEN Wordboundary = 1 THEN ' AND ''#'' + T.Libelle + ''#'' Like ''%[^a-z]' + REPLACE(Libelle, '''', '''''') + '[^a-z]%'''
+		ELSE ' AND T.Libelle Like ''%' + REPLACE(Libelle, '''', '''''') + '%''' 
 		END
 	  FROM
 	  @searchTerm
@@ -105,9 +105,8 @@ BEGIN
 	  )
 
 	if(@searchTermClause IS NOT NULL AND @searchTermClause != '' ) BEGIN
-		SET @whereClause += ' AND ' + @searchTermClause + ' '
-		SET @whereClause += ' OR (EXISTS (SELECT 1 FROM Tag T INNER JOIN MediumTag MT ON MT.TagId = T.Id ) '
-		SET @whereClause += ' AND EXISTS (SELECT 1 FROM Tag T INNER JOIN MediumTag MT ON MT.TagId = T.Id WHERE ' + @searchTermClauseTag +' AND MT.Medium_Id = FM.Id )) '
+		SET @whereClause += ' AND ( ' + @searchTermClause + ' '
+		SET @whereClause += ' OR ( EXISTS (SELECT 1 FROM Tag T INNER JOIN MediumTag MT ON MT.TagId = T.Id WHERE ' + @searchTermClauseTag +' AND MT.Medium_Id = FM.Id ))) '
 	END
 	SET @whereClause += @InfoWhereClause
 	-- construction script

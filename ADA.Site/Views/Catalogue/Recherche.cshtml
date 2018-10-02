@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Recherche Bibliothèque";
+    ViewBag.Title = "Recherche Catalogue";
 }
 @using PagedList;
 @using PagedList.Mvc;
@@ -26,7 +26,20 @@
                     @{ Html.RenderPartial("~/Views/Shared/_Pager.cshtml", Model.Resultats, new ViewDataDictionary { { "Action", "Recherche" }, { "FormName", "recherche" } });}
                     <div class="header-result-item-right">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-secondary" data-multi-select-api-button='{"api":"pdfs", "extendParams": "searchTerms=@Model.Titre", "checkboxKey":"id", "key":"ids"}'><i class="fas fa-file-pdf"></i></button>
+                            @*<button type="button" class="btn btn-secondary" data-multi-select-api-button='{"api":"pdfs", "extendParams": "searchTerms"=@Model.Titre, "checkboxKey":"id", "key":"ids"}'><i class="fas fa-file-pdf"></i></button>*@
+
+                            <button type="button" class="btn btn-secondary" data-multi-select-api-button='@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(new
+                                                                                                     {
+                                                                                                         api = "pdfs",
+                                                                                                         extendParams = "searchTerms=" + Model.Titre,
+                                                                                                         checkboxKey = "id", key = "ids" 
+                                                                                                     },
+                                                                                                     new Newtonsoft.Json.JsonSerializerSettings
+                                                                                                        {
+                                                                                                            ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver()
+                                                                                                        }))'><i class="fas fa-file-pdf"></i></button>
+
+
                             <button type="button" class="btn btn-secondary  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" multi-select-api-checkbox-select-all href="javascript:void(0)">Sélectionner tout</a>
@@ -39,7 +52,7 @@
             <ul class="list-group markable-context " data-mark-keyword='@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.MarkableElement, new Newtonsoft.Json.JsonSerializerSettings
         {
             ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver()
-        }))'>
+                            }))'>
                 @foreach (var item in Model.Resultats)
                 {
                     <li class="list-group-item list-selectable">

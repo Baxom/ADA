@@ -88,7 +88,7 @@ namespace ADA.Infrastructure.Services.Core.PdfManager
             for (int i = 1; i <= reader.NumberOfPages; i++)
             {
                 if (pageIndexToPrint.Any() && !pageIndexToPrint.Contains(i)) continue;
-
+                
                 AddNewContentPage(reader.GetCropBox(i), reader.GetPageRotation(i), autoResize);
 
 
@@ -96,6 +96,7 @@ namespace ADA.Infrastructure.Services.Core.PdfManager
                 page.BoundingBox = reader.GetCropBox(i);
 
                 _writerContent.DirectContent.AddTemplate(page, CreateTransform(page, page.Rotation, reader.GetPageSize(i), autoResize));
+              
 
                 CreateStamp(stampString);
             }
@@ -480,7 +481,7 @@ namespace ADA.Infrastructure.Services.Core.PdfManager
                 if (size.Width >= size.Height && (size.Width < PageSize.A4.Rotate().Width || size.Width < PageSize.A4.Rotate().Height)) pageSize = PageSize.A4.Rotate();
 
                 if (size.Height >= 1000) pageSize = PageSize.A3;
-                if (size.Width >= 1000) pageSize = PageSize.A3.Rotate();
+                if (size.Width >= 1000 && size.Height < size.Width ) pageSize = PageSize.A3.Rotate();
             }
             //if(size.Width > size.Height)
             if (mustRotate)

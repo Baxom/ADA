@@ -35,9 +35,9 @@ namespace ADA.Data.Model
             Order = order;
         }
 
-        public override Func<IQueryable<T>, IOrderedQueryable<T>> GetOrder<T>()
+        public override Func<IQueryable<U>, IOrderedQueryable<U>> GetOrder<U>()
         {
-            return (Func<IQueryable<T>, IOrderedQueryable<T>>)Order;
+            return (Func<IQueryable<U>, IOrderedQueryable<U>>)Order;
         }
        
     }

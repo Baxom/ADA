@@ -20,8 +20,7 @@ namespace ADA.Domain.Revues
         private const string _codeNomRevue = "NOM_REVUE";
         private const string _codeNumeroRevue = "NUMERO_REVUE";
         private const string _codeCodeRevueMere = "CODE_REVUE_MERE";
-
-        private Dictionary<string, object> _dctCodeValue;
+        
 
         public string Code { get; set; }
         public string Nom { get; set; }

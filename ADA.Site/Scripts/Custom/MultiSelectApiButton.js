@@ -22,6 +22,8 @@
             var self = $(this);
             var data = self.data('multi-select-api-button');
 
+            if (typeof data === 'string') data = data = JSON.parse(data); 
+
             var queryParam = $('input[type="checkbox"][multi-select-api-button-checkbox]:checked').toArray().map(function (elt) {
                 return data.key + "=" + $(elt).data(data.checkboxKey);
                 })

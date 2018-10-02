@@ -64,10 +64,12 @@
 
                             <div class="dropdown-menu dropdown-submenu" aria-labelledby="navbarDropdownMenuLink">
 
+                                @{ int compteurFond = 0; }
+
                                 @foreach (var fond in Model.Fonds.OrderBy(b => b.Nom))
                                 {
                                     <a class="dropdown-item dropdown-toggle" href="javascript:void(0);">@fond.Nom</a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="top: @String.Format(System.Globalization.CultureInfo.GetCultureInfo("en-GB"), "{0:0.0}rem", compteurFond++ * 1.9f - 0.2f)">
                                         @Html.ActionLink("Description", "Description", "Fond", new { id = fond.Id }, new { @class = "dropdown-item" })
                                         <div class="dropdown-divider"></div>
 

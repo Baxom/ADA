@@ -20,8 +20,7 @@ namespace ADA.Domain.Services.Core
         IUnitOfWork _uow;
         IPdfManager _pdfManager;
         IWordSearchParser _wordSearchParser;
-
-        string _fileMissingMessage = "Pensez à contacter l'administration des archives diocesaines d'Angers pour corriger ce problème";
+        
 
         public CatalogueService(IUnitOfWork uow, IPdfManager pdfManager, IWordSearchParser wordSearchParser)
         {
