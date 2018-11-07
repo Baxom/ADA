@@ -19,7 +19,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <img class="fit-to-screen" data-src="@Url.Action("Image", "Media", new { id = Model.Id })" />
+                <img class="fit-to-screen" data-src="@Url.HttpRouteUrl("ActionApi", new { controller = "Media", action= "Content", id = Model.Id })" />
+                @*<img class="fit-to-screen" data-src="@Url.Action("Image", "Media", new { id = Model.Id })" />*@
             </div>
 
         </div>
