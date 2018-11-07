@@ -72,5 +72,11 @@
 
             }
         });
+
+        $('input.ui-autocomplete-input').each(function () {
+
+            var self = $(this);
+            self.attr('autocomplete', 'new-password');
+        });
     });
 })()
