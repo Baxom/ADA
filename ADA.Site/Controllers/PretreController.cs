@@ -170,7 +170,7 @@ namespace ADA.Site.Controllers
         }
 
         [OutputCache(Duration = 3600, VaryByParam = "id")]
-        public ActionResult Image(int id)
+        public ActionResult Image(int id, string niceUrl)
         {
             var pretre = _unitOfWork.Pretres.Get(b => b.Photos.Any(p => p.Id == id), null, b => b.Photos).FirstOrDefault();
 

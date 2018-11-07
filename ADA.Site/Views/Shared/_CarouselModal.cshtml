@@ -32,7 +32,7 @@
                         @foreach (var photo in Model)
                         {
                             <div class="carousel-item @(@compteur == 1 ? "active" : "")">
-                                <img class="d-block center" data-src="@Url.Action("Image", "Pretre", new { id = photo.Id })">
+                                <img class="d-block center" data-src="@Url.Action("Image", "Pretre", new { id = photo.Id, niceUrl = photo.NomFichier })">
                             </div>
                             compteur++;
                         }

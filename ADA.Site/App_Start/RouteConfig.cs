@@ -41,9 +41,14 @@ namespace ADA.Site
                 url: "pretre/fiche/{id}/{niceUrl}",
                 defaults: new { controller = "Pretre", action = "Fiche" });
 
+            routes.MapRoute(
+                name: "ImagePretre",
+                url: "pretre/image/{id}/{niceUrl}",
+                defaults: new { controller = "Pretre", action = "Image" });
+
             /* Route revues */
 
-           routes.MapRoute(
+            routes.MapRoute(
                 name: "SelectionArticle",
                 url: "revue/selection-article/",
                 defaults: new { controller = "Revue", action = "Pdfs" });
