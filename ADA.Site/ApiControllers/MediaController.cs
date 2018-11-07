@@ -87,7 +87,7 @@ namespace ADA.Site.ApiControllers
 
             var root = System.Web.HttpContext.Current.Server.MapPath("~/");
 
-            string path = Path.Combine(root, medium.RepertoireNom.TrimStart('/', '\\').Replace("\\", " /"));
+            string path = Path.Combine(root, medium.RepertoireNom.TrimStart('/', '\\').Replace("/", "\\"));
 
             if (!File.Exists(path)) return NotFound();
 
